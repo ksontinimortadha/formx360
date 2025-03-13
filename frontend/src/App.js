@@ -14,6 +14,7 @@ import FormStylingPage from "./components/FormStylingPage";
 import Profile from "./components/Profile";
 import Security from "./components/Security";
 import PreviewPage from "./components/PreviewPage";
+import FormSubmit from "./components/FormSubmit";
 
 function App() {
   return (
@@ -38,6 +39,8 @@ function App() {
         <Route path="/form-builder/:formId" element={<FormBuilder />} />
         <Route path="/form-styling/:formId" element={<FormStylingPage />} />
         <Route path="/preview/:formId" element={<PreviewPage />} />
+        {/* responses Routes  */}
+        <Route path="/responses/:formId" element={<FormSubmit />} />
       </Routes>
     </Router>
   );

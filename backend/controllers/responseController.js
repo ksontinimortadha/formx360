@@ -191,15 +191,31 @@ exports.getFormResponses = async (req, res) => {
   const { form_id } = req.params;
 
   try {
-    const responses = await Response.find({ form_id }).populate(
-      "user_id",
-      "name email"
-    );
-    res.status(200).json(responses);
+    // Validate if form exists
+    const form = await Form.findById(form_id);
+    if (!form) {
+      return res.status(404).json({ message: "Form not found" });
+    }
+
+    // Fetch all responses for the given form
+    const responses = await Response.find({ form_id })
+      .populate("user_id", "name email") // Populating user details
+      .exec();
+
+    // Check if responses exist
+    if (responses.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No responses found for this form" });
+    }
+
+    res.status(200).json(responses); // Return responses
   } catch (err) {
+    // Handle any errors that occur during the process
     res.status(500).json({ message: "Server error", error: err.message });
   }
 };
+
 
 // Get Responses Submitted by a User
 exports.getUserResponses = async (req, res) => {

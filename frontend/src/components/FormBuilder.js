@@ -45,7 +45,6 @@ const FormBuilder = () => {
           `https://formx360.onrender.com/forms/${formId}`
         );
         const form = response.data.form;
-        console.log("form", form);
         setFormData(form);
         setFormTitle(form.title || "Untitled Form");
         setFormDescription(form.description || "");

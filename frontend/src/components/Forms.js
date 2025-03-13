@@ -76,7 +76,6 @@ function Forms() {
 
     try {
       const newVisibility = form.visibility === "public" ? "private" : "public";
-      // Generate the public URL (if the form is made public)
       const publicUrl =
         newVisibility === "public"
           ? `https://formx360.vercel.app/form/response/${form._id}`
