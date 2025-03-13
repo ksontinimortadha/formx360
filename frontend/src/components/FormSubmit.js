@@ -39,32 +39,31 @@ const FormSubmit = () => {
   };
 
   // Handle form submission
- const handleSubmit = async (event) => {
-   event.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-   // Check if there are any responses
-   if (responses.length === 0) {
-     setError("Please fill out the form before submitting.");
-     return;
-   }
+    // Check if there are any responses
+    if (responses.length === 0) {
+      setError("Please fill out the form before submitting.");
+      return;
+    }
 
-   try {
-     // Send the responses to the backend API
-     const response = await axios.post(
-       `https://formx360.onrender.com/responses/`,
-       { responses }
-     );
+    try {
+      // Send the responses to the backend API
+      const response = await axios.post(
+        `https://formx360.onrender.com/responses/`,
+        { responses }
+      );
 
-     if (response.status === 200) {
-       alert("Response submitted successfully!");
-       // Optionally, clear form or redirect after success
-     }
-   } catch (err) {
-     setError("Error submitting the form. Please try again.");
-     console.error("Submit Error:", err); // Log the error for debugging
-   }
- };
-
+      if (response.status === 200) {
+        alert("Response submitted successfully!");
+        // Optionally, clear form or redirect after success
+      }
+    } catch (err) {
+      setError("Error submitting the form. Please try again.");
+      console.error("Submit Error:", err); // Log the error for debugging
+    }
+  };
 
   if (loading) return <div>Loading form...</div>;
 
