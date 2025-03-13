@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Container, Row, Col, Button, Card, Dropdown } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FaPencilAlt, FaTrash, FaPlus, FaEllipsisV } from "react-icons/fa";
@@ -76,10 +76,14 @@ function Forms() {
 
     try {
       const newVisibility = form.visibility === "public" ? "private" : "public";
-
+      // Generate the public URL (if the form is made public)
+      const publicUrl =
+        newVisibility === "public"
+          ? `https://formx360.vercel.app/form/response/${form._id}`
+          : null;
       await axios.put(
         `https://formx360.onrender.com/forms/${form._id}/visibility`,
-        { visibility: newVisibility }
+        { visibility: newVisibility, publicUrl: publicUrl }
       );
 
       // Update local state

@@ -291,7 +291,7 @@ exports.updateFieldStyle = async (req, res) => {
 // Update form visibility
 exports.updateFormVisibility = async (req, res) => {
   const { formId } = req.params;
-  const { visibility } = req.body;
+  const { visibility, publicUrl } = req.body;
 
   try {
     // Validate visibility value
@@ -303,8 +303,8 @@ exports.updateFormVisibility = async (req, res) => {
     // Update the form's visibility
     const updatedForm = await Form.findByIdAndUpdate(
       formId,
-      { $set: { visibility } },
-      { new: true } // Return the updated form
+      { $set: { visibility, publicUrl } },
+      { new: true } 
     );
 
     if (!updatedForm) {
@@ -312,7 +312,7 @@ exports.updateFormVisibility = async (req, res) => {
     }
 
     res.status(200).json({
-      message: `Form visibility updated to ${visibility}`,
+      message: `Form visibility updated to ${visibility} and link ${publicUrl}`,
       form: updatedForm,
     });
   } catch (err) {

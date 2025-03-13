@@ -2,7 +2,7 @@ const Response = require("../models/Response");
 const Form = require("../models/Form");
 
 // Submit a New Response
-const submitResponse = async (req, res) => {
+exports.submitResponse = async (req, res) => {
   const { form_id, user_id, responses } = req.body;
 
   try {
@@ -18,158 +18,150 @@ const submitResponse = async (req, res) => {
       );
 
       // Check required fields
-      if (field.is_required && (!userResponse || !userResponse.value)) {
+      if (field.required && (!userResponse || !userResponse.value)) {
         validationErrors.push(`Field '${field.label}' is required.`);
         return; // Skip further validation for this field
       }
 
       if (userResponse) {
-        const value = userResponse.value;
+        let value = userResponse.value;
 
-        // Validation based on field type
-        switch (field.field_type) {
+        // Normalize checkbox-group and radio-group to array
+        if (Array.isArray(value)) {
+          value = value.filter((val) =>
+            field.options.some((option) => option.value === val)
+          );
+        } else {
+          value = [value];
+        }
+
+        // Validate based on field type
+        switch (field.type) {
           case "text":
           case "textarea":
-            if (
-              field.validation_rules?.regex &&
-              !new RegExp(field.validation_rules.regex).test(value)
-            ) {
+            // Validate min/max length
+            if (field.min_length && value[0].length < field.min_length) {
               validationErrors.push(
-                `Field '${field.label}' must match the format: ${
-                  field.validation_rules.regex_description || "invalid format"
-                }.`
+                `Field '${field.label}' must have at least ${field.min_length} characters.`
               );
             }
-            if (
-              field.validation_rules?.min_length &&
-              value.length < field.validation_rules.min_length
-            ) {
+            if (field.max_length && value[0].length > field.max_length) {
               validationErrors.push(
-                `Field '${field.label}' must have at least ${field.validation_rules.min_length} characters.`
-              );
-            }
-            if (
-              field.validation_rules?.max_length &&
-              value.length > field.validation_rules.max_length
-            ) {
-              validationErrors.push(
-                `Field '${field.label}' must not exceed ${field.validation_rules.max_length} characters.`
+                `Field '${field.label}' must not exceed ${field.max_length} characters.`
               );
             }
             break;
 
           case "number":
-            if (isNaN(value)) {
+            if (isNaN(value[0])) {
               validationErrors.push(
                 `Field '${field.label}' must be a valid number.`
               );
             }
-            if (
-              field.validation_rules?.min_value &&
-              value < field.validation_rules.min_value
-            ) {
+            if (field.min && value[0] < field.min) {
               validationErrors.push(
-                `Field '${field.label}' must be at least ${field.validation_rules.min_value}.`
+                `Field '${field.label}' must be at least ${field.min}.`
               );
             }
-            if (
-              field.validation_rules?.max_value &&
-              value > field.validation_rules.max_value
-            ) {
+            if (field.max && value[0] > field.max) {
               validationErrors.push(
-                `Field '${field.label}' must not exceed ${field.validation_rules.max_value}.`
+                `Field '${field.label}' must not exceed ${field.max}.`
               );
             }
             break;
 
-          case "dropdown":
-          case "radio":
-            if (!field.options.includes(value)) {
+          case "checkbox-group":
+          case "radio-group":
+            // Validate options
+            if (!Array.isArray(value)) value = [value]; // Normalize single option to an array
+            value.forEach((val) => {
+              if (!field.options.some((option) => option.value === val)) {
+                validationErrors.push(
+                  `Field '${field.label}' contains invalid options.`
+                );
+              }
+            });
+            if (field.min && value.length < field.min) {
+              validationErrors.push(
+                `Field '${field.label}' must have at least ${field.min} selected.`
+              );
+            }
+            if (field.max && value.length > field.max) {
+              validationErrors.push(
+                `Field '${field.label}' must not exceed ${field.max} selected.`
+              );
+            }
+            break;
+
+          case "select":
+            if (!field.options.some((option) => option.value === value[0])) {
               validationErrors.push(
                 `Field '${field.label}' must be one of the predefined options.`
               );
             }
             break;
 
-          case "checkbox":
-            if (!Array.isArray(value)) {
-              validationErrors.push(`Field '${field.label}' must be an array.`);
-            } else if (
-              field.validation_rules?.max_selected &&
-              value.length > field.validation_rules.max_selected
-            ) {
-              validationErrors.push(
-                `Field '${field.label}' must not exceed ${field.validation_rules.max_selected} selections.`
-              );
-            } else if (
-              field.validation_rules?.min_selected &&
-              value.length < field.validation_rules.min_selected
-            ) {
-              validationErrors.push(
-                `Field '${field.label}' must have at least ${field.validation_rules.min_selected} selections.`
-              );
-            } else if (value.some((v) => !field.options.includes(v))) {
-              validationErrors.push(
-                `Field '${field.label}' contains invalid options.`
-              );
-            }
-            break;
-
           case "date":
-            const dateValue = new Date(value);
+            const dateValue = new Date(value[0]);
             if (isNaN(dateValue)) {
               validationErrors.push(
                 `Field '${field.label}' must be a valid date.`
               );
             }
-            if (
-              field.validation_rules?.min_date &&
-              dateValue < new Date(field.validation_rules.min_date)
-            ) {
+            if (field.min && dateValue < new Date(field.min)) {
               validationErrors.push(
-                `Field '${field.label}' must not be before ${field.validation_rules.min_date}.`
+                `Field '${field.label}' must not be before ${field.min}.`
               );
             }
-            if (
-              field.validation_rules?.max_date &&
-              dateValue > new Date(field.validation_rules.max_date)
-            ) {
+            if (field.max && dateValue > new Date(field.max)) {
               validationErrors.push(
-                `Field '${field.label}' must not be after ${field.validation_rules.max_date}.`
-              );
-            }
-            break;
-
-          case "url":
-            const urlRegex = /^(https?:\/\/)?([\w-]+)+([\w./?%&=]*)?$/;
-            if (!urlRegex.test(value)) {
-              validationErrors.push(
-                `Field '${field.label}' must be a valid URL.`
+                `Field '${field.label}' must not be after ${field.max}.`
               );
             }
             break;
 
           case "file":
-            if (!field.validation_rules?.allowed_types.includes(value.type)) {
+            const file = value[0]; // Assuming value is a file object
+            if (
+              file &&
+              field.min_length &&
+              file.size < field.min_length * 1024
+            ) {
               validationErrors.push(
-                `Field '${
-                  field.label
-                }' must be a file of type: ${field.validation_rules.allowed_types.join(
-                  ", "
-                )}.`
+                `Field '${field.label}' file size must be at least ${field.min_length} KB.`
               );
             }
-            if (value.size > field.validation_rules?.max_size * 1024 * 1024) {
+            if (
+              file &&
+              field.max_length &&
+              file.size > field.max_length * 1024
+            ) {
               validationErrors.push(
-                `Field '${field.label}' file size must not exceed ${field.validation_rules.max_size} MB.`
+                `Field '${field.label}' file size must not exceed ${field.max_length} KB.`
               );
             }
             break;
 
+          case "autocomplete":
+          case "hidden":
+          case "button":
+          case "header":
+          case "paragraph":
+          case "starRating":
+            // These types do not require validation for values
+            break;
+
           default:
             validationErrors.push(
-              `Field '${field.label}' has an unsupported field type: ${field.field_type}.`
+              `Field '${field.label}' has an unsupported field type: ${field.type}.`
             );
+        }
+
+        // Custom validation based on field subtype (e.g., password)
+        if (field.subtype === "password" && value[0].length < 8) {
+          validationErrors.push(
+            `Field '${field.label}' (password) must have at least 8 characters.`
+          );
         }
       }
     });
@@ -184,12 +176,10 @@ const submitResponse = async (req, res) => {
     const newResponse = new Response({ form_id, user_id, responses });
     await newResponse.save();
 
-    res
-      .status(201)
-      .json({
-        message: "Response submitted successfully",
-        response: newResponse,
-      });
+    res.status(201).json({
+      message: "Response submitted successfully",
+      response: newResponse,
+    });
   } catch (err) {
     res.status(500).json({ message: "Server error", error: err.message });
   }
@@ -197,7 +187,7 @@ const submitResponse = async (req, res) => {
 
 
 // Get Responses for a Form
-const getFormResponses = async (req, res) => {
+exports.getFormResponses = async (req, res) => {
   const { form_id } = req.params;
 
   try {
@@ -212,7 +202,7 @@ const getFormResponses = async (req, res) => {
 };
 
 // Get Responses Submitted by a User
-const getUserResponses = async (req, res) => {
+exports.getUserResponses = async (req, res) => {
   const { user_id } = req.params;
 
   try {
@@ -224,10 +214,4 @@ const getUserResponses = async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: "Server error", error: err.message });
   }
-};
-
-module.exports = {
-  submitResponse,
-  getFormResponses,
-  getUserResponses,
 };
