@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Container, Row, Col, Button, Card, Dropdown } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FaPencilAlt, FaTrash, FaPlus, FaEllipsisV } from "react-icons/fa";
@@ -20,13 +20,14 @@ function Forms() {
   const [showVisibilityModal, setShowVisibilityModal] = useState(false);
   const [formToEdit, setFormToEdit] = useState(null);
   const [companyId, setCompanyId] = useState("");
+
   const navigate = useNavigate();
 
   useEffect(() => {
-    const companyId = sessionStorage.getItem("companyId");
-    if (companyId) {
-      setCompanyId(companyId);
-      fetchForms(companyId);
+    const storedCompanyId = sessionStorage.getItem("companyId");
+    if (storedCompanyId) {
+      setCompanyId(storedCompanyId);
+      fetchForms(storedCompanyId);
     }
   }, []);
 
@@ -38,6 +39,7 @@ function Forms() {
       );
       setForms(response.data);
     } catch (error) {
+      console.error("Error fetching forms:", error);
       toast.error("Failed to fetch forms.");
     }
   };
@@ -46,9 +48,6 @@ function Forms() {
     sessionStorage.removeItem("companyId");
     navigate("/login");
   };
-
-  const handleShowAddModal = () => setShowAddModal(true);
-  const handleCloseAddModal = () => setShowAddModal(false);
 
   const handleEditForm = (form) => {
     navigate(`/form-builder/${form._id}`);
@@ -61,34 +60,47 @@ function Forms() {
 
   const handleCloseDeleteModal = () => setShowDeleteModal(false);
 
- const handleShowVisibilityModal = (form) => {
-   setFormToEdit(form);
-   setShowVisibilityModal(true); // Open the visibility modal
- };
+  const handleShowVisibilityModal = (form) => {
+    setFormToEdit(form);
+    setShowVisibilityModal(true);
+  };
 
- const handleCloseVisibilityModal = () => setShowVisibilityModal(false);
+  const handleCloseVisibilityModal = () => setShowVisibilityModal(false);
 
- const handleVisibilityChange = async (form) => {
-   try {
-     const newVisibility = form.visibility === "public" ? "private" : "public";
-     await axios.put(
-       `https://formx360.onrender.com/forms/${form._id}/visibility`,
-       { visibility: newVisibility }
-     );
+  const handleVisibilityChange = async (form) => {
+    if (!form || !form._id) {
+      toast.error("Invalid form data.");
+      console.error("Invalid form data:", form);
+      return;
+    }
 
-     setForms((prevForms) =>
-       prevForms.map((f) =>
-         f._id === form._id ? { ...f, visibility: newVisibility } : f
-       )
-     );
+    try {
+      const newVisibility = form.visibility === "public" ? "private" : "public";
 
-     toast.success(
-       `Form is now ${newVisibility === "public" ? "public" : "private"}`
-     );
-   } catch (error) {
-     toast.error("Failed to update visibility.");
-   }
- };
+      await axios.put(
+        `https://formx360.onrender.com/forms/${form._id}/visibility`,
+        { visibility: newVisibility }
+      );
+
+      // Update local state
+      setForms((prevForms) =>
+        prevForms.map((f) =>
+          f._id === form._id ? { ...f, visibility: newVisibility } : f
+        )
+      );
+
+      toast.success(`Form is now ${newVisibility}`);
+
+      // Fetch latest data from the server
+      fetchForms(companyId);
+    } catch (error) {
+      console.error("Error updating visibility:", error.response || error);
+      toast.error("Failed to update visibility.");
+    }
+  };
+
+  const handleShowAddModal = () => setShowAddModal(true);
+  const handleCloseAddModal = () => setShowAddModal(false);
 
   return (
     <div>
@@ -217,7 +229,7 @@ function Forms() {
           <ChangeVisibilityModal
             show={showVisibilityModal}
             handleClose={handleCloseVisibilityModal}
-            fetchForms={fetchForms}
+            form={formToEdit}
             handleVisibilityChange={handleVisibilityChange}
           />
         </main>

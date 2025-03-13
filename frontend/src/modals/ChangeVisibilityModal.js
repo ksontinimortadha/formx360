@@ -5,12 +5,16 @@ import { FaCheck, FaTimes } from "react-icons/fa";
 function ChangeVisibilityModal({
   show,
   handleClose,
-  fetchForms,
+  form,
   handleVisibilityChange,
 }) {
+  if (!form) return null; 
+
+  const newVisibility = form.visibility === "public" ? "private" : "public";
+
   const handleConfirmChange = async () => {
-    await handleVisibilityChange(fetchForms);
-    handleClose(); // Close the modal after the change
+    await handleVisibilityChange(form); 
+    handleClose();
   };
 
   return (
@@ -21,8 +25,7 @@ function ChangeVisibilityModal({
       <Modal.Body>
         <p>
           Are you sure you want to change the visibility of the form{" "}
-          <strong>{fetchForms.title}</strong> to{" "}
-          {fetchForms.visibility === "public" ? "private" : "public"}?
+          <strong>{form.title}</strong> to <strong>{newVisibility}</strong>?
         </p>
       </Modal.Body>
       <Modal.Footer>
