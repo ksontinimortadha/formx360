@@ -1,13 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const FormSubmit = () => {
   const [formData, setFormData] = useState(null);
   const [responses, setResponses] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+  const [fieldStyles, setFieldStyles] = useState({});
+  const [selectedTheme, setSelectedTheme] = useState(""); // Theme state
   const { formId } = useParams();
+
+  // Use ref for form data to optimize performance
+  const formDataRef = useRef(null);
 
   // Fetch form data based on formId
   useEffect(() => {
@@ -17,7 +24,9 @@ const FormSubmit = () => {
           `https://formx360.onrender.com/forms/${formId}`
         );
         setFormData(form.data.form);
-        console.log("form", form.data.form);
+        setFieldStyles(form.data.form.fieldStyles);
+        setSelectedTheme(form.data.form.theme); // Set the theme
+        formDataRef.current = form.data.form;
         setLoading(false);
       } catch (err) {
         setError("Error loading form.");
@@ -39,103 +48,257 @@ const FormSubmit = () => {
     });
   };
 
+  // Validate required fields before submission
+  const validateForm = () => {
+    const requiredFields = formDataRef.current.fields.filter(
+      (field) => field.required
+    );
+    for (const field of requiredFields) {
+      const response = responses.find((r) => r.field_id === field._id);
+      if (!response || !response.value) {
+        toast.error(`Field "${field.label}" is required.`);
+        return false;
+      }
+    }
+    return true;
+  };
+
   // Handle form submission
- const handleSubmit = async (event) => {
-   event.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-   // Check if there are any responses
-   if (responses.length === 0) {
-     setError("Please fill out the form before submitting.");
-     console.error("Validation Error: No responses provided.");
-     return;
-   }
+    if (!validateForm()) return;
 
-   console.log("Submitting responses:", responses);
-   console.log("Fetching form with ID:", formId);
+    // Check if there are any responses
+    if (responses.length === 0) {
+      toast.error("Please fill out the form before submitting.");
+      return;
+    }
 
-   try {
-     const response = await axios.post(
-       `https://formx360.onrender.com/responses/${formId}`,
-       { responses }
-     );
+    try {
+      const response = await axios.post(
+        `https://formx360.onrender.com/responses/${formId}`,
+        { responses }
+      );
 
-     console.log("Server Response:", response.data);
+      if (response.status === 201) {
+        toast.success("Response submitted successfully!");
+        setResponses([]); // Clear responses after successful submission
+      }
+    } catch (err) {
+      console.error(
+        "Submit Error:",
+        err.response ? err.response.data : err.message
+      );
 
-     if (response.status === 201) {
-       alert("Response submitted successfully!");
-       setResponses([]); // Clear the form after submission
-     }
-   } catch (err) {
-     console.error(
-       "Submit Error:",
-       err.response ? err.response.data : err.message
-     );
-
-     // Display more specific errors if available
-     if (err.response && err.response.data && err.response.data.errors) {
-       setError(
-         `Error submitting the form: ${err.response.data.errors.join(", ")}`
-       );
-     } else {
-       setError("Error submitting the form. Please try again.");
-     }
-   }
- };
-
+      // Display more specific errors if available
+      if (err.response && err.response.data && err.response.data.errors) {
+        toast.error(
+          `Error submitting the form: ${err.response.data.errors.join(", ")}`
+        );
+      } else {
+        toast.error("Error submitting the form. Please try again.");
+      }
+    }
+  };
 
   if (loading) return <div>Loading form...</div>;
-
-  if (error) return <div>{error}</div>;
 
   // Ensure formData and formData.fields exist before attempting to map
   if (!formData || !Array.isArray(formData.fields)) {
     return <div>Form data is not available</div>;
   }
 
-  return (
-    <div className="form-container">
-      <h2>{formData.title}</h2>
-      <form onSubmit={handleSubmit}>
-        {formData.fields.map((field) => (
-          <div key={field._id} className="form-group">
-            <label>{field.label}</label>
-            {field.type === "text" || field.type === "textarea" ? (
-              <input
-                type="text"
-                name={field.name}
-                className={field.className}
-                value={
-                  responses.find((r) => r.field_id === field._id)?.value || ""
-                }
-                onChange={(e) => handleFieldChange(field._id, e.target.value)}
-                required={field.required}
-              />
-            ) : field.type === "checkbox-group" ||
-              field.type === "radio-group" ? (
-              field.options.map((option) => (
-                <div key={option.value}>
-                  <input
-                    type={
-                      field.type === "checkbox-group" ? "checkbox" : "radio"
-                    }
-                    name={field.name}
-                    value={option.value}
-                    onChange={(e) =>
-                      handleFieldChange(field._id, e.target.value)
-                    }
-                  />
-                  <label>{option.label}</label>
-                </div>
-              ))
-            ) : null}
-            {field.required &&
-              !responses.find((r) => r.field_id === field._id)?.value && (
-                <span style={{ color: "red" }}>This field is required</span>
-              )}
+  // Render fields
+  const renderFormFields = () => {
+    return formData.fields.map((field, index) => {
+      const fieldStyle = fieldStyles[index] || {};
+      const placementClass = fieldStyle.position
+        ? `field-${fieldStyle.position}`
+        : "";
+
+      const fieldContent = (
+        <>
+          {/* Render checkbox or radio group */}
+          {field.type === "checkbox-group" || field.type === "radio-group" ? (
+            <div style={{ marginBottom: "15px" }}>
+              {field.label}
+              {field.type === "checkbox-group" &&
+                field.values.map((option, i) => (
+                  <label
+                    key={option.value || i}
+                    style={{ marginRight: "10px" }}
+                  >
+                    <input
+                      style={fieldStyle}
+                      type="checkbox"
+                      name={field.name}
+                      value={option.value}
+                    />
+                    {option.label}
+                  </label>
+                ))}
+              {field.type === "radio-group" &&
+                field.values.map((option, i) => (
+                  <label
+                    key={option.value || i}
+                    style={{ marginRight: "10px" }}
+                  >
+                    <input
+                      type="radio"
+                      name={field.name}
+                      value={option.value}
+                    />
+                    {option.label}
+                  </label>
+                ))}
+            </div>
+          ) : field.type === "button" ? (
+            <button
+              type="button"
+              style={{ ...fieldStyle, marginBottom: "15px" }}
+              key={field.name || index} // Add unique key here if needed
+            >
+              {field.label}
+            </button>
+          ) : field.type === "select" ? (
+            <>
+              <div style={{ marginBottom: "15px" }}>
+                {field.label}
+                <select
+                  style={{ ...fieldStyle, width: "100%" }}
+                  key={field.name || index}
+                >
+                  {field.values &&
+                    field.values.map((option, idx) => (
+                      <option key={option.value || idx} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                </select>
+              </div>
+            </>
+          ) : field.type === "textarea" ? (
+            <>
+              <div style={{ marginBottom: "15px" }}>
+                {field.label}
+                <textarea
+                  placeholder={field.placeholder || "Enter text"}
+                  style={{ ...fieldStyle, width: "100%", height: "100px" }}
+                  key={field.name || index}
+                />
+              </div>
+            </>
+          ) : field.type === "autocomplete" ? (
+            <>
+              <div style={{ marginBottom: "15px" }}>
+                {field.label}
+                <input
+                  type="text"
+                  placeholder={field.placeholder || "Start typing..."}
+                  list="autocomplete-list"
+                  style={fieldStyle}
+                  key={field.name || index}
+                />
+              </div>
+            </>
+          ) : field.type === "file" ? (
+            <>
+              <div style={{ marginBottom: "15px" }}>
+                {field.label}
+                <input
+                  type="file"
+                  style={fieldStyle}
+                  key={field.name || index}
+                />
+              </div>
+            </>
+          ) : field.type === "date" ? (
+            <>
+              <div style={{ marginBottom: "15px" }}>
+                {field.label}
+                <input
+                  type="date"
+                  style={fieldStyle}
+                  key={field.name || index}
+                />
+              </div>
+            </>
+          ) : field.type === "hidden" ? (
+            <input
+              type="hidden"
+              value={field.value || ""}
+              style={fieldStyle}
+              key={field.name || index}
+            />
+          ) : field.type === "header" ? (
+            <h2 key={field.name || index}>{field.label}</h2>
+          ) : field.type === "paragraph" ? (
+            <p key={field.name || index}>{field.label}</p>
+          ) : (
+            <>
+              <div style={{ marginBottom: "15px" }}>
+                {field.label}
+                <input
+                  type={field.type}
+                  placeholder={field.placeholder || "Enter " + field.type}
+                  style={fieldStyle}
+                  key={field.name || index}
+                />
+              </div>
+            </>
+          )}
+        </>
+      );
+
+      return (
+        <div
+          className={`${selectedTheme}`}
+          style={{
+            paddingRight: "15px",
+            paddingLeft: "15px",
+          }}
+          key={field.name || index} // Ensure key for the parent div as well
+        >
+          <div
+            className={`form-field ${placementClass}`}
+            style={{ marginBottom: "10px" }}
+          >
+            {fieldContent}
           </div>
-        ))}
-        <button type="submit">Submit</button>
+        </div>
+      );
+    });
+  };
+  const styles = {
+    container: {
+      backgroundColor: "#f9f9f9", // Light gray background to mimic iOS background
+      padding: "20px",
+      borderRadius: "15px",
+      boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)", // Subtle shadow
+      maxWidth: "600px",
+      margin: "20px auto",
+    },
+    title: {
+      fontSize: "24px",
+      fontWeight: "600",
+      textAlign: "center",
+      marginBottom: "20px",
+      color: "#333", // Darker text for contrast
+    },
+  };
+
+  return (
+    <div style={styles.container}>
+      <h1 style={styles.title}>{formData.title}</h1>
+      <form
+        onSubmit={handleSubmit}
+        className={`${selectedTheme}`}
+        style={{ paddingTop: "10px" }}
+      >
+        {renderFormFields()}
       </form>
+      <ToastContainer />
     </div>
   );
 };

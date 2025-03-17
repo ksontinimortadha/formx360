@@ -7,8 +7,6 @@ exports.submitResponse = async (req, res) => {
   const { form_id } = req.params;
 
   try {
-    console.log("Received request:", req.body); // Log request data
-
     // Validate the form exists
     const form = await Form.findById(form_id);
     if (!form) {
@@ -179,8 +177,6 @@ exports.submitResponse = async (req, res) => {
     // Save the response
     const newResponse = new Response({ form_id, user_id, responses });
     await newResponse.save();
-
-    console.log("Response saved successfully:", newResponse);
 
     res.status(201).json({
       message: "Response submitted successfully",
