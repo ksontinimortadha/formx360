@@ -55,6 +55,7 @@ const formSchema = new mongoose.Schema(
         description: { type: String }, // Help text for the field
         access: { type: [String], default: ["all"] }, // e.g., ["admin", "user"]
         values: { type: mongoose.Schema.Types.Mixed }, // Default value (can be any type)
+        value: { type: mongoose.Schema.Types.Mixed }, // Default value (can be any type)
         multiple: { type: Boolean, default: false }, // Allows multiple selection
         inline: { type: Boolean, default: false }, // Inline options for radio/checkbox
         min_length: { type: Number },

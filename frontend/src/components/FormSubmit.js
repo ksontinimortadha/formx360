@@ -17,6 +17,7 @@ const FormSubmit = () => {
           `https://formx360.onrender.com/forms/${formId}`
         );
         setFormData(response.data.form);
+        console.log("form", response.data.form);
         setLoading(false);
       } catch (err) {
         setError("Error loading form.");
