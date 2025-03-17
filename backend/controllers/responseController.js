@@ -3,7 +3,8 @@ const Form = require("../models/Form");
 
 // Submit a New Response
 exports.submitResponse = async (req, res) => {
-  const { form_id, user_id, responses } = req.body;
+  const { user_id, responses } = req.body;
+  const { form_id } = req.params;
 
   try {
     console.log("Received request:", req.body); // Log request data
@@ -191,8 +192,6 @@ exports.submitResponse = async (req, res) => {
   }
 };
 
-
-
 // Get Responses for a Form
 exports.getFormResponses = async (req, res) => {
   const { form_id } = req.params;
@@ -222,7 +221,6 @@ exports.getFormResponses = async (req, res) => {
     res.status(500).json({ message: "Server error", error: err.message });
   }
 };
-
 
 // Get Responses Submitted by a User
 exports.getUserResponses = async (req, res) => {

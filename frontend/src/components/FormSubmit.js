@@ -13,11 +13,11 @@ const FormSubmit = () => {
   useEffect(() => {
     const fetchForm = async () => {
       try {
-        const response = await axios.get(
+        const form = await axios.get(
           `https://formx360.onrender.com/forms/${formId}`
         );
-        setFormData(response.data.form);
-        console.log("form", response.data.form);
+        setFormData(form.data.form);
+        console.log("form", form.data.form);
         setLoading(false);
       } catch (err) {
         setError("Error loading form.");
@@ -40,31 +40,48 @@ const FormSubmit = () => {
   };
 
   // Handle form submission
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+ const handleSubmit = async (event) => {
+   event.preventDefault();
 
-    // Check if there are any responses
-    if (responses.length === 0) {
-      setError("Please fill out the form before submitting.");
-      return;
-    }
+   // Check if there are any responses
+   if (responses.length === 0) {
+     setError("Please fill out the form before submitting.");
+     console.error("Validation Error: No responses provided.");
+     return;
+   }
 
-    console.log("responses", responses);
-    try {
-      // Send the responses to the backend API
-      const response = await axios.post(
-        `https://formx360.onrender.com/responses/${formId}`,
-        { responses }
-      );
-      if (response.status === 200) {
-        alert("Response submitted successfully!");
-        // Optionally, clear form or redirect after success
-      }
-    } catch (err) {
-      setError("Error submitting the form. Please try again.");
-      console.error("Submit Error:", err); // Log the error for debugging
-    }
-  };
+   console.log("Submitting responses:", responses);
+   console.log("Fetching form with ID:", formId);
+
+   try {
+     const response = await axios.post(
+       `https://formx360.onrender.com/responses/${formId}`,
+       { responses }
+     );
+
+     console.log("Server Response:", response.data);
+
+     if (response.status === 201) {
+       alert("Response submitted successfully!");
+       setResponses([]); // Clear the form after submission
+     }
+   } catch (err) {
+     console.error(
+       "Submit Error:",
+       err.response ? err.response.data : err.message
+     );
+
+     // Display more specific errors if available
+     if (err.response && err.response.data && err.response.data.errors) {
+       setError(
+         `Error submitting the form: ${err.response.data.errors.join(", ")}`
+       );
+     } else {
+       setError("Error submitting the form. Please try again.");
+     }
+   }
+ };
+
 
   if (loading) return <div>Loading form...</div>;
 
