@@ -49,13 +49,13 @@ const FormSubmit = () => {
       return;
     }
 
+    console.log("responses", responses);
     try {
       // Send the responses to the backend API
       const response = await axios.post(
         `https://formx360.onrender.com/responses/${formId}`,
         { responses }
       );
-
       if (response.status === 200) {
         alert("Response submitted successfully!");
         // Optionally, clear form or redirect after success

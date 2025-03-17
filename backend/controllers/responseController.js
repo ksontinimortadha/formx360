@@ -6,9 +6,14 @@ exports.submitResponse = async (req, res) => {
   const { form_id, user_id, responses } = req.body;
 
   try {
+    console.log("Received request:", req.body); // Log request data
+
     // Validate the form exists
     const form = await Form.findById(form_id);
-    if (!form) return res.status(404).json({ message: "Form not found" });
+    if (!form) {
+      console.log("Error: Form not found");
+      return res.status(404).json({ message: "Form not found" });
+    }
 
     // Validate responses
     const validationErrors = [];
@@ -39,7 +44,6 @@ exports.submitResponse = async (req, res) => {
         switch (field.type) {
           case "text":
           case "textarea":
-            // Validate min/max length
             if (field.min_length && value[0].length < field.min_length) {
               validationErrors.push(
                 `Field '${field.label}' must have at least ${field.min_length} characters.`
@@ -72,7 +76,6 @@ exports.submitResponse = async (req, res) => {
 
           case "checkbox-group":
           case "radio-group":
-            // Validate options
             if (!Array.isArray(value)) value = [value]; // Normalize single option to an array
             value.forEach((val) => {
               if (!field.options.some((option) => option.value === val)) {
@@ -121,7 +124,7 @@ exports.submitResponse = async (req, res) => {
             break;
 
           case "file":
-            const file = value[0]; // Assuming value is a file object
+            const file = value[0];
             if (
               file &&
               field.min_length &&
@@ -148,7 +151,6 @@ exports.submitResponse = async (req, res) => {
           case "header":
           case "paragraph":
           case "starRating":
-            // These types do not require validation for values
             break;
 
           default:
@@ -167,6 +169,7 @@ exports.submitResponse = async (req, res) => {
     });
 
     if (validationErrors.length > 0) {
+      console.log("Validation Errors:", validationErrors);
       return res
         .status(400)
         .json({ message: "Validation errors", errors: validationErrors });
@@ -176,14 +179,18 @@ exports.submitResponse = async (req, res) => {
     const newResponse = new Response({ form_id, user_id, responses });
     await newResponse.save();
 
+    console.log("Response saved successfully:", newResponse);
+
     res.status(201).json({
       message: "Response submitted successfully",
       response: newResponse,
     });
   } catch (err) {
+    console.error("Server error:", err);
     res.status(500).json({ message: "Server error", error: err.message });
   }
 };
+
 
 
 // Get Responses for a Form
