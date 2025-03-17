@@ -7,7 +7,7 @@ const {
 } = require("../controllers/responseController");
 
 // Submit a response
-router.post("/", submitResponse);
+router.post("/:form_id", submitResponse);
 
 // Get all responses for a form
 router.get("/form/:form_id", getFormResponses);

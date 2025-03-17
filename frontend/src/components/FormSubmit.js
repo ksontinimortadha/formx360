@@ -51,7 +51,7 @@ const FormSubmit = () => {
     try {
       // Send the responses to the backend API
       const response = await axios.post(
-        `https://formx360.onrender.com/responses/`,
+        `https://formx360.onrender.com/responses/${formId}`,
         { responses }
       );
 
