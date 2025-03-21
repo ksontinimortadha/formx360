@@ -11,7 +11,6 @@ const ResponsesPage = () => {
 
   useEffect(() => {
     const fetchResponses = async () => {
-      if (!formId) return;
 
       try {
         const response = await axios.get(
