@@ -82,9 +82,9 @@ exports.submitResponse = async (req, res) => {
               console.log("Checking value:", val);
               console.log(
                 "Available options:",
-                field.options.map((option) => option.value)
+                field.values.map((val) => val.value)
               );
-              if (!field.options.some((option) => option.value === val)) {
+              if (!field.values.some((option) => option.value === val)) {
                 validationErrors.push(
                   `Field '${field.label}' contains invalid options.`
                 );
