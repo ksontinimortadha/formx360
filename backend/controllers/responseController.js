@@ -35,7 +35,7 @@ exports.submitResponse = async (req, res) => {
         // Normalize checkbox-group and radio-group to array
         if (Array.isArray(value)) {
           value = value.filter((val) =>
-            field.options.some((option) => option.value === val)
+            field.values.some((option) => option.value === val)
           );
         } else {
           value = [value];
@@ -79,7 +79,7 @@ exports.submitResponse = async (req, res) => {
           case "radio-group":
             if (!Array.isArray(value)) value = [value]; // Normalize single option to an array
             value.forEach((val) => {
-              if (!field.options.some((option) => option.value === val)) {
+              if (!field.values.some((option) => option.value === val)) {
                 validationErrors.push(
                   `Field '${field.label}' contains invalid options.`
                 );
@@ -98,9 +98,9 @@ exports.submitResponse = async (req, res) => {
             break;
 
           case "select":
-            if (!field.values.some((value) => value === value[0])) {
+            if (!field.values.some((opt) => opt.value === value[0])) {
               validationErrors.push(
-                `Field '${field.label}' must be one of the predefined options. '${field.values.value}'`
+                `Field '${field.label}' must be one of the predefined options.`
               );
             }
             break;
@@ -201,7 +201,8 @@ exports.submitResponse = async (req, res) => {
     res.status(500).json({ message: "Server error", error: err.message });
   }
 };
-;
+
+
 
 
 
