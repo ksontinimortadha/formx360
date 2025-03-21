@@ -15,6 +15,7 @@ import Profile from "./components/Profile";
 import Security from "./components/Security";
 import PreviewPage from "./components/PreviewPage";
 import FormSubmit from "./components/FormSubmit";
+import FormSubmissionSuccess from "./components/FormSubmissionSuccess";
 
 function App() {
   return (
@@ -41,6 +42,10 @@ function App() {
         <Route path="/preview/:formId" element={<PreviewPage />} />
         {/* responses Routes  */}
         <Route path="/responses/:formId" element={<FormSubmit />} />
+        <Route
+          path="/responses/submission-success/:responseId"
+          element={<FormSubmissionSuccess />}
+        />
       </Routes>
     </Router>
   );

@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { Navigate, redirect, useNavigate, useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import FormSubmissionSuccess from "./FormSubmissionSuccess";
 
 const FormSubmit = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState(null);
   const [responses, setResponses] = useState([]);
   const [error, setError] = useState("");
@@ -80,9 +82,10 @@ const FormSubmit = () => {
         `https://formx360.onrender.com/responses/${formId}`,
         { responses }
       );
-
+      const responseId = response.data.response._id;
       if (response.status === 201) {
         toast.success("Response submitted successfully!");
+        navigate(`/responses/submission-success/${responseId}`);
         setResponses([]); // Clear responses after successful submission
       }
     } catch (err) {
@@ -109,13 +112,17 @@ const FormSubmit = () => {
     return <div>Form data is not available</div>;
   }
 
-  // Render fields
+  // Render fields and prefill them with existing responses
   const renderFormFields = () => {
     return formData.fields.map((field, index) => {
       const fieldStyle = fieldStyles[index] || {};
       const placementClass = fieldStyle.position
         ? `field-${fieldStyle.position}`
         : "";
+
+      // Check if there's a response for the field
+      const response = responses.find((r) => r.field_id === field._id);
+      const prefilledValue = response ? response.value : "";
 
       const fieldContent = (
         <>
@@ -134,6 +141,10 @@ const FormSubmit = () => {
                       type="checkbox"
                       name={field.name}
                       value={option.value}
+                      checked={prefilledValue.includes(option.value)}
+                      onChange={() =>
+                        handleFieldChange(field._id, prefilledValue)
+                      }
                     />
                     {option.label}
                   </label>
@@ -148,6 +159,10 @@ const FormSubmit = () => {
                       type="radio"
                       name={field.name}
                       value={option.value}
+                      checked={prefilledValue === option.value}
+                      onChange={() =>
+                        handleFieldChange(field._id, option.value)
+                      }
                     />
                     {option.label}
                   </label>
@@ -157,73 +172,68 @@ const FormSubmit = () => {
             <button
               type="button"
               style={{ ...fieldStyle, marginBottom: "15px" }}
-              key={field.name || index} // Add unique key here if needed
+              key={field.name || index}
+              onClick={handleSubmit}
             >
               {field.label}
             </button>
           ) : field.type === "select" ? (
-            <>
-              <div style={{ marginBottom: "15px" }}>
-                {field.label}
-                <select
-                  style={{ ...fieldStyle, width: "100%" }}
-                  key={field.name || index}
-                >
-                  {field.values &&
-                    field.values.map((option, idx) => (
-                      <option key={option.value || idx} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                </select>
-              </div>
-            </>
+            <div style={{ marginBottom: "15px" }}>
+              {field.label}
+              <select
+                style={{ ...fieldStyle, width: "100%" }}
+                key={field.name || index}
+                value={prefilledValue}
+                onChange={(e) => handleFieldChange(field._id, e.target.value)}
+              >
+                {field.values &&
+                  field.values.map((option, idx) => (
+                    <option key={option.value || idx} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+              </select>
+            </div>
           ) : field.type === "textarea" ? (
-            <>
-              <div style={{ marginBottom: "15px" }}>
-                {field.label}
-                <textarea
-                  placeholder={field.placeholder || "Enter text"}
-                  style={{ ...fieldStyle, width: "100%", height: "100px" }}
-                  key={field.name || index}
-                />
-              </div>
-            </>
+            <div style={{ marginBottom: "15px" }}>
+              {field.label}
+              <textarea
+                placeholder={field.placeholder || "Enter text"}
+                style={{ ...fieldStyle, width: "100%", height: "100px" }}
+                key={field.name || index}
+                value={prefilledValue}
+                onChange={(e) => handleFieldChange(field._id, e.target.value)}
+              />
+            </div>
           ) : field.type === "autocomplete" ? (
-            <>
-              <div style={{ marginBottom: "15px" }}>
-                {field.label}
-                <input
-                  type="text"
-                  placeholder={field.placeholder || "Start typing..."}
-                  list="autocomplete-list"
-                  style={fieldStyle}
-                  key={field.name || index}
-                />
-              </div>
-            </>
+            <div style={{ marginBottom: "15px" }}>
+              {field.label}
+              <input
+                type="text"
+                placeholder={field.placeholder || "Start typing..."}
+                list="autocomplete-list"
+                style={fieldStyle}
+                key={field.name || index}
+                value={prefilledValue}
+                onChange={(e) => handleFieldChange(field._id, e.target.value)}
+              />
+            </div>
           ) : field.type === "file" ? (
-            <>
-              <div style={{ marginBottom: "15px" }}>
-                {field.label}
-                <input
-                  type="file"
-                  style={fieldStyle}
-                  key={field.name || index}
-                />
-              </div>
-            </>
+            <div style={{ marginBottom: "15px" }}>
+              {field.label}
+              <input type="file" style={fieldStyle} key={field.name || index} />
+            </div>
           ) : field.type === "date" ? (
-            <>
-              <div style={{ marginBottom: "15px" }}>
-                {field.label}
-                <input
-                  type="date"
-                  style={fieldStyle}
-                  key={field.name || index}
-                />
-              </div>
-            </>
+            <div style={{ marginBottom: "15px" }}>
+              {field.label}
+              <input
+                type="date"
+                style={fieldStyle}
+                key={field.name || index}
+                value={prefilledValue}
+                onChange={(e) => handleFieldChange(field._id, e.target.value)}
+              />
+            </div>
           ) : field.type === "hidden" ? (
             <input
               type="hidden"
@@ -236,17 +246,17 @@ const FormSubmit = () => {
           ) : field.type === "paragraph" ? (
             <p key={field.name || index}>{field.label}</p>
           ) : (
-            <>
-              <div style={{ marginBottom: "15px" }}>
-                {field.label}
-                <input
-                  type={field.type}
-                  placeholder={field.placeholder || "Enter " + field.type}
-                  style={fieldStyle}
-                  key={field.name || index}
-                />
-              </div>
-            </>
+            <div style={{ marginBottom: "15px" }}>
+              {field.label}
+              <input
+                type={field.type}
+                placeholder={field.placeholder || "Enter " + field.type}
+                style={fieldStyle}
+                key={field.name || index}
+                value={prefilledValue}
+                onChange={(e) => handleFieldChange(field._id, e.target.value)}
+              />
+            </div>
           )}
         </>
       );
@@ -270,6 +280,7 @@ const FormSubmit = () => {
       );
     });
   };
+
   const styles = {
     container: {
       backgroundColor: "#f9f9f9", // Light gray background to mimic iOS background
@@ -299,6 +310,9 @@ const FormSubmit = () => {
         {renderFormFields()}
       </form>
       <ToastContainer />
+      <FormSubmissionSuccess
+        formTitle={formData.title}
+      />
     </div>
   );
 };
