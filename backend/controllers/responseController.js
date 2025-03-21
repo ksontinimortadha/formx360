@@ -150,6 +150,7 @@ exports.submitResponse = async (req, res) => {
           case "header":
           case "paragraph":
           case "starRating":
+            // No validation needed for these types
             break;
 
           default:
@@ -187,6 +188,8 @@ exports.submitResponse = async (req, res) => {
     res.status(500).json({ message: "Server error", error: err.message });
   }
 };
+
+
 
 // Get Responses for a Form
 exports.getFormResponses = async (req, res) => {

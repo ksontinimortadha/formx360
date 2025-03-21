@@ -86,7 +86,7 @@ const FormSubmit = () => {
       if (response.status === 201) {
         toast.success("Response submitted successfully!");
         navigate(`/responses/submission-success/${responseId}`);
-        setResponses([]); // Clear responses after successful submission
+        setResponses([]); 
       }
     } catch (err) {
       console.error(
@@ -310,7 +310,6 @@ const FormSubmit = () => {
         {renderFormFields()}
       </form>
       <ToastContainer />
-      <FormSubmissionSuccess formTitle={formData.title} />
     </div>
   );
 };
