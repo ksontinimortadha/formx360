@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import { Navigate, redirect, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import FormSubmissionSuccess from "./FormSubmissionSuccess";
@@ -268,7 +268,7 @@ const FormSubmit = () => {
             paddingRight: "15px",
             paddingLeft: "15px",
           }}
-          key={field.name || index} // Ensure key for the parent div as well
+          key={field.name || index}
         >
           <div
             className={`form-field ${placementClass}`}
@@ -283,10 +283,10 @@ const FormSubmit = () => {
 
   const styles = {
     container: {
-      backgroundColor: "#f9f9f9", // Light gray background to mimic iOS background
+      backgroundColor: "#f9f9f9",
       padding: "20px",
       borderRadius: "15px",
-      boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)", // Subtle shadow
+      boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
       maxWidth: "600px",
       margin: "20px auto",
     },
@@ -295,7 +295,7 @@ const FormSubmit = () => {
       fontWeight: "600",
       textAlign: "center",
       marginBottom: "20px",
-      color: "#333", // Darker text for contrast
+      color: "#333",
     },
   };
 
@@ -310,9 +310,7 @@ const FormSubmit = () => {
         {renderFormFields()}
       </form>
       <ToastContainer />
-      <FormSubmissionSuccess
-        formTitle={formData.title}
-      />
+      <FormSubmissionSuccess formTitle={formData.title} />
     </div>
   );
 };

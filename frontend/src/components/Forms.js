@@ -105,6 +105,10 @@ function Forms() {
   const handleShowAddModal = () => setShowAddModal(true);
   const handleCloseAddModal = () => setShowAddModal(false);
 
+  const handleResponses = (form) => {
+    navigate(`/responses/form/${form._id}`);
+  };
+
   return (
     <div>
       <NavbarComponent logo={logo} handleLogout={handleLogout} />
@@ -173,7 +177,8 @@ function Forms() {
                               </Dropdown.Item>
 
                               {/* Responses */}
-                              <Dropdown.Item /* onClick={() => handleResponses(form)} */
+                              <Dropdown.Item
+                                onClick={() => handleResponses(form)}
                               >
                                 View Responses
                               </Dropdown.Item>
