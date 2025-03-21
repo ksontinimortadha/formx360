@@ -130,6 +130,7 @@ const FormSubmit = () => {
           {field.type === "checkbox-group" || field.type === "radio-group" ? (
             <div style={{ marginBottom: "15px" }}>
               {field.label}
+
               {field.type === "checkbox-group" &&
                 field.values.map((option, i) => (
                   <label
@@ -141,14 +142,19 @@ const FormSubmit = () => {
                       type="checkbox"
                       name={field.name}
                       value={option.value}
-                      checked={prefilledValue.includes(option.value)}
-                      onChange={() =>
-                        handleFieldChange(field._id, prefilledValue)
-                      }
+                      checked={prefilledValue.includes(option.value)} // Check if the value is in the array
+                      onChange={(e) =>
+                        handleFieldChange(
+                          field._id,
+                          e.target.value,
+                          e.target.checked
+                        )
+                      } // Pass checked state to the handler
                     />
                     {option.label}
                   </label>
                 ))}
+
               {field.type === "radio-group" &&
                 field.values.map((option, i) => (
                   <label
@@ -159,10 +165,10 @@ const FormSubmit = () => {
                       type="radio"
                       name={field.name}
                       value={option.value}
-                      checked={prefilledValue === option.value}
+                      checked={prefilledValue === option.value} // Single value for radio buttons
                       onChange={() =>
                         handleFieldChange(field._id, option.value)
-                      }
+                      } // Update state for radio button
                     />
                     {option.label}
                   </label>

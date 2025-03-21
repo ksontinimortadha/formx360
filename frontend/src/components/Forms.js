@@ -1,8 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Container, Row, Col, Button, Card, Dropdown } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Button,
+  Card,
+  Dropdown,
+  Navbar,
+  Form,
+} from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { FaPencilAlt, FaTrash, FaPlus, FaEllipsisV } from "react-icons/fa";
+import {
+  FaPencilAlt,
+  FaTrash,
+  FaPlus,
+  FaEllipsisV,
+  FaSearch,
+} from "react-icons/fa";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -15,6 +30,8 @@ import ChangeVisibilityModal from "../modals/ChangeVisibilityModal";
 
 function Forms() {
   const [forms, setForms] = useState([]);
+  const [filteredForms, setFilteredForms] = useState([]);
+  const [searchTerm, setSearchTerm] = useState(""); // Add state for the search term
   const [showAddModal, setShowAddModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showVisibilityModal, setShowVisibilityModal] = useState(false);
@@ -38,6 +55,7 @@ function Forms() {
         `https://formx360.onrender.com/forms/${companyId}/forms`
       );
       setForms(response.data);
+      setFilteredForms(response.data); // Initially set filtered forms to all fetched forms
     } catch (error) {
       console.error("Error fetching forms:", error);
       toast.error("Failed to fetch forms.");
@@ -46,7 +64,7 @@ function Forms() {
 
   const handleLogout = () => {
     sessionStorage.removeItem("companyId");
-    navigate("/login");
+    navigate("/users/login");
   };
 
   const handleEditForm = (form) => {
@@ -109,6 +127,18 @@ function Forms() {
     navigate(`/responses/form/${form._id}`);
   };
 
+  // Handle the search input change
+  const handleSearchChange = (e) => {
+    const searchTerm = e.target.value;
+    setSearchTerm(searchTerm);
+
+    // Filter forms based on the search term
+    const filtered = forms.filter((form) =>
+      form.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredForms(filtered);
+  };
+
   return (
     <div>
       <NavbarComponent logo={logo} handleLogout={handleLogout} />
@@ -121,6 +151,15 @@ function Forms() {
                 <Card.Body>
                   <div className="d-flex justify-content-between align-items-center">
                     <h4>Forms Management</h4>
+                    <Form.Control
+                      style={{ width: "auto", marginLeft: "350px" }}
+                      type="search"
+                      placeholder="Search Form"
+                      aria-label="Search"
+                      value={searchTerm}
+                      onChange={handleSearchChange}
+                    />
+
                     <Button variant="primary" onClick={handleShowAddModal}>
                       <FaPlus /> Add Form
                     </Button>
@@ -129,10 +168,10 @@ function Forms() {
               </Card>
             </Row>
             <Row>
-              {forms.length === 0 ? (
-                <Col className="text-center">No forms available.</Col>
+              {filteredForms.length === 0 ? (
+                <Col className="text-center">No forms found.</Col>
               ) : (
-                forms.map((form) => (
+                filteredForms.map((form) => (
                   <Col key={form._id} md={12} className="mb-3">
                     <Card className="shadow-sm border-0 rounded-4">
                       <Card.Body className="d-flex justify-content-between align-items-center">

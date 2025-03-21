@@ -94,7 +94,7 @@ function Profile() {
   const handleLogout = () => {
     sessionStorage.removeItem("companyId");
     sessionStorage.removeItem("userId");
-    navigate("/login");
+    navigate("/users/login");
   };
 
   if (error) {

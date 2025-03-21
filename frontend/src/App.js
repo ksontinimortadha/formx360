@@ -16,38 +16,110 @@ import Security from "./components/Security";
 import PreviewPage from "./components/PreviewPage";
 import FormSubmit from "./components/FormSubmit";
 import FormSubmissionSuccess from "./components/FormSubmissionSuccess";
-import ResponsesPage from "./components/ResponsesPage ";
+import ProtectedRoute from "./components/ProtectedRoute ";
+import ResponsePage from "./components/ResponsePage ";
 
 function App() {
   return (
     <Router>
       {/* Routes Section */}
       <Routes>
-        {" "}
-        {/* auth Routes  */}
+        {/* Auth Routes */}
         <Route path="/" element={<Home />} />
         <Route path="/users/register" element={<Register />} />
         <Route path="/users/login" element={<Login />} />
         <Route path="/reset-password-request" element={<RequestReset />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/users/verify-email" element={<VerifyEmail />} />
-        {/* Company Routes  */}
+
+        {/* Company Routes */}
         <Route path="/companies/company" element={<Company />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/profile/:userId" element={<Profile />} />
-        <Route path="/security/:userId" element={<Security />} />
-        {/* Form Routes  */}
-        <Route path="/forms" element={<Forms />} />
-        <Route path="/form-builder/:formId" element={<FormBuilder />} />
-        <Route path="/form-styling/:formId" element={<FormStylingPage />} />
-        <Route path="/preview/:formId" element={<PreviewPage />} />
-        {/* responses Routes  */}
-        <Route path="/responses/:formId" element={<FormSubmit />} />
+
+        {/* Protected Routes (Only accessible when logged in) */}
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile/:userId"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/security/:userId"
+          element={
+            <ProtectedRoute>
+              <Security />
+            </ProtectedRoute>
+          }
+        />
+        
+        {/* Form Routes */}
+        <Route
+          path="/forms"
+          element={
+            <ProtectedRoute>
+              <Forms />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/form-builder/:formId"
+          element={
+            <ProtectedRoute>
+              <FormBuilder />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/form-styling/:formId"
+          element={
+            <ProtectedRoute>
+              <FormStylingPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/preview/:formId"
+          element={
+            <ProtectedRoute>
+              <PreviewPage />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Responses Routes */}
+        <Route
+          path="/responses/:formId"
+          element={
+            <ProtectedRoute>
+              <FormSubmit />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/responses/submission-success/:responseId"
-          element={<FormSubmissionSuccess />}
+          element={
+            <ProtectedRoute>
+              <FormSubmissionSuccess />
+            </ProtectedRoute>
+          }
         />
-        <Route path="/responses/form/:formId" element={<ResponsesPage />} />
+        <Route
+          path="/responses/form/:formId"
+          element={
+            <ProtectedRoute>
+              <ResponsePage />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </Router>
   );
