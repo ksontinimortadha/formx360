@@ -6,12 +6,10 @@ import { toast } from "react-toastify";
 const ResponsesPage = () => {
   const { formId } = useParams();
   const [responses, setResponses] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [headers, setHeaders] = useState([]);
 
   useEffect(() => {
     const fetchResponses = async () => {
-
       try {
         const response = await axios.get(
           `https://formx360.onrender.com/responses/form/${formId}`
@@ -27,25 +25,16 @@ const ResponsesPage = () => {
           ];
           setHeaders(uniqueFields);
         }
-
+        console.log("res", response.data);
         setResponses(response.data);
       } catch (error) {
         console.error("Error fetching responses:", error);
         toast.error("Failed to fetch responses.");
-      } finally {
-        setLoading(false);
       }
     };
 
     fetchResponses();
   }, [formId]);
-
-  /**if (loading)
-    return (
-      <div className="flex justify-center items-center h-80">
-        <ClipLoader size={50} color="#2563EB" />
-      </div>
-    ); */
 
   if (!responses.length)
     return (
@@ -64,12 +53,13 @@ const ResponsesPage = () => {
         <table className="w-full border-collapse border border-gray-300 shadow-sm rounded-lg">
           <thead>
             <tr className="bg-gray-100 text-gray-700">
-              <th className="border p-3 text-left">Submitted At</th>
-              {headers.map((header) => (
-                <th key={header} className="border p-3 text-left">
-                  {header}
+              {/* Dynamically render headers from the field_name values */}
+              {responses[0]?.responses.map((response) => (
+                <th key={response.field_id} className="border p-3 text-left">
+                  {response.field_name}
                 </th>
               ))}
+              <th className="border p-3 text-left">Submitted At</th>
             </tr>
           </thead>
           <tbody>
@@ -78,19 +68,15 @@ const ResponsesPage = () => {
                 key={response._id}
                 className="border hover:bg-gray-50 transition-all"
               >
+                {/* Render the response values dynamically */}
+                {response.responses.map((field) => (
+                  <td key={field.field_id} className="border p-3 text-gray-700">
+                    {field.value}
+                  </td>
+                ))}
                 <td className="border p-3 text-gray-700">
                   {new Date(response.submitted_at).toLocaleString()}
                 </td>
-                {headers.map((header) => {
-                  const field = response.responses.find(
-                    (r) => r.field_id === header
-                  );
-                  return (
-                    <td key={header} className="border p-3 text-gray-700">
-                      {field ? field.value : "-"}
-                    </td>
-                  );
-                })}
               </tr>
             ))}
           </tbody>

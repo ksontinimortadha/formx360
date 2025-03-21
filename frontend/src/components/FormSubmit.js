@@ -3,7 +3,6 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import FormSubmissionSuccess from "./FormSubmissionSuccess";
 
 const FormSubmit = () => {
   const navigate = useNavigate();
@@ -82,11 +81,12 @@ const FormSubmit = () => {
         `https://formx360.onrender.com/responses/${formId}`,
         { responses }
       );
+      console.log("res", responses);
       const responseId = response.data.response._id;
       if (response.status === 201) {
         toast.success("Response submitted successfully!");
         navigate(`/responses/submission-success/${responseId}`);
-        setResponses([]); 
+        setResponses([]);
       }
     } catch (err) {
       console.error(
