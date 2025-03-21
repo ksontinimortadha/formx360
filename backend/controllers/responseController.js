@@ -16,6 +16,8 @@ exports.submitResponse = async (req, res) => {
 
     // Validate responses
     const validationErrors = [];
+    const processedResponses = [];
+
     form.fields.forEach((field) => {
       const userResponse = responses.find(
         (r) => r.field_id === field._id.toString()
@@ -150,7 +152,6 @@ exports.submitResponse = async (req, res) => {
           case "header":
           case "paragraph":
           case "starRating":
-            // No validation needed for these types
             break;
 
           default:
@@ -165,6 +166,13 @@ exports.submitResponse = async (req, res) => {
             `Field '${field.label}' (password) must have at least 8 characters.`
           );
         }
+
+        // Add validated response with field name
+        processedResponses.push({
+          field_id: field._id,
+          field_name: field.label, // Adding field_name
+          value: userResponse.value,
+        });
       }
     });
 
@@ -176,7 +184,12 @@ exports.submitResponse = async (req, res) => {
     }
 
     // Save the response
-    const newResponse = new Response({ form_id, user_id, responses });
+    const newResponse = new Response({
+      form_id,
+      user_id,
+      responses: processedResponses, // Use processed responses with field names
+    });
+
     await newResponse.save();
 
     res.status(201).json({
@@ -188,6 +201,7 @@ exports.submitResponse = async (req, res) => {
     res.status(500).json({ message: "Server error", error: err.message });
   }
 };
+;
 
 
 

@@ -24,7 +24,6 @@ const responseSchema = new mongoose.Schema({
       }, // Reference to the form field
       field_name: {
         type: String,
-        required: true, // Ensuring field_name is always present
       },
       value: {
         type: mongoose.Schema.Types.Mixed,
