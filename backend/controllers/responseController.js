@@ -79,12 +79,18 @@ exports.submitResponse = async (req, res) => {
           case "radio-group":
             if (!Array.isArray(value)) value = [value]; // Normalize single option to an array
             value.forEach((val) => {
-              if (!field.values.some((option) => option.value === val)) {
+              console.log("Checking value:", val);
+              console.log(
+                "Available options:",
+                field.options.map((option) => option.value)
+              );
+              if (!field.options.some((option) => option.value === val)) {
                 validationErrors.push(
                   `Field '${field.label}' contains invalid options.`
                 );
               }
             });
+
             if (field.min && value.length < field.min) {
               validationErrors.push(
                 `Field '${field.label}' must have at least ${field.min} selected.`
