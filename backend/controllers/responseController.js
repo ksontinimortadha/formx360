@@ -100,7 +100,7 @@ exports.submitResponse = async (req, res) => {
           case "select":
             if (!field.values.some((value) => value === value[0])) {
               validationErrors.push(
-                `Field '${field.label}' must be one of the predefined options. '${field.values}'`
+                `Field '${field.label}' must be one of the predefined options. '${field.values.value}'`
               );
             }
             break;
