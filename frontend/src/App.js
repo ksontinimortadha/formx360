@@ -100,11 +100,7 @@ function App() {
         <Route path="/responses/private/:formId" element={<FormSubmit />} />
         <Route
           path="/responses/submission-success/:responseId"
-          element={
-            <ProtectedRoute>
-              <FormSubmissionSuccess />
-            </ProtectedRoute>
-          }
+          element={<FormSubmissionSuccess />}
         />
         <Route
           path="/responses/form/:formId"
