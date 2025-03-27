@@ -4,7 +4,6 @@ import { FaUser, FaEdit, FaRegAddressCard, FaLock } from "react-icons/fa";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import NavbarComponent from "./NavbarComponent";
-import logo from "../images/logo.png";
 import { toast } from "react-toastify";
 import EditUserModal from "../modals/EditUserModal";
 
@@ -91,19 +90,13 @@ function Profile() {
     { path: `/security/${userId}`, label: "Security", icon: <FaLock /> },
   ];
 
-  const handleLogout = () => {
-    sessionStorage.removeItem("companyId");
-    sessionStorage.removeItem("userId");
-    navigate("/users/login");
-  };
-
   if (error) {
     return <div>{error}</div>;
   }
 
   return (
     <Container fluid>
-      <NavbarComponent logo={logo} handleLogout={handleLogout} />
+      <NavbarComponent />
 
       <Row className="mb-4">
         {/* Sidebar */}

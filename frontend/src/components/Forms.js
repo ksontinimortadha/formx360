@@ -7,7 +7,6 @@ import {
   Button,
   Card,
   Dropdown,
-  Navbar,
   Form,
 } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -16,7 +15,6 @@ import {
   FaTrash,
   FaPlus,
   FaEllipsisV,
-  FaSearch,
 } from "react-icons/fa";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
@@ -24,7 +22,6 @@ import "react-toastify/dist/ReactToastify.css";
 import Sidebar from "./Sidebar";
 import AddFormModal from "../modals/AddFormModal";
 import NavbarComponent from "./NavbarComponent";
-import logo from "../images/logo.png";
 import DeleteFormModal from "../modals/DeleteFormModal";
 import ChangeVisibilityModal from "../modals/ChangeVisibilityModal";
 
@@ -60,11 +57,6 @@ function Forms() {
       console.error("Error fetching forms:", error);
       toast.error("Failed to fetch forms.");
     }
-  };
-
-  const handleLogout = () => {
-    sessionStorage.removeItem("companyId");
-    navigate("/users/login");
   };
 
   const handleEditForm = (form) => {
@@ -141,7 +133,7 @@ function Forms() {
 
   return (
     <div>
-      <NavbarComponent logo={logo} handleLogout={handleLogout} />
+      <NavbarComponent />
       <div style={{ height: "100vh", display: "flex" }}>
         <Sidebar />
         <main className="flex-grow-1 p-4">

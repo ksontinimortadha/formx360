@@ -10,7 +10,6 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import NavbarComponent from "./NavbarComponent";
-import logo from "../images/logo.png"; // Replace with the actual logo image path if needed
 
 function Security() {
   const [currentPassword, setCurrentPassword] = useState("");
@@ -76,7 +75,7 @@ function Security() {
 
   return (
     <Container fluid>
-      <NavbarComponent logo={logo} handleLogout={() => navigate("/login")} />
+      <NavbarComponent />
 
       <Row className="mb-4">
         {/* Sidebar */}

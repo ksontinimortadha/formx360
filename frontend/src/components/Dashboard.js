@@ -4,7 +4,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { useNavigate } from "react-router-dom";
 import { FaTrash, FaPencilAlt } from "react-icons/fa";
 import axios from "axios";
-import logo from "../images/logo.png";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Sidebar from "./Sidebar";
@@ -35,7 +34,6 @@ function Dashboard() {
 
   useEffect(() => {
     const savedCompanyId = sessionStorage.getItem("companyId");
-    const userId = sessionStorage.getItem("userId");
     if (savedCompanyId) {
       setCompanyId(savedCompanyId);
       fetchUsers(savedCompanyId);
@@ -83,10 +81,6 @@ function Dashboard() {
     );
   }, [firstName, lastName, email, password]);
 
-  const handleLogout = () => {
-    sessionStorage.removeItem("companyId");
-    navigate("/users/login");
-  };
   const handleShow = () => setShowModal(true);
   const handleCloseAddModal = () => {
     setFirstName("");
@@ -206,7 +200,7 @@ function Dashboard() {
   return (
     <div style={{ height: "100vh", display: "flex", flexDirection: "column" }}>
       {/* Top Navigation Bar */}
-      <NavbarComponent logo={logo} handleLogout={handleLogout} />
+      <NavbarComponent />
 
       <div style={{ display: "flex", height: "calc(100vh - 56px)" }}>
         {/* Sidebar */}

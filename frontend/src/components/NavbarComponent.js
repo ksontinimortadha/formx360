@@ -1,20 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { Container, Navbar, Dropdown } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaUserCircle, FaUser, FaPowerOff } from "react-icons/fa";
+import logo from "../images/logo.png";
 
-function NavbarComponent({ logo, handleLogout, userId: propUserId }) {
+function NavbarComponent({ userId: propUserId }) {
   const [userId, setUserId] = useState(propUserId);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const sessionUserId = sessionStorage.getItem("userId");
-    console.log("user id from sessionStorage:", sessionUserId);
 
     if (!userId && sessionUserId) {
       setUserId(sessionUserId); // Fallback to sessionStorage if userId is not passed as prop
     }
   }, [userId]);
-
+  const handleLogout = () => {
+    sessionStorage.removeItem("companyId");
+    sessionStorage.removeItem("userId");
+    navigate("/users/login");
+  };
   return (
     <Navbar
       bg="light"

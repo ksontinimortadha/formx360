@@ -11,7 +11,8 @@ function ChangeVisibilityModal({
   if (!form) return null;
 
   const newVisibility = form.visibility === "public" ? "private" : "public";
-  const publicUrl = `https://formx360.vercel.app/responses/${form._id}`;
+  const publicUrl = `https://formx360.vercel.app/responses/public/${form._id}`;
+  const privateUrl = `https://formx360.vercel.app/responses/private/${form._id}`;
 
   console.log("visibility", form.visibility);
   console.log("newVisibility", newVisibility);
@@ -37,6 +38,14 @@ function ChangeVisibilityModal({
             users to access and submit the form:
             <br />
             <strong>{publicUrl}</strong>
+          </Alert>
+        )}
+        {newVisibility === "public" && privateUrl && (
+          <Alert variant="success" style={{ wordWrap: "break-word" }}>
+            The form is now public! You can share the following link to allow
+            users to access and submit the form:
+            <br />
+            <strong>{privateUrl}</strong>
           </Alert>
         )}
       </Modal.Body>

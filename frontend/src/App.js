@@ -60,7 +60,7 @@ function App() {
             </ProtectedRoute>
           }
         />
-        
+
         {/* Form Routes */}
         <Route
           path="/forms"
@@ -96,14 +96,7 @@ function App() {
         />
 
         {/* Responses Routes */}
-        <Route
-          path="/responses/:formId"
-          element={
-            <ProtectedRoute>
-              <FormSubmit />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/responses/public/:formId" element={<FormSubmit />} />
         <Route
           path="/responses/submission-success/:responseId"
           element={

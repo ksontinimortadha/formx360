@@ -3,7 +3,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import NavbarComponent from "./NavbarComponent";
-import logo from "../images/logo.png";
 import Paginations from "./Paginations";
 import { Button, Container, Navbar } from "react-bootstrap";
 import {
@@ -21,12 +20,6 @@ const ResponsePage = () => {
   const [itemsPerPage] = useState(10);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
   const navigate = useNavigate();
-
-  // Logout handler
-  const handleLogout = () => {
-    sessionStorage.removeItem("companyId");
-    navigate("/users/login");
-  };
 
   // Fetch responses from the API
   const fetchResponses = async () => {
@@ -113,7 +106,7 @@ const ResponsePage = () => {
   if (!responses.length) {
     return (
       <>
-        <NavbarComponent logo={logo} handleLogout={handleLogout} />
+        <NavbarComponent />
         <Navbar className="bg-body-tertiary" style={{ marginBottom: "20px" }}>
           <Container>
             <Navbar.Brand style={{ fontWeight: "500" }}>
@@ -142,7 +135,7 @@ const ResponsePage = () => {
   };
   return (
     <>
-      <NavbarComponent logo={logo} handleLogout={handleLogout} />
+      <NavbarComponent />
       <Navbar className="bg-body-tertiary" style={{ marginBottom: "20px" }}>
         <Container>
           <Navbar.Brand style={{ fontWeight: "500" }}>
