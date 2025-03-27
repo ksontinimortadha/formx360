@@ -238,22 +238,25 @@ const ResponsePage = () => {
       </table>
 
       {/* Pagination controls */}
-      <Navbar className="bg-body-tertiary" fixed="bottom">
-        <Container>
-          <Navbar.Brand style={{ fontWeight: "bolder" }}></Navbar.Brand>
-          <Navbar.Toggle />
-          <Navbar.Collapse className="justify-content-end">
-            <Navbar.Text>
-              <Paginations
-                totalItems={responses.length}
-                itemsPerPage={itemsPerPage}
-                currentPage={currentPage}
-                setCurrentPage={setCurrentPage}
-              />
-            </Navbar.Text>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
+      {/**
+       <Navbar className="bg-body-tertiary" fixed="bottom">
+         <Container>
+           <Navbar.Brand style={{ fontWeight: "bolder" }}></Navbar.Brand>
+           <Navbar.Toggle />
+           <Navbar.Collapse className="justify-content-end">
+             <Navbar.Text>
+               <Paginations
+                 totalItems={responses.length}
+                 itemsPerPage={itemsPerPage}
+                 currentPage={currentPage}
+                 setCurrentPage={setCurrentPage}
+               />
+             </Navbar.Text>
+           </Navbar.Collapse>
+         </Container>
+       </Navbar>
+       
+       */}
     </>
   );
 };

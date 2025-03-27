@@ -81,7 +81,6 @@ const FormSubmit = () => {
         `https://formx360.onrender.com/responses/${formId}`,
         { responses }
       );
-      console.log("res", responses);
       const responseId = response.data.response._id;
       if (response.status === 201) {
         toast.success("Response submitted successfully!");
