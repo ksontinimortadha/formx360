@@ -1,12 +1,15 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 function AddReportModal({ show, handleClose }) {
   const [forms, setForms] = useState([]);
   const [selectedForm, setSelectedForm] = useState("");
+  const [reportTitle, setReportTitle] = useState("");
   const [companyId, setCompanyId] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const storedCompanyId = sessionStorage.getItem("companyId");
@@ -29,9 +32,32 @@ function AddReportModal({ show, handleClose }) {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Selected Form:", selectedForm);
+    if (!reportTitle || !selectedForm) {
+      toast.error("Please fill in all fields.");
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        `https://formx360.onrender.com/reports`,
+        {
+          title: reportTitle,
+          formId: selectedForm,
+          companyId,
+        }
+      );
+
+      toast.success("Report created successfully!");
+      handleClose();
+
+      // Redirect to the report builder page
+      navigate(`/report-builder/${response.data.report._id}`);
+    } catch (error) {
+      console.error("Error creating report:", error);
+      toast.error("Failed to create report.");
+    }
   };
 
   return (
@@ -46,6 +72,8 @@ function AddReportModal({ show, handleClose }) {
             <Form.Control
               type="text"
               placeholder="Enter report title"
+              value={reportTitle}
+              onChange={(e) => setReportTitle(e.target.value)}
               required
             />
           </Form.Group>
@@ -76,6 +104,7 @@ function AddReportModal({ show, handleClose }) {
           </div>
         </Form>
       </Modal.Body>
+      <ToastContainer />
     </Modal>
   );
 }

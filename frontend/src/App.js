@@ -19,6 +19,7 @@ import FormSubmissionSuccess from "./components/FormSubmissionSuccess";
 import ProtectedRoute from "./components/ProtectedRoute ";
 import ResponsePage from "./components/ResponsePage ";
 import Reports from "./components/Reports";
+import ReportBuilder from "./components/ReportBuilder";
 
 function App() {
   return (
@@ -117,6 +118,14 @@ function App() {
           element={
             <ProtectedRoute>
               <Reports />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/report-builder/:reportId"
+          element={
+            <ProtectedRoute>
+              <ReportBuilder />
             </ProtectedRoute>
           }
         />

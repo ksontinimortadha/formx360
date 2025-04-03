@@ -15,6 +15,7 @@ app.use("/users", require("./routes/userRoutes"));
 app.use("/forms", require("./routes/formRoutes"));
 app.use("/responses", require("./routes/responseRoutes"));
 app.use("/companies", require("./routes/companyRoutes"));
+app.use("/reports", require("./routes/reportRoutes"));
 
 // Database Connection
 const PORT = process.env.PORT || 5000;
