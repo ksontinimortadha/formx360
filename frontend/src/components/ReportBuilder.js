@@ -28,9 +28,10 @@ function ReportBuilder() {
   }, [reportId]);
 
   const fetchReport = async () => {
+    console.log(reportId);
     try {
       const response = await axios.get(
-        `https://formx360.onrender.com/reports/${reportId}`
+        `https://formx360.onrender.com/reports/report/${reportId}`
       );
       setReport(response.data);
       console.log("res", response.data);
@@ -61,7 +62,7 @@ function ReportBuilder() {
     setLoading(true);
     try {
       const response = await axios.post(
-        `https://formx360.onrender.com/reports/${reportId}/filter`,
+        `https://formx360.onrender.com/reports/report/${reportId}/filter`,
         { filters }
       );
       setReportData(response.data);

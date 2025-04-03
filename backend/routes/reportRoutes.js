@@ -6,15 +6,15 @@ const reportController = require("../controllers/reportController");
 router.post("/", reportController.createReport);
 
 // Get all reports for a company
-router.get("/:companyId", reportController.getCompanyReports);
+router.get("/company/:companyId", reportController.getCompanyReports);
 
 // Get a single report by ID
-router.get("/:reportId", reportController.getReportById);
+router.get("/report/:reportId", reportController.getReportById);
 
 // Delete a report
-router.delete("/:reportId", reportController.deleteReport);
+router.delete("/report/:reportId", reportController.deleteReport);
 
 // filter report
-router.delete("/:reportId/filter", reportController.filterReportData);
+router.delete("/report/:reportId/filter", reportController.filterReportData);
 
 module.exports = router;

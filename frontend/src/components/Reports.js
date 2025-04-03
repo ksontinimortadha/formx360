@@ -41,7 +41,7 @@ function Reports() {
 
     try {
       const response = await axios.get(
-        `https://formx360.onrender.com/reports/${companyId}`
+        `https://formx360.onrender.com/reports/company/${companyId}`
       );
       setReports(response.data);
     } catch (err) {
