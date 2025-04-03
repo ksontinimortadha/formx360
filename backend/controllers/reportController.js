@@ -77,3 +77,41 @@ exports.deleteReport = async (req, res) => {
     res.status(500).json({ message: "Server error", error: err.message });
   }
 };
+
+exports.filterReportData = async (req, res) => {
+  const { reportId } = req.params;
+  const { filters } = req.body;
+
+  try {
+    const report = await Report.findById(reportId).populate("formId");
+    if (!report) {
+      return res.status(404).json({ message: "Report not found" });
+    }
+
+    let query = {};
+    filters.forEach(({ field, condition, value }) => {
+      switch (condition) {
+        case "equals":
+          query[field] = value;
+          break;
+        case "contains":
+          query[field] = { $regex: value, $options: "i" }; // Case-insensitive search
+          break;
+        case "greater_than":
+          query[field] = { $gt: value };
+          break;
+        case "less_than":
+          query[field] = { $lt: value };
+          break;
+        default:
+          break;
+      }
+    });
+
+    const filteredData = await Report.find(query);
+    res.status(200).json(filteredData);
+  } catch (err) {
+    console.error("Error filtering report data:", err);
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+};

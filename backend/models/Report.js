@@ -8,14 +8,14 @@ const reportSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
-  }, // Tracks the user who created the report
+  }, // Tracks the user who created the report*/
   filters: [
     {
       field: { type: String, required: true }, // Field to filter (e.g., "status")
       condition: { type: String, required: true }, // Condition (e.g., "equals", "contains")
       value: { type: mongoose.Schema.Types.Mixed, required: true }, // Can be a string, number, or date
     },
-  ],*/
+  ],
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });

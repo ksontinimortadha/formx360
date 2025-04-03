@@ -14,4 +14,7 @@ router.get("/:reportId", reportController.getReportById);
 // Delete a report
 router.delete("/:reportId", reportController.deleteReport);
 
+// filter report
+router.delete("/:reportId/filter", reportController.filterReportData);
+
 module.exports = router;
