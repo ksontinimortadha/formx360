@@ -1,0 +1,17 @@
+export const predefinedThemes = [
+  { name: "Classic Blue", className: "classic-blue" },
+  { name: "Modern Gray", className: "modern-gray" },
+  { name: "Light & Airy", className: "light-airy" },
+  { name: "Dark Mode", className: "dark-mode" },
+  { name: "Nature Green", className: "nature-green" },
+  { name: "Vibrant Orange", className: "vibrant-orange" },
+  { name: "Minimalist White", className: "minimalist-white" },
+  { name: "Vintage Red", className: "vintage-red" },
+  { name: "Elegant Purple", className: "elegant-purple" },
+  { name: "Tech Blue", className: "tech-blue" },
+  { name: "Professional Black & White", className: "professional-bw" },
+  { name: "Fresh Mint", className: "fresh-mint" },
+  { name: "Funky Pink", className: "funky-pink" },
+  { name: "Elegant Gold", className: "elegant-gold" },
+  { name: "Techno Yellow", className: "techno-yellow" },
+];

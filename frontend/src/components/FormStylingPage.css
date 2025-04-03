@@ -1,0 +1,425 @@
+/* General Styles */
+.form-styling-page {
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+h1 {
+  font-size: 2.5rem;
+  color: #333;
+}
+
+h3 {
+  color: #555;
+}
+
+h4 {
+  font-size: 1.5rem;
+}
+
+/* Theme Selection Card Styles */
+.theme-card {
+  cursor: pointer;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.theme-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.theme-card.active {
+  border-color: #007bff;
+  box-shadow: 0 6px 15px rgba(0, 123, 255, 0.4);
+}
+
+.theme-preview-img {
+  max-width: 100%;
+  border-radius: 8px;
+}
+
+.theme-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+/* Form Preview Styles */
+.form-preview {
+  margin-top: 20px;
+  padding: 30px;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.classic-blue {
+  background-color: #007bff;
+  color: white;
+}
+
+.modern-gray {
+  background-color: #6c757d;
+  color: white;
+}
+
+.light-airy {
+  background-color: #f0f8ff;
+  color: #333;
+}
+
+.dark-mode {
+  background-color: #212121;
+  color: white;
+}
+
+.nature-green {
+  background-color: #28a745;
+  color: white;
+}
+
+.vibrant-orange {
+  background-color: #fd7e14;
+  color: white;
+}
+
+.minimalist-white {
+  background-color: #ffffff;
+  color: #333;
+}
+
+.vintage-red {
+  background-color: #dc3545;
+  color: white;
+}
+
+.elegant-purple {
+  background-color: #6f42c1;
+  color: white;
+}
+
+.tech-blue {
+  background-color: #17a2b8;
+  color: white;
+}
+
+.professional-bw {
+  background-color: #000;
+  color: #fff;
+}
+
+.fresh-mint {
+  background-color: #3cb371;
+  color: white;
+}
+
+.funky-pink {
+  background-color: #e83e8c;
+  color: white;
+}
+
+.elegant-gold {
+  background-color: #f1c40f;
+  color: white;
+}
+
+.techno-yellow {
+  background-color: #f39c12;
+  color: white;
+}
+
+/* Dropdown Styles */
+.choosing-list-container {
+  position: relative;
+  margin-top: 20px;
+}
+
+.choosing-list {
+  padding: 12px 20px;
+  font-size: 16px;
+  border-radius: 10px;
+  background-color: #f7f7f8;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.choosing-list:hover {
+  background-color: #e7e7e7;
+}
+
+.dropdown-icon {
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid #333;
+  border-bottom: 2px solid #333;
+  transform: rotate(45deg);
+  transition: transform 0.3s ease;
+}
+
+.dropdown-icon.open {
+  transform: rotate(-135deg);
+}
+
+.dropdown-options {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.dropdown-options .option {
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.dropdown-options .option:hover {
+  background-color: #f7f7f7;
+}
+
+.dropdown-options .option.selected {
+  background-color: #007bff;
+  color: white;
+}
+
+/* Form Fields Styling */
+.form-preview-content {
+  display: flex;
+  flex-direction: column;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="date"],
+textarea,
+select {
+  padding: 8px;
+  margin: 10px 0;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  width: 100%;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+  margin-right: 8px;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+label {
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* Error & Loading States */
+.d-flex {
+  justify-content: center;
+}
+
+.alert {
+  margin-top: 20px;
+}
+
+.spinner-border {
+  margin-top: 20px;
+}
+
+/* Form Field Alignment */
+.form-fields {
+  display: flex;
+  flex-direction: column; /* Stack fields vertically */
+  gap: 16px; /* Space between fields */
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column; /* Stack label and input vertically */
+  gap: 4px; /* Space between label and input */
+  width: 100%; /* Ensure each field takes the full width */
+}
+
+.field-left,
+.field-middle,
+.field-right {
+  display: flex;
+  flex-direction: column; /* Keep content vertically stacked */
+  justify-content: center; /* Vertically centers the content inside each field */
+  width: 100%; /* Ensure fields take full width */
+}
+
+.field-left {
+  align-items: flex-start;
+  width: 100%; /* Ensure fields take full width */
+}
+
+.field-center {
+  align-items: center; /* Center content */
+}
+
+.field-right {
+  align-items: flex-end; /* Align content to the right */
+}
+
+/* Label style */
+.form-field label {
+  display: block; /* Makes the label appear above the input */
+  margin-bottom: 4px;
+  font-weight: bold; /* Make labels more noticeable */
+  font-size: 14px;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="date"]:focus,
+input[type="radio"]:focus,
+input[type="checkbox"]:focus {
+  outline: none;
+  box-shadow: 0 0 8px rgba(0, 122, 255, 0.2); /* Soft shadow for focus state */
+}
+
+/* Textarea specific styles */
+textarea {
+  padding: 12px 16px;
+  font-size: 16px;
+  width: 100%;
+  min-height: 120px;
+  border-radius: 12px;
+  border: 1px solid #d1d1d6;
+  background-color: white;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+textarea:focus {
+  outline: none;
+  box-shadow: 0 0 8px rgba(0, 122, 255, 0.2);
+}
+
+/* Select field specific styles */
+select {
+  padding: 12px 16px;
+  font-size: 16px;
+  width: 100%;
+  border: 1px solid #d1d1d6;
+  background-color: white;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+select:focus {
+  outline: none;
+  box-shadow: 0 0 8px rgba(0, 122, 255, 0.2);
+}
+
+/* Button specific styles */
+button {
+  padding: 12px 16px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  background-color: #007aff;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Autocomplete input */
+input[list="autocomplete-list"] {
+  padding: 12px 16px;
+  font-size: 16px;
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid #d1d1d6;
+  background-color: white;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input[list="autocomplete-list"]:focus {
+  outline: none;
+  box-shadow: 0 0 8px rgba(0, 122, 255, 0.2);
+}
+
+/* Star Rating style */
+.star-rating {
+  display: flex;
+  justify-content: center;
+}
+
+.star-rating input {
+  display: none;
+}
+
+.star-rating label {
+  font-size: 32px;
+  cursor: pointer;
+  color: #d1d1d6; /* Gray stars */
+  transition: color 0.2s ease;
+}
+
+.star-rating input:checked ~ label {
+  color: #ffcc00; /* Gold color for checked stars */
+}
+
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+  color: #ffcc00; /* Hover stars turn gold */
+}
+
+/* Additional responsive styles */
+@media (max-width: 768px) {
+  .form-fields {
+    gap: 12px; /* Adjust gap on smaller screens */
+  }
+
+  .form-field {
+    gap: 8px; /* Adjust gap on smaller screens */
+  }
+
+  /* Make the form fields more compact on mobile */
+  .form-field label {
+    font-size: 12px;
+  }
+}
+
+/* Move modal to the right */
+.right-modal {
+  position: fixed !important;
+  margin-right: 5px;
+  right: 0;
+  top: 0;
+  width: 400px;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.right-modal .modal-dialog {
+  margin: 0;
+  height: 100%;
+}
+
+.right-modal .modal-content {
+  height: 100%;
+  border-radius: 10px;
+}
