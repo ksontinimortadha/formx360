@@ -97,7 +97,7 @@ exports.filterReportData = async (req, res) => {
 
     console.log("✅ Report found:", report.title);
     console.log("📄 Populated formId:", report.formId);
-    console.log("📦 Collection Name:", report.formId?.collectionName);
+    console.log("📦 Collection Name:", report.formId?.fields);
 
     const collectionName = report.formId?.collectionName;
 
