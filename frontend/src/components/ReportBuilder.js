@@ -13,6 +13,7 @@ import {
 } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { FaPlus, FaTrash, FaFilter, FaChartBar } from "react-icons/fa";
+import NavbarComponent from "./NavbarComponent";
 
 function ReportBuilder() {
   const { reportId } = useParams();
@@ -40,6 +41,7 @@ function ReportBuilder() {
           `https://formx360.onrender.com/forms/${response.data.formId._id}`
         );
         setAvailableFields(formResponse.data.form.fields || []);
+        console.log(formResponse.data.form.fields);
       }
     } catch (error) {
       console.error("Error fetching report or form details:", error);
@@ -63,6 +65,7 @@ function ReportBuilder() {
 
   const generateReport = async () => {
     setLoading(true);
+    console.log(filters);
     try {
       const response = await axios.post(
         `https://formx360.onrender.com/reports/report/${reportId}/filter`,
@@ -70,7 +73,7 @@ function ReportBuilder() {
       );
       setReportData(response.data);
       setShowModal(true);
-      toast.success("success")
+      toast.success("success");
     } catch (error) {
       console.error("Error generating report:", error);
       toast.error("Failed to generate report.");
@@ -80,139 +83,142 @@ function ReportBuilder() {
   };
 
   return (
-    <Container fluid className="p-4">
-      <h2 className="mb-4 text-center text-dark">
-        <FaChartBar className="me-2" /> Build Your Report
-      </h2>
-      {report ? (
-        <h4 className="text-center text-secondary">{report.title}</h4>
-      ) : (
-        <p className="text-center">Loading report details...</p>
-      )}
+    <>
+      <NavbarComponent />
+      <Container fluid className="p-4">
+        <h2 className="mb-4 text-center text-dark">
+          <FaChartBar className="me-2" /> Build Your Report
+        </h2>
+        {report ? (
+          <h4 className="text-center text-secondary">{report.title}</h4>
+        ) : (
+          <p className="text-center">Loading report details...</p>
+        )}
 
-      {/* Filters Section */}
-      <Card className="shadow-sm p-4 mt-4 border-0">
-        <h5 className="mb-3 text-primary">
-          <FaFilter className="me-2" /> Add Filters (Optional)
-        </h5>
-        <p className="text-muted">
-          Customize your report by applying filters to refine the results.
-        </p>
+        {/* Filters Section */}
+        <Card className="shadow-sm p-4 mt-4 border-0">
+          <h5 className="mb-3 text-primary">
+            <FaFilter className="me-2" /> Add Filters (Optional)
+          </h5>
+          <p className="text-muted">
+            Customize your report by applying filters to refine the results.
+          </p>
 
-        {filters.map((filter, index) => (
-          <Row key={index} className="align-items-center mb-3">
-            <Col md={3}>
-              <Form.Select
-                value={filter.field}
-                onChange={(e) => updateFilter(index, "field", e.target.value)}
-                className="border-0 shadow-sm"
-              >
-                <option value="">Choose a Field</option>
-                {availableFields.map((field) => (
-                  <option key={field._id} value={field.name}>
-                    {field.label || field.name}
-                  </option>
-                ))}
-              </Form.Select>
-            </Col>
-            <Col md={3}>
-              <Form.Select
-                value={filter.condition}
-                onChange={(e) =>
-                  updateFilter(index, "condition", e.target.value)
-                }
-                className="border-0 shadow-sm"
-              >
-                <option value="equals">Equals</option>
-                <option value="contains">Contains</option>
-                <option value="greater_than">Greater Than</option>
-                <option value="less_than">Less Than</option>
-              </Form.Select>
-            </Col>
-            <Col md={3}>
-              <Form.Control
-                type="text"
-                placeholder="Enter value"
-                value={filter.value}
-                onChange={(e) => updateFilter(index, "value", e.target.value)}
-                className="border-0 shadow-sm"
-              />
-            </Col>
-            <Col md={2}>
-              <Button
-                variant="danger"
-                className="shadow-sm"
-                onClick={() => removeFilter(index)}
-              >
-                <FaTrash />
-              </Button>
-            </Col>
-          </Row>
-        ))}
-
-        <Button
-          variant="outline-primary"
-          onClick={addFilter}
-          className="mt-3 shadow-sm"
-        >
-          <FaPlus className="me-2" /> Add Filter
-        </Button>
-      </Card>
-
-      {/* Generate Report Button */}
-      <div className="text-center mt-4">
-        <Button
-          variant="success"
-          size="lg"
-          onClick={generateReport}
-          disabled={loading}
-        >
-          {loading ? (
-            "Generating..."
-          ) : (
-            <>
-              <FaChartBar className="me-2" /> Generate Report
-            </>
-          )}
-        </Button>
-      </div>
-
-      {/* Report Data Modal */}
-      <Modal show={showModal} onHide={() => setShowModal(false)} size="lg">
-        <Modal.Header closeButton>
-          <Modal.Title>Report Results</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {reportData.length > 0 ? (
-            <Table striped bordered hover responsive className="shadow-sm">
-              <thead className="bg-primary text-white">
-                <tr>
-                  {Object.keys(reportData[0]).map((key) => (
-                    <th key={key}>{key}</th>
+          {filters.map((filter, index) => (
+            <Row key={index} className="align-items-center mb-3">
+              <Col md={3}>
+                <Form.Select
+                  value={filter.field}
+                  onChange={(e) => updateFilter(index, "field", e.target.value)}
+                  className="border-0 shadow-sm"
+                >
+                  <option value="">Choose a Field</option>
+                  {availableFields.map((field) => (
+                    <option key={field._id} value={field.label}>
+                      {field.label || field.name}
+                    </option>
                   ))}
-                </tr>
-              </thead>
-              <tbody>
-                {reportData.map((row, index) => (
-                  <tr key={index}>
-                    {Object.values(row).map((value, i) => (
-                      <td key={i}>{value}</td>
+                </Form.Select>
+              </Col>
+              <Col md={3}>
+                <Form.Select
+                  value={filter.condition}
+                  onChange={(e) =>
+                    updateFilter(index, "condition", e.target.value)
+                  }
+                  className="border-0 shadow-sm"
+                >
+                  <option value="equals">Equals</option>
+                  <option value="contains">Contains</option>
+                  <option value="greater_than">Greater Than</option>
+                  <option value="less_than">Less Than</option>
+                </Form.Select>
+              </Col>
+              <Col md={3}>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter value"
+                  value={filter.value}
+                  onChange={(e) => updateFilter(index, "value", e.target.value)}
+                  className="border-0 shadow-sm"
+                />
+              </Col>
+              <Col md={2}>
+                <Button
+                  variant="danger"
+                  className="shadow-sm"
+                  onClick={() => removeFilter(index)}
+                >
+                  <FaTrash />
+                </Button>
+              </Col>
+            </Row>
+          ))}
+
+          <Button
+            variant="outline-primary"
+            onClick={addFilter}
+            className="mt-3 shadow-sm"
+          >
+            <FaPlus className="me-2" /> Add Filter
+          </Button>
+        </Card>
+
+        {/* Generate Report Button */}
+        <div className="text-center mt-4">
+          <Button
+            variant="success"
+            size="lg"
+            onClick={generateReport}
+            disabled={loading}
+          >
+            {loading ? (
+              "Generating..."
+            ) : (
+              <>
+                <FaChartBar className="me-2" /> Generate Report
+              </>
+            )}
+          </Button>
+        </div>
+
+        {/* Report Data Modal */}
+        <Modal show={showModal} onHide={() => setShowModal(false)} size="lg">
+          <Modal.Header closeButton>
+            <Modal.Title>Report Results</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {reportData.length > 0 ? (
+              <Table striped bordered hover responsive className="shadow-sm">
+                <thead className="bg-primary text-white">
+                  <tr>
+                    {Object.keys(reportData[0]).map((key) => (
+                      <th key={key}>{key}</th>
                     ))}
                   </tr>
-                ))}
-              </tbody>
-            </Table>
-          ) : (
-            <p>No data found based on your filters.</p>
-          )}
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowModal(false)}>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    </Container>
+                </thead>
+                <tbody>
+                  {reportData.map((row, index) => (
+                    <tr key={index}>
+                      {Object.values(row).map((value, i) => (
+                        <td key={i}>{value}</td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            ) : (
+              <p>No data found based on your filters.</p>
+            )}
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={() => setShowModal(false)}>
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </Container>
+    </>
   );
 }
 

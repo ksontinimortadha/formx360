@@ -89,6 +89,8 @@ exports.filterReportData = async (req, res) => {
     }
 
     const collectionName = report.formId.collectionName;
+    console.log("1 :",report.formId);
+    console.log("2 : ",report.formId.collectionName);
     if (!collectionName) {
       return res.status(400).json({ message: "Form collection not found" });
     }
