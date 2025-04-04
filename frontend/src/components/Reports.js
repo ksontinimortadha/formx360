@@ -11,15 +11,18 @@ import {
   Spinner,
   Alert,
 } from "react-bootstrap";
-import { FaPlus } from "react-icons/fa";
+import { FaEdit, FaPlus } from "react-icons/fa";
 import AddReportModal from "../modals/AddReportModal";
 import { ToastContainer, toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 function Reports() {
   const [showAddModal, setShowAddModal] = useState(false);
   const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
+
 
   const handleShowAddModal = () => setShowAddModal(true);
   const handleCloseAddModal = () => setShowAddModal(false);
@@ -96,11 +99,24 @@ function Reports() {
                     <Col key={report._id} md={6} lg={4} className="mb-4">
                       <Card className="shadow-sm border-0 rounded-4">
                         <Card.Body>
-                          <h5>{report.title}</h5>
-                          <p className="text-muted">
-                            Related Form:{" "}
-                            <strong>{report.formId?.title || "N/A"}</strong>
-                          </p>
+                          <div className="d-flex justify-content-between align-items-center">
+                            <div>
+                              <h5>{report.title}</h5>
+                              <p className="text-muted">
+                                Related Form:{" "}
+                                <strong>{report.formId?.title || "N/A"}</strong>
+                              </p>
+                            </div>
+                            <Button
+                              variant="outline-primary"
+                              className="shadow-sm"
+                              onClick={() =>
+                                navigate(`/report-builder/${report._id}`)
+                              }
+                            >
+                              <FaEdit className="me-2" /> Edit
+                            </Button>
+                          </div>
                         </Card.Body>
                       </Card>
                     </Col>
