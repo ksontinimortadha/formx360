@@ -41,7 +41,6 @@ function ReportBuilder() {
           `https://formx360.onrender.com/forms/${response.data.formId._id}`
         );
         setAvailableFields(formResponse.data.form.fields || []);
-        console.log(formResponse.data.form.fields);
       }
     } catch (error) {
       console.error("Error fetching report or form details:", error);
@@ -72,6 +71,10 @@ function ReportBuilder() {
         { filters }
       );
       setReportData(response.data);
+      // Log each responses array individually
+      response.data.forEach((entry, index) => {
+        console.log(`Responses for entry ${index + 1}:`, entry.responses);
+      });
       setShowModal(true);
       toast.success("success");
     } catch (error) {
@@ -192,16 +195,16 @@ function ReportBuilder() {
               <Table striped bordered hover responsive className="shadow-sm">
                 <thead className="bg-primary text-white">
                   <tr>
-                    {Object.keys(reportData[0]).map((key) => (
-                      <th key={key}>{key}</th>
+                    {reportData[0].responses.map((response, index) => (
+                      <th key={index}>{response.field_name}</th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
-                  {reportData.map((row, index) => (
-                    <tr key={index}>
-                      {Object.values(row).map((value, i) => (
-                        <td key={i}>{value}</td>
+                  {reportData.map((entry, rowIndex) => (
+                    <tr key={rowIndex}>
+                      {entry.responses.map((response, colIndex) => (
+                        <td key={colIndex}>{response.value}</td>
                       ))}
                     </tr>
                   ))}
