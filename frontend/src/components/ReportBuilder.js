@@ -27,20 +27,23 @@ function ReportBuilder() {
     fetchReport();
   }, [reportId]);
 
+  // Fetch the report details
   const fetchReport = async () => {
-    console.log(reportId);
     try {
       const response = await axios.get(
         `https://formx360.onrender.com/reports/report/${reportId}`
       );
       setReport(response.data);
-      console.log("res", response.data);
-
-      setAvailableFields(response.data.formId.fields || []);
-      console.log("fields :", response.data.formId.fields);
+      // Fetch form details only if formId exists
+      if (response.data.formId._id) {
+        const formResponse = await axios.get(
+          `https://formx360.onrender.com/forms/${response.data.formId._id}`
+        );
+        setAvailableFields(formResponse.data.form.fields || []);
+      }
     } catch (error) {
-      console.error("Error fetching report:", error);
-      toast.error("Failed to load report.");
+      console.error("Error fetching report or form details:", error);
+      toast.error("Failed to load report or form details.");
     }
   };
 
@@ -66,7 +69,8 @@ function ReportBuilder() {
         { filters }
       );
       setReportData(response.data);
-      setShowModal(true); // Open modal when report is generated
+      setShowModal(true);
+      toast.success("success")
     } catch (error) {
       console.error("Error generating report:", error);
       toast.error("Failed to generate report.");
@@ -105,8 +109,8 @@ function ReportBuilder() {
               >
                 <option value="">Choose a Field</option>
                 {availableFields.map((field) => (
-                  <option key={field} value={field}>
-                    {field}
+                  <option key={field._id} value={field.name}>
+                    {field.label || field.name}
                   </option>
                 ))}
               </Form.Select>

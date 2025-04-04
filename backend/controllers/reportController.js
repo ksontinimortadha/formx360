@@ -88,27 +88,38 @@ exports.filterReportData = async (req, res) => {
       return res.status(404).json({ message: "Report not found" });
     }
 
+    const collectionName = report.formId.collectionName;
+    if (!collectionName) {
+      return res.status(400).json({ message: "Form collection not found" });
+    }
+
+    const FormModel = mongoose.model(collectionName);
+
     let query = {};
     filters.forEach(({ field, condition, value }) => {
+      if (!field || value === "") return;
+
+      let parsedValue = isNaN(value) ? value : Number(value);
+
       switch (condition) {
         case "equals":
-          query[field] = value;
+          query[field] = parsedValue;
           break;
         case "contains":
-          query[field] = { $regex: value, $options: "i" }; // Case-insensitive search
+          query[field] = { $regex: parsedValue, $options: "i" };
           break;
         case "greater_than":
-          query[field] = { $gt: value };
+          query[field] = { $gt: parsedValue };
           break;
         case "less_than":
-          query[field] = { $lt: value };
+          query[field] = { $lt: parsedValue };
           break;
         default:
           break;
       }
     });
 
-    const filteredData = await Report.find(query);
+    const filteredData = await FormModel.find(query);
     res.status(200).json(filteredData);
   } catch (err) {
     console.error("Error filtering report data:", err);
