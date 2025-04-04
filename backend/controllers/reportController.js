@@ -1,5 +1,6 @@
 const Report = require("../models/Report");
 const Form = require("../models/Form");
+const Response = require("../models/Response");
 
 // Create a New Report
 exports.createReport = async (req, res) => {
@@ -78,75 +79,75 @@ exports.deleteReport = async (req, res) => {
   }
 };
 
-const mongoose = require("mongoose");
-
 exports.filterReportData = async (req, res) => {
   const { reportId } = req.params;
   const { filters } = req.body;
 
-  console.log("Incoming request to filter report data for reportId:", reportId);
-  console.log("Received filters:", filters);
+  console.log("📥 Incoming filter request for reportId:", reportId);
+  console.log("🧪 Filters received:", filters);
 
   try {
     const report = await Report.findById(reportId).populate("formId");
-
     if (!report) {
       console.log("❌ Report not found");
       return res.status(404).json({ message: "Report not found" });
     }
 
+    const formId = report.formId._id;
     console.log("✅ Report found:", report.title);
-    console.log("📄 Populated formId:", report.formId);
-    console.log("📦 Collection Name:", report.formId?.fields);
+    console.log("📝 Form ID associated with report:", formId);
 
-    const collectionName = report.formId?.fields;
+    // Fetch all responses for this form
+    const responses = await Response.find({ form_id: formId });
+    console.log("📦 Total responses fetched:", responses.length);
 
-    if (!collectionName) {
-      console.log("❌ Collection name not found in formId");
-      return res.status(400).json({ message: "Form collection not found" });
-    }
+    // Now filter responses in JS
+    const filteredResponses = responses.filter((response, index) => {
+      console.log(`🔎 Checking response #${index + 1}:`, response._id);
 
-    const FormModel = mongoose.model(collectionName);
+      const isMatch = filters.every(({ field, condition, value }) => {
+        const answer = response.responses.find((r) => r.field_name === field);
+        if (!answer) {
+          console.log(`⚠️ Field '${field}' not found in response.`);
+          return false;
+        }
 
-    let query = {};
-    filters.forEach(({ field, condition, value }) => {
-      if (!field || value === "") {
+        const responseValue = answer.value;
+        const parsedValue = isNaN(value) ? value : Number(value);
+
         console.log(
-          `⚠️ Skipping invalid filter: field=${field}, value=${value}`
+          `🧮 Filtering - Field: ${field}, Condition: ${condition}, Value: ${parsedValue}, Response Value: ${responseValue}`
         );
-        return;
+
+        switch (condition) {
+          case "equals":
+            return responseValue === parsedValue;
+          case "contains":
+            return (
+              typeof responseValue === "string" &&
+              responseValue.toLowerCase().includes(parsedValue.toLowerCase())
+            );
+          case "greater_than":
+            return responseValue > parsedValue;
+          case "less_than":
+            return responseValue < parsedValue;
+          default:
+            console.log(`⚠️ Unknown condition: ${condition}`);
+            return false;
+        }
+      });
+
+      if (!isMatch) {
+        console.log("❌ Response does not match all filters.");
+      } else {
+        console.log("✅ Response matches all filters.");
       }
 
-      let parsedValue = isNaN(value) ? value : Number(value);
-      console.log(
-        `🔍 Adding filter - Field: ${field}, Condition: ${condition}, Value: ${parsedValue}`
-      );
-
-      switch (condition) {
-        case "equals":
-          query[field] = parsedValue;
-          break;
-        case "contains":
-          query[field] = { $regex: parsedValue, $options: "i" };
-          break;
-        case "greater_than":
-          query[field] = { $gt: parsedValue };
-          break;
-        case "less_than":
-          query[field] = { $lt: parsedValue };
-          break;
-        default:
-          console.log(`⚠️ Unknown condition: ${condition}`);
-          break;
-      }
+      return isMatch;
     });
 
-    console.log("📥 Final MongoDB Query:", query);
-
-    const filteredData = await FormModel.find(query);
-    console.log("✅ Filtered data count:", filteredData.length);
-
-    res.status(200).json(filteredData);
+    console.log("✅ Total filtered responses:", filteredResponses.length);
+    res.status(200).json(filteredResponses);
   } catch (err) {
     console.error("💥 Error filtering report data:", err);
     res.status(500).json({ message: "Server error", error: err.message });

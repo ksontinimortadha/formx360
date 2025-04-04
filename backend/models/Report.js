@@ -4,11 +4,7 @@ const reportSchema = new mongoose.Schema({
   title: { type: String, required: true },
   formId: { type: mongoose.Schema.Types.ObjectId, ref: "Form", required: true },
   companyId: { type: String, required: true },
-  /*createdBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
-  }, // Tracks the user who created the report*/
+
   filters: [
     {
       field: { type: String, required: true }, // Field to filter (e.g., "status")
