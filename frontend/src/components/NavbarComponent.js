@@ -7,8 +7,9 @@ import socket from "../socket";
 
 function NavbarComponent({ userId: propUserId }) {
   const [userId, setUserId] = useState(propUserId);
+  const [notifications, setNotifications] = useState([]);
   const navigate = useNavigate();
-  
+
   useEffect(() => {
     // Listen to new notifications
     socket.on("new_notification", (data) => {
@@ -23,12 +24,8 @@ function NavbarComponent({ userId: propUserId }) {
       socket.off("new_notification");
     };
   }, []);
-  const [notifications, setNotifications] = useState([
-    { id: 1, message: "New report available.", read: false },
-    { id: 2, message: "Form updated successfully.", read: false },
-    { id: 3, message: "User added successfully", read: true },
-  ]);
 
+  // Unread notifications count
   const unreadCount = notifications.filter((n) => !n.read).length;
 
   useEffect(() => {
@@ -44,10 +41,12 @@ function NavbarComponent({ userId: propUserId }) {
     navigate("/users/login");
   };
 
+  // Mark all notifications as read
   const markAllAsRead = () => {
     setNotifications((prev) => prev.map((notif) => ({ ...notif, read: true })));
   };
 
+  // Mark a single notification as read
   const markSingleAsRead = (id) => {
     setNotifications((prev) =>
       prev.map((notif) => (notif.id === id ? { ...notif, read: true } : notif))
