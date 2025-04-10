@@ -125,28 +125,6 @@ function ReportDashboard() {
           </div>
         )}
 
-        {responses.length > 0 &&
-          simplifiedChartData.labels &&
-          simplifiedChartData.values &&
-          simplifiedChartData.labels.length > 0 &&
-          simplifiedChartData.values.length > 0 && (
-            <Row className="mb-4">
-              <Col md={12}>
-                <Card className="shadow-lg border-0 rounded">
-                  <Card.Body>
-                    <Card.Title className="text-center mb-4">
-                      Responses per Date
-                    </Card.Title>
-                    <BarChart
-                      labels={simplifiedChartData.labels}
-                      values={simplifiedChartData.values}
-                    />
-                  </Card.Body>
-                </Card>
-              </Col>
-            </Row>
-          )}
-
         <Row>
           {responses.length > 0 &&
             Array.from(
