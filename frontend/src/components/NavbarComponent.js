@@ -10,8 +10,26 @@ function NavbarComponent({ userId: propUserId }) {
   const [notifications, setNotifications] = useState([]);
   const navigate = useNavigate();
 
+  // Fetch notifications from backend
   useEffect(() => {
-    // Listen to new notifications
+    // Check if userId is available
+    const currentUserId = userId || sessionStorage.getItem("userId");
+
+    if (currentUserId) {
+      // Fetch notifications from the backend for the logged-in user
+      fetch(`https://formx360.onrender.com/notifications/${currentUserId}`)
+        .then((response) => response.json())
+        .then((data) => {
+          setNotifications(data);
+        })
+        .catch((error) =>
+          console.error("Error fetching notifications:", error)
+        );
+    }
+  }, [userId]);
+
+  useEffect(() => {
+    // Listen to new notifications via socket
     socket.on("new_notification", (data) => {
       console.log("📬 New Notification:", data);
       setNotifications((prev) => [
@@ -132,9 +150,9 @@ function NavbarComponent({ userId: propUserId }) {
                   No notifications
                 </Dropdown.ItemText>
               ) : (
-                notifications.map((notif) => (
+                notifications.map((notif, index) => (
                   <Dropdown.ItemText
-                    key={notif.id}
+                    key={notif.id || index}
                     onClick={() => markSingleAsRead(notif.id)}
                     className="d-flex justify-content-between align-items-center px-3 py-2"
                     style={{
