@@ -10,7 +10,7 @@ import {
   Col,
 } from "react-bootstrap";
 import { FaArrowLeft } from "react-icons/fa";
-import logo from "/Users/ksontini/Desktop/formx360/frontend/src/images/logo.png";
+import logo from "./logo.png";
 
 function ResetPassword() {
   const [password, setPassword] = useState("");

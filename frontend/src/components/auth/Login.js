@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Container, Row, Col, Form, Button, Card } from "react-bootstrap";
 import { FaEye, FaEyeSlash, FaArrowLeft } from "react-icons/fa";
-import logo from "/Users/ksontini/Desktop/formx360/frontend/src/images/logo.png";
+import logo from "./logo.png";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../../api";
 

@@ -10,7 +10,7 @@ import {
 } from "react-bootstrap";
 import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import logo from "/Users/ksontini/Desktop/formx360/frontend/src/images/logo.png";
+import logo from "./logo.png";
 
 function RequestReset() {
   const [email, setEmail] = useState("");
