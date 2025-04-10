@@ -78,13 +78,9 @@ exports.deleteReport = async (req, res) => {
     res.status(500).json({ message: "Server error", error: err.message });
   }
 };
-
 exports.filterReportData = async (req, res) => {
   const { reportId } = req.params;
   const { filters } = req.body;
-
-  console.log("📥 Incoming filter request for reportId:", reportId);
-  console.log("🧪 Filters received:", filters);
 
   try {
     const report = await Report.findById(reportId).populate("formId");
@@ -94,18 +90,11 @@ exports.filterReportData = async (req, res) => {
     }
 
     const formId = report.formId._id;
-    console.log("✅ Report found:", report.title);
-    console.log("📝 Form ID associated with report:", formId);
 
-    // Fetch all responses for this form
     const responses = await Response.find({ form_id: formId });
-    console.log("📦 Total responses fetched:", responses.length);
 
-    // Now filter responses in JS
-    const filteredResponses = responses.filter((response, index) => {
-      console.log(`🔎 Checking response #${index + 1}:`, response._id);
-
-      const isMatch = filters.every(({ field, condition, value }) => {
+    const filteredResponses = responses.filter((response) => {
+      return filters.every(({ field, condition, value }) => {
         const answer = response.responses.find((r) => r.field_name === field);
         if (!answer) {
           console.log(`⚠️ Field '${field}' not found in response.`);
@@ -113,40 +102,61 @@ exports.filterReportData = async (req, res) => {
         }
 
         const responseValue = answer.value;
-        const parsedValue = isNaN(value) ? value : Number(value);
-
-        console.log(
-          `🧮 Filtering - Field: ${field}, Condition: ${condition}, Value: ${parsedValue}, Response Value: ${responseValue}`
-        );
+        const parsedValue =
+          !isNaN(value) && value !== "" ? Number(value) : value;
+        const isDate = (val) => !isNaN(Date.parse(val));
 
         switch (condition) {
           case "equals":
-            return responseValue === parsedValue;
+            return responseValue == parsedValue;
+          case "not_equals":
+            return responseValue != parsedValue;
           case "contains":
             return (
               typeof responseValue === "string" &&
-              responseValue.toLowerCase().includes(parsedValue.toLowerCase())
+              responseValue
+                .toLowerCase()
+                .includes(String(parsedValue).toLowerCase())
+            );
+          case "starts_with":
+            return (
+              typeof responseValue === "string" &&
+              responseValue
+                .toLowerCase()
+                .startsWith(String(parsedValue).toLowerCase())
+            );
+          case "ends_with":
+            return (
+              typeof responseValue === "string" &&
+              responseValue
+                .toLowerCase()
+                .endsWith(String(parsedValue).toLowerCase())
             );
           case "greater_than":
-            return responseValue > parsedValue;
+            return Number(responseValue) > Number(parsedValue);
           case "less_than":
-            return responseValue < parsedValue;
+            return Number(responseValue) < Number(parsedValue);
+          case "greater_or_equal":
+            return Number(responseValue) >= Number(parsedValue);
+          case "less_or_equal":
+            return Number(responseValue) <= Number(parsedValue);
+          case "before_date":
+            return (
+              isDate(responseValue) &&
+              new Date(responseValue) < new Date(parsedValue)
+            );
+          case "after_date":
+            return (
+              isDate(responseValue) &&
+              new Date(responseValue) > new Date(parsedValue)
+            );
           default:
             console.log(`⚠️ Unknown condition: ${condition}`);
             return false;
         }
       });
-
-      if (!isMatch) {
-        console.log("❌ Response does not match all filters.");
-      } else {
-        console.log("✅ Response matches all filters.");
-      }
-
-      return isMatch;
     });
 
-    console.log("✅ Total filtered responses:", filteredResponses.length);
     res.status(200).json(filteredResponses);
   } catch (err) {
     console.error("💥 Error filtering report data:", err);

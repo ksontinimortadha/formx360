@@ -132,9 +132,18 @@ function ReportBuilder() {
                   className="border-0 shadow-sm"
                 >
                   <option value="equals">Equals</option>
+                  <option value="not_equals">Not Equals</option>
                   <option value="contains">Contains</option>
+                  <option value="starts_with">Starts With</option>
+                  <option value="ends_with">Ends With</option>
                   <option value="greater_than">Greater Than</option>
+                  <option value="greater_or_equal">
+                    Greater Than or Equal
+                  </option>
                   <option value="less_than">Less Than</option>
+                  <option value="less_or_equal">Less Than or Equal</option>
+                  <option value="before_date">Before Date</option>
+                  <option value="after_date">After Date</option>
                 </Form.Select>
               </Col>
               <Col md={3}>

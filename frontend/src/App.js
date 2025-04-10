@@ -20,6 +20,7 @@ import ProtectedRoute from "./components/ProtectedRoute ";
 import ResponsePage from "./components/ResponsePage ";
 import Reports from "./components/Reports";
 import ReportBuilder from "./components/ReportBuilder";
+import ReportDashboard from "./components/ReportDashboard";
 
 function App() {
   return (
@@ -126,6 +127,14 @@ function App() {
           element={
             <ProtectedRoute>
               <ReportBuilder />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/report-dashboard/:formId"
+          element={
+            <ProtectedRoute>
+              <ReportDashboard />
             </ProtectedRoute>
           }
         />
