@@ -152,7 +152,7 @@ exports.updateForm = async (req, res) => {
     // Find and update the form, ensuring arrays are replaced properly
     const updatedForm = await Form.findByIdAndUpdate(
       id,
-      { title, description, field_order, fields, values },
+      { userId, title, description, field_order, fields, values },
       { new: true } // Return updated form & validate fields
     );
 
@@ -182,7 +182,6 @@ exports.updateForm = async (req, res) => {
   }
 };
 
-
 // Delete a Form
 exports.deleteForm = async (req, res) => {
   const { id } = req.params;
@@ -192,7 +191,7 @@ exports.deleteForm = async (req, res) => {
     const deletedForm = await Form.findByIdAndDelete(id);
     if (!deletedForm)
       return res.status(404).json({ message: "Form not found" });
-    
+
     // Create a notification about the form update
     const notif = await Notification.create({
       userId,
