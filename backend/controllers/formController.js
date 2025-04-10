@@ -122,8 +122,18 @@ exports.updateForm = async (req, res) => {
     fields = [],
     values,
   } = req.body;
-  
+
   try {
+    // Retrieve the form from the database to get the userId
+    const existingForm = await Form.findById(id);
+
+    // Check if the form exists
+    if (!existingForm) {
+      return res.status(404).json({ message: "Form not found" });
+    }
+
+    const userId = existingForm.user_id; // Retrieve userId from the form
+
     if (!Array.isArray(fields)) {
       return res
         .status(400)
@@ -167,7 +177,7 @@ exports.updateForm = async (req, res) => {
     });
 
     // Send real-time notification via Socket.IO (make sure req.io is available)
-    req.io.to(id).emit("new-notification", notif);
+    req.io.to(userId).emit("new-notification", notif);
 
     // Send success response
     res.status(200).json({
@@ -181,15 +191,17 @@ exports.updateForm = async (req, res) => {
   }
 };
 
+
 // Delete a Form
 exports.deleteForm = async (req, res) => {
   const { id } = req.params;
-  const userId = req.user.id; // Ensure req.user is available
-
+  
   try {
     const deletedForm = await Form.findByIdAndDelete(id);
     if (!deletedForm)
       return res.status(404).json({ message: "Form not found" });
+
+    const userId = deletedForm.user_id; // Retrieve userId from the form
 
     // Create a notification about the form update
     const notif = await Notification.create({
