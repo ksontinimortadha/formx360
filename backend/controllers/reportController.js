@@ -78,6 +78,7 @@ exports.deleteReport = async (req, res) => {
     res.status(500).json({ message: "Server error", error: err.message });
   }
 };
+
 exports.filterReportData = async (req, res) => {
   const { reportId } = req.params;
   const { filters } = req.body;

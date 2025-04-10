@@ -11,7 +11,7 @@ import {
   Spinner,
   Alert,
 } from "react-bootstrap";
-import { FaEdit, FaPlus } from "react-icons/fa";
+import { FaEdit, FaPlus, FaTrash } from "react-icons/fa";
 import AddReportModal from "../modals/AddReportModal";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -22,7 +22,6 @@ function Reports() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const navigate = useNavigate();
-
 
   const handleShowAddModal = () => setShowAddModal(true);
   const handleCloseAddModal = () => setShowAddModal(false);
@@ -58,6 +57,18 @@ function Reports() {
     handleCloseAddModal();
     fetchReports(); // Refresh the list after adding a new report
     toast.success("Report added successfully!");
+  };
+  const handleDeleteReport = async (reportId) => {
+    try {
+      await axios.delete(
+        `https://formx360.onrender.com/reports/report/${reportId}`
+      );
+      toast.success("Report deleted successfully!");
+      fetchReports(); // Refresh the list after deletion
+    } catch (err) {
+      console.error("Error deleting report:", err);
+      toast.error("Failed to delete report.");
+    }
   };
 
   return (
@@ -115,6 +126,13 @@ function Reports() {
                               }
                             >
                               <FaEdit className="me-2" /> Edit
+                            </Button>
+                            <Button
+                              variant="outline-danger"
+                              className="shadow-sm ms-2"
+                              onClick={() => handleDeleteReport(report._id)}
+                            >
+                              <FaTrash /> Delete
                             </Button>
                           </div>
                         </Card.Body>

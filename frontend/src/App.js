@@ -130,7 +130,8 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route
+        {/*
+       <Route
           path="/report-dashboard/:formId"
           element={
             <ProtectedRoute>
@@ -138,6 +139,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+       */}
       </Routes>
     </Router>
   );
