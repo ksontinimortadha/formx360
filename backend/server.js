@@ -1,7 +1,9 @@
 const express = require("express");
+const http = require("http");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const socketIo = require("socket.io");
 require("dotenv").config();
 
 const app = express();
@@ -13,8 +15,7 @@ const corsOptions = {
   credentials: true, // Allow cookies and other credentials
 };
 
-// Middleware
-app.use(cors(corsOptions)); // Use the CORS configuration with credentials
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
 // Routes
@@ -25,10 +26,34 @@ app.use("/companies", require("./routes/companyRoutes"));
 app.use("/reports", require("./routes/reportRoutes"));
 app.use("/notifications", require("./routes/notificationRoutes"));
 
-// Socket
-const notificationSocket = require("./sockets/notificationSocket");
+// Create HTTP server for Socket.IO
+const server = http.createServer(app);
 
-// Database Connection
+// Set up Socket.IO
+const io = socketIo(server, {
+  cors: {
+    origin: "http://localhost:3000", // Allow only your frontend
+    methods: ["GET", "POST"],
+    credentials: true,
+  },
+});
+
+// Socket connection handler
+io.on("connection", (socket) => {
+  console.log("A user connected");
+
+  // Handle events like notifications
+  socket.on("new_notification", (data) => {
+    console.log("New notification:", data);
+    socket.broadcast.emit("new_notification", data); // Emit to all other clients
+  });
+
+  socket.on("disconnect", () => {
+    console.log("User disconnected");
+  });
+});
+
+// Database connection and server start
 const PORT = process.env.PORT || 5000;
 mongoose
   .connect(process.env.MONGO_URI, {
@@ -37,6 +62,8 @@ mongoose
   })
   .then(() => {
     console.log("MongoDB Connected");
-    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+    server.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
   })
   .catch((err) => console.error(err));
