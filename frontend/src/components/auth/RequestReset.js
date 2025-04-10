@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { useState } from "react";
 import {
   Container,
   Form,
@@ -10,65 +9,38 @@ import {
   Col,
 } from "react-bootstrap";
 import { FaArrowLeft } from "react-icons/fa";
-import logo from "../images/logo.png";
+import { useNavigate } from "react-router-dom";
+import logo from "/Users/ksontini/Desktop/formx360/frontend/src/images/logo.png";
 
-function ResetPassword() {
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+function RequestReset() {
+  const [email, setEmail] = useState("");
   const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const location = useLocation();
-
-  // Extract token and email from URL
-  const searchParams = new URLSearchParams(location.search);
-  const token = searchParams.get("token");
-  const email = searchParams.get("email");
-
-  useEffect(() => {
-    console.log("Token from URL: ", token);
-    console.log("Email from URL: ", email);
-
-    if (!token || !email) {
-      setError("Invalid or expired reset link.");
-    }
-  }, [token, email]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage(null);
     setError(null);
 
-    if (password !== confirmPassword) {
-      setError("Passwords do not match.");
-      return;
-    }
-
     try {
-      // Send the token, email, and new password in the request body
       const response = await fetch(
-        "https://formx360.onrender.com/users/reset-password", // Update with actual backend URL
+        "https://formx360.onrender.com/users/reset-password-request",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            token: token, // JWT token from URL
-            email: email, // User email from URL
-            newPassword: password, // New password entered by user
-          }),
+          body: JSON.stringify({ email }),
         }
       );
 
       const data = await response.json();
 
-      if (!response.ok) throw new Error(data.error || "Something went wrong.");
+      if (!response.ok) throw new Error(data.message);
 
-      setMessage("Password reset successful! Redirecting to login...");
-      setTimeout(() => navigate("/login"), 3000); // Redirect to login page after success
+      setMessage("A reset password link has been sent to your email.");
+      setEmail("");
     } catch (err) {
-      setError(
-        err.message || "An error occurred while resetting your password."
-      );
+      setError(err.message || "Something went wrong.");
     }
   };
 
@@ -100,9 +72,9 @@ function ResetPassword() {
                 width="200"
                 alt="FormX360"
               />
-              <h2 className="h4">Set a New Password</h2>
+              <h2 className="h4">Reset Your Password</h2>
               <p className="text-secondary small">
-                Enter your new password and confirm it.
+                Enter your email, and we'll send you a reset link.
               </p>
             </div>
 
@@ -112,36 +84,22 @@ function ResetPassword() {
             <Form onSubmit={handleSubmit}>
               <Row className="gy-2">
                 <Col xs={12}>
-                  <Form.Group controlId="password">
+                  <Form.Group controlId="email">
                     <Form.Label>
-                      New Password <span className="text-danger">*</span>
+                      Email Address <span className="text-danger">*</span>
                     </Form.Label>
                     <Form.Control
-                      type="password"
-                      placeholder="Enter new password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      required
-                    />
-                  </Form.Group>
-                </Col>
-                <Col xs={12}>
-                  <Form.Group controlId="confirmPassword">
-                    <Form.Label>
-                      Confirm Password <span className="text-danger">*</span>
-                    </Form.Label>
-                    <Form.Control
-                      type="password"
-                      placeholder="Confirm new password"
-                      value={confirmPassword}
-                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      type="email"
+                      placeholder="Enter your email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                       required
                     />
                   </Form.Group>
                 </Col>
                 <Col xs={12}>
                   <Button variant="primary" type="submit" className="w-100">
-                    Reset Password
+                    Send Reset Link
                   </Button>
                 </Col>
               </Row>
@@ -150,7 +108,7 @@ function ResetPassword() {
             <div className="text-center mt-4">
               <hr className="border-secondary-subtle" />
               <p className="text-secondary small">
-                Back to login page?
+                Remembered your password?
                 <span
                   className="text-primary text-decoration-none"
                   style={{ cursor: "pointer" }}
@@ -167,4 +125,4 @@ function ResetPassword() {
   );
 }
 
-export default ResetPassword;
+export default RequestReset;

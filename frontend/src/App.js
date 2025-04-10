@@ -1,26 +1,26 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./components/Home";
-import Login from "./components/Login";
-import Register from "./components/Register";
-import ResetPassword from "./components/ResetPassword";
+import Login from "./components/auth/Login";
+import Register from "./components/auth/Register";
+import ResetPassword from "./components/auth/ResetPassword";
 import Dashboard from "./components/Dashboard";
-import VerifyEmail from "./components/VerifyEmail";
+import VerifyEmail from "./components/auth/VerifyEmail";
 import Company from "./components/Company";
-import RequestReset from "./components/RequestReset";
-import Forms from "./components/Forms";
-import FormBuilder from "./components/FormBuilder";
-import FormStylingPage from "./components/FormStylingPage";
+import RequestReset from "./components/auth/RequestReset";
+import Forms from "./components/forms/Forms";
+import FormBuilder from "./components/forms/FormBuilder";
+import FormStylingPage from "./components/forms/FormStylingPage";
 import Profile from "./components/Profile";
 import Security from "./components/Security";
-import PreviewPage from "./components/PreviewPage";
-import FormSubmit from "./components/FormSubmit";
-import FormSubmissionSuccess from "./components/FormSubmissionSuccess";
+import PreviewPage from "./components/forms/PreviewPage";
+import FormSubmit from "./components/forms/FormSubmit";
+import FormSubmissionSuccess from "./components/forms/FormSubmissionSuccess";
 import ProtectedRoute from "./components/ProtectedRoute ";
 import ResponsePage from "./components/ResponsePage ";
-import Reports from "./components/Reports";
-import ReportBuilder from "./components/ReportBuilder";
-import ReportDashboard from "./components/ReportDashboard";
+import Reports from "./components/reports/Reports";
+import ReportBuilder from "./components/reports/ReportBuilder";
+import ReportDashboard from "./components/reports/ReportDashboard";
 
 function App() {
   return (
@@ -130,17 +130,16 @@ function App() {
             </ProtectedRoute>
           }
         />
-       {
-
-       <Route
-          path="/report-dashboard/:formId"
-          element={
-            <ProtectedRoute>
-              <ReportDashboard />
-            </ProtectedRoute>
-          }
-        />
-       } 
+        {
+          <Route
+            path="/report-dashboard/:formId"
+            element={
+              <ProtectedRoute>
+                <ReportDashboard />
+              </ProtectedRoute>
+            }
+          />
+        }
       </Routes>
     </Router>
   );

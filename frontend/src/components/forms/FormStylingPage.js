@@ -4,7 +4,7 @@ import "./FormStylingPage.css";
 import { useParams } from "react-router-dom";
 import FormPreview from "./FormPreview";
 import ThemeSelector from "./ThemeSelector";
-import EditStyleModal from "../modals/EditStyleModal";
+import EditStyleModal from "../../modals/EditStyleModal";
 
 const FormStylingPage = () => {
   const [formData, setFormData] = useState(null);

@@ -10,9 +10,9 @@ import {
 } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FaEye, FaEyeSlash, FaArrowLeft } from "react-icons/fa";
-import logo from "../images/logo.png";
+import logo from "/Users/ksontini/Desktop/formx360/frontend/src/images/logo.png";
 import { useNavigate } from "react-router-dom";
-import { registerUser } from "../api";
+import { registerUser } from "../../api";
 import { toast, ToastContainer } from "react-toastify";
 
 function Register() {

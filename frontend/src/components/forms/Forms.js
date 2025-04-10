@@ -10,20 +10,15 @@ import {
   Form,
 } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import {
-  FaPencilAlt,
-  FaTrash,
-  FaPlus,
-  FaEllipsisV,
-} from "react-icons/fa";
+import { FaPencilAlt, FaTrash, FaPlus, FaEllipsisV } from "react-icons/fa";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Sidebar from "./Sidebar";
-import AddFormModal from "../modals/AddFormModal";
-import NavbarComponent from "./NavbarComponent";
-import DeleteFormModal from "../modals/DeleteFormModal";
-import ChangeVisibilityModal from "../modals/ChangeVisibilityModal";
+import Sidebar from "../Sidebar";
+import AddFormModal from "../../modals/AddFormModal";
+import NavbarComponent from "../NavbarComponent";
+import DeleteFormModal from "../../modals/DeleteFormModal";
+import ChangeVisibilityModal from "../../modals/ChangeVisibilityModal";
 
 function Forms() {
   const [forms, setForms] = useState([]);
@@ -117,6 +112,10 @@ function Forms() {
 
   const handleResponses = (form) => {
     navigate(`/responses/form/${form._id}`);
+  };
+
+  const handleStats = (form) => {
+    navigate(`/report-dashboard/${form._id}`);
   };
 
   // Handle the search input change
@@ -213,6 +212,10 @@ function Forms() {
                               >
                                 View Responses
                               </Dropdown.Item>
+                              {/* stats */}
+                              <Dropdown.Item onClick={() => handleStats(form)}>
+                                View Statistics Dashboard
+                              </Dropdown.Item>
 
                               {/* Permissions */}
                               <Dropdown.Item /* onClick={() => handlePermissions(form)} */
@@ -236,11 +239,6 @@ function Forms() {
                               <Dropdown.Item /* onClick={() => handleLockForm(form)} */
                               >
                                 Lock Form
-                              </Dropdown.Item>
-
-                              {/* Delete Form */}
-                              <Dropdown.Item className="text-danger">
-                                Delete Form
                               </Dropdown.Item>
                             </Dropdown.Menu>
                           </Dropdown>

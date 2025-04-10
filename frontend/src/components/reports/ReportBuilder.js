@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import {
   Container,
@@ -12,11 +12,18 @@ import {
   Modal,
 } from "react-bootstrap";
 import { toast } from "react-toastify";
-import { FaPlus, FaTrash, FaFilter, FaChartBar } from "react-icons/fa";
-import NavbarComponent from "./NavbarComponent";
+import {
+  FaPlus,
+  FaTrash,
+  FaFilter,
+  FaChartBar,
+  FaArrowLeft,
+} from "react-icons/fa";
+import NavbarComponent from "../NavbarComponent";
 
 function ReportBuilder() {
   const { reportId } = useParams();
+  const navigate = useNavigate();
   const [report, setReport] = useState(null);
   const [filters, setFilters] = useState([]);
   const [reportData, setReportData] = useState([]);
@@ -89,6 +96,13 @@ function ReportBuilder() {
     <>
       <NavbarComponent />
       <Container fluid className="p-4">
+        <FaArrowLeft
+          style={{ marginLeft: "20px", marginTop: "20px" }}
+          size={20}
+          color="darkgrey"
+          onClick={() => navigate("/reports")}
+        />
+
         <h2 className="mb-4 text-center text-dark">
           <FaChartBar className="me-2" /> Build Your Report
         </h2>

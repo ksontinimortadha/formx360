@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import NavbarComponent from "./NavbarComponent";
-import Sidebar from "./Sidebar";
+import NavbarComponent from "../NavbarComponent";
+import Sidebar from "../Sidebar";
 import {
   Button,
   Card,
@@ -12,7 +12,7 @@ import {
   Alert,
 } from "react-bootstrap";
 import { FaEdit, FaPlus, FaTrash } from "react-icons/fa";
-import AddReportModal from "../modals/AddReportModal";
+import AddReportModal from "../../modals/AddReportModal";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
@@ -118,22 +118,24 @@ function Reports() {
                                 <strong>{report.formId?.title || "N/A"}</strong>
                               </p>
                             </div>
-                            <Button
-                              variant="outline-primary"
-                              className="shadow-sm"
-                              onClick={() =>
-                                navigate(`/report-builder/${report._id}`)
-                              }
-                            >
-                              <FaEdit className="me-2" /> Edit
-                            </Button>
-                            <Button
-                              variant="outline-danger"
-                              className="shadow-sm ms-2"
-                              onClick={() => handleDeleteReport(report._id)}
-                            >
-                              <FaTrash /> Delete
-                            </Button>
+                            <div className="d-flex">
+                              <Button
+                                variant="outline-primary"
+                                className="shadow-sm"
+                                onClick={() =>
+                                  navigate(`/report-builder/${report._id}`)
+                                }
+                              >
+                                <FaEdit className="me-2" /> Edit
+                              </Button>
+                              <Button
+                                variant="outline-danger"
+                                className="shadow-sm ms-2"
+                                onClick={() => handleDeleteReport(report._id)}
+                              >
+                                <FaTrash /> Delete
+                              </Button>
+                            </div>
                           </div>
                         </Card.Body>
                       </Card>

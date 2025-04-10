@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Container, Row, Col, Form, Button, Card } from "react-bootstrap";
 import { FaEye, FaEyeSlash, FaArrowLeft } from "react-icons/fa";
-import logo from "../images/logo.png";
+import logo from "/Users/ksontini/Desktop/formx360/frontend/src/images/logo.png";
 import { useNavigate } from "react-router-dom";
-import { loginUser } from "../api";
+import { loginUser } from "../../api";
 
 function Login() {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -17,47 +17,46 @@ function Login() {
     setFormData({ ...formData, [name]: value });
   };
 
- const handleSubmit = async (e) => {
-   e.preventDefault();
-   setLoading(true);
-   setError("");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
 
-   try {
-     // Send login request
-     const response = await loginUser({
-       email: formData.email,
-       password: formData.password,
-     });
+    try {
+      // Send login request
+      const response = await loginUser({
+        email: formData.email,
+        password: formData.password,
+      });
 
-     if (response.data?.user?.id) {
-       // Store user data
-       sessionStorage.setItem("userId", response.data.user.id);
-       sessionStorage.setItem("token", response.data.token);
-       localStorage.setItem("token", response.data.token);
+      if (response.data?.user?.id) {
+        // Store user data
+        sessionStorage.setItem("userId", response.data.user.id);
+        sessionStorage.setItem("token", response.data.token);
+        localStorage.setItem("token", response.data.token);
 
-       // Retrieve company ID
-       const companyId = response.data.user.companyId;
+        // Retrieve company ID
+        const companyId = response.data.user.companyId;
 
-       // Save companyId if available
-       if (companyId) {
-         sessionStorage.setItem("companyId", companyId);
-         navigate(`/dashboard?companyId=${companyId}`);
-       } else {
-         navigate(`/companies/company`);
-       }
-     } else {
-       setError("Invalid credentials.");
-     }
-   } catch (err) {
-     setError(
-       err.response?.data?.message ||
-         (err.request ? "No response from server" : "An error occurred")
-     );
-   } finally {
-     setLoading(false);
-   }
- };
-
+        // Save companyId if available
+        if (companyId) {
+          sessionStorage.setItem("companyId", companyId);
+          navigate(`/dashboard?companyId=${companyId}`);
+        } else {
+          navigate(`/companies/company`);
+        }
+      } else {
+        setError("Invalid credentials.");
+      }
+    } catch (err) {
+      setError(
+        err.response?.data?.message ||
+          (err.request ? "No response from server" : "An error occurred")
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleShowPassword = (e) => {
     e.preventDefault();

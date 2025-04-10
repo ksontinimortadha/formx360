@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import logo from "../images/logo.png";
-import { verifyEmail } from "../api";
+import logo from "/Users/ksontini/Desktop/formx360/frontend/src/images/logo.png";
+import { verifyEmail } from "../../api";
 
 const VerifyEmail = () => {
   const [statusMessage, setStatusMessage] = useState("");

@@ -4,7 +4,7 @@ import { FaChartBar } from "react-icons/fa";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import NavbarComponent from "./NavbarComponent";
+import NavbarComponent from "../NavbarComponent";
 
 function ReportDashboard() {
   const { reportId, formId } = useParams();
