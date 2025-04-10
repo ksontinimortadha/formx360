@@ -122,8 +122,8 @@ exports.updateForm = async (req, res) => {
     fields = [],
     values,
   } = req.body;
+  console.log("userId", req.user);
   const userId = req.user.id; // Ensure req.user is available
-console.log("userId", req.user);
   try {
     if (!Array.isArray(fields)) {
       return res
