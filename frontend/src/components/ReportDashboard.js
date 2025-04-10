@@ -6,8 +6,6 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import NavbarComponent from "./NavbarComponent";
 
-import BarChart from "./BarChart";
-
 function ReportDashboard() {
   const { reportId, formId } = useParams();
   const [responses, setResponses] = useState([]);
