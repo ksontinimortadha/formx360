@@ -122,6 +122,7 @@ exports.updateForm = async (req, res) => {
     fields = [],
     values,
   } = req.body;
+  const userId = req.user.id; // Ensure req.user is available
 
   try {
     if (!Array.isArray(fields)) {
@@ -160,11 +161,14 @@ exports.updateForm = async (req, res) => {
       return res.status(404).json({ message: "Form not found" });
     }
 
+    // Create a notification about the form update
     const notif = await Notification.create({
-      userId: req.user.id,
+      userId,
       message: `Your form "${updatedForm.title}" was updated.`,
     });
-    req.io.to(req.user.id).emit("new-notification", notif);
+
+    // Send real-time notification via Socket.IO (make sure req.io is available)
+    req.io.to(userId).emit("new-notification", notif);
 
     // Send success response
     res.status(200).json({
@@ -178,15 +182,25 @@ exports.updateForm = async (req, res) => {
   }
 };
 
+
 // Delete a Form
 exports.deleteForm = async (req, res) => {
   const { id } = req.params;
+  const userId = req.user.id; // Ensure req.user is available
 
   try {
     const deletedForm = await Form.findByIdAndDelete(id);
     if (!deletedForm)
       return res.status(404).json({ message: "Form not found" });
+    
+    // Create a notification about the form update
+    const notif = await Notification.create({
+      userId,
+      message: `Your form "${updatedForm.title}" was deleted.`,
+    });
 
+    // Send real-time notification via Socket.IO (make sure req.io is available)
+    req.io.to(userId).emit("new-notification", notif);
     res.status(200).json({ message: "Form deleted successfully" });
   } catch (err) {
     res.status(500).json({ message: "Server error", error: err.message });
