@@ -116,6 +116,7 @@ exports.getFormById = async (req, res) => {
 exports.updateForm = async (req, res) => {
   const { id } = req.params;
   const {
+    userId,
     title,
     description,
     field_order = [],
@@ -123,7 +124,6 @@ exports.updateForm = async (req, res) => {
     values,
   } = req.body;
   console.log("userId", req.body);
-  const userId = req.user.id; // Ensure req.user is available
   try {
     if (!Array.isArray(fields)) {
       return res
