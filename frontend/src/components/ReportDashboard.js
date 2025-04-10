@@ -5,29 +5,8 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import NavbarComponent from "./NavbarComponent";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-  Filler,
-} from "chart.js";
-import BarChart from "./BarChart";
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-  Filler
-);
+import BarChart from "./BarChart";
 
 function ReportDashboard() {
   const { reportId, formId } = useParams();
