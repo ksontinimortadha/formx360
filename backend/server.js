@@ -11,12 +11,28 @@ const app = express();
 // CORS configuration
 const corsOptions = {
   origin: "http://localhost:3000", // Allow only your frontend
-  methods: ["GET", "POST","DELETE","PUT"],
+  methods: ["GET", "POST", "DELETE", "PUT"],
   credentials: true, // Allow cookies and other credentials
 };
 
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
+
+// Attach the socket.io instance to each request
+const server = http.createServer(app);
+const io = socketIo(server, {
+  cors: {
+    origin: "http://localhost:3000", // Allow only your frontend
+    methods: ["GET", "POST", "DELETE", "PUT"],
+    credentials: true,
+  },
+});
+
+// Middleware to inject io into req object
+app.use((req, res, next) => {
+  req.io = io;
+  next();
+});
 
 // Routes
 app.use("/users", require("./routes/userRoutes"));
@@ -25,18 +41,6 @@ app.use("/responses", require("./routes/responseRoutes"));
 app.use("/companies", require("./routes/companyRoutes"));
 app.use("/reports", require("./routes/reportRoutes"));
 app.use("/notifications", require("./routes/notificationRoutes"));
-
-// Create HTTP server for Socket.IO
-const server = http.createServer(app);
-
-// Set up Socket.IO
-const io = socketIo(server, {
-  cors: {
-    origin: "http://localhost:3000", // Allow only your frontend
-    methods: ["GET", "POST", "DELETE", "PUT"],
-    credentials: true,
-  },
-});
 
 // Socket connection handler
 io.on("connection", (socket) => {
