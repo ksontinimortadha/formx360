@@ -3,11 +3,26 @@ import { Container, Navbar, Dropdown } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { FaUserCircle, FaUser, FaPowerOff, FaBell } from "react-icons/fa";
 import logo from "../images/logo.png";
+import socket from "../socket";
 
 function NavbarComponent({ userId: propUserId }) {
   const [userId, setUserId] = useState(propUserId);
   const navigate = useNavigate();
+  
+  useEffect(() => {
+    // Listen to new notifications
+    socket.on("new_notification", (data) => {
+      console.log("📬 New Notification:", data);
+      setNotifications((prev) => [
+        { id: Date.now(), message: data.message, read: false },
+        ...prev,
+      ]);
+    });
 
+    return () => {
+      socket.off("new_notification");
+    };
+  }, []);
   const [notifications, setNotifications] = useState([
     { id: 1, message: "New report available.", read: false },
     { id: 2, message: "Form updated successfully.", read: false },

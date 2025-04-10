@@ -21,8 +21,23 @@ import ResponsePage from "./components/ResponsePage ";
 import Reports from "./components/reports/Reports";
 import ReportBuilder from "./components/reports/ReportBuilder";
 import ReportDashboard from "./components/reports/ReportDashboard";
+import { useEffect } from "react";
+import socket from "./socket";
 
 function App() {
+  useEffect(() => {
+    socket.connect();
+
+    // Optionally handle errors or logs
+    socket.on("connect", () => {
+      console.log("🔌 Connected to WebSocket server");
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+  
   return (
     <Router>
       {/* Routes Section */}

@@ -16,6 +16,11 @@ app.use("/forms", require("./routes/formRoutes"));
 app.use("/responses", require("./routes/responseRoutes"));
 app.use("/companies", require("./routes/companyRoutes"));
 app.use("/reports", require("./routes/reportRoutes"));
+app.use("/notifications", require("./routes/notificationRoutes"));
+
+
+// Socket
+const notificationSocket = require("./sockets/notificationSocket");
 
 // Database Connection
 const PORT = process.env.PORT || 5000;

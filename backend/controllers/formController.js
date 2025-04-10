@@ -1,5 +1,6 @@
 const Form = require("../models/Form");
 const Company = require("../models/Company");
+const Notification = require("../models/Notification");
 
 // Create a new form for a specific company
 exports.createForm = async (req, res) => {
@@ -40,7 +41,14 @@ exports.createForm = async (req, res) => {
     // Add the new form to the company's forms array
     company.forms.push(newForm._id);
     await company.save();
+    // Create and send notification
+    const notif = await Notification.create({
+      userId,
+      message: `The form "${title}" has been created.`,
+    });
 
+    // Send real-time notification via Socket.IO
+    req.io.to(userId).emit("new-notification", notif);
     // Respond with the newly created form ID
     res.status(201).json({
       message: "Form created successfully!",
@@ -138,19 +146,6 @@ exports.updateForm = async (req, res) => {
           selected: option.selected ?? false, // Ensure selected is explicitly set
         }));
       }
-
-      // Handle field validation rules, ensuring they are only set when relevant
-      if (field.validation_rules) {
-        field.validation_rules = {
-          ...field.validation_rules,
-          min_length: field.validation_rules.min_length ?? undefined,
-          max_length: field.validation_rules.max_length ?? undefined,
-          min_value: field.validation_rules.min_value ?? undefined,
-          max_value: field.validation_rules.max_value ?? undefined,
-          min_date: field.validation_rules.min_date ?? undefined,
-          max_date: field.validation_rules.max_date ?? undefined,
-        };
-      }
     });
 
     // Find and update the form, ensuring arrays are replaced properly
@@ -164,6 +159,12 @@ exports.updateForm = async (req, res) => {
     if (!updatedForm) {
       return res.status(404).json({ message: "Form not found" });
     }
+
+    const notif = await Notification.create({
+      userId: req.user.id,
+      message: `Your form "${updatedForm.title}" was updated.`,
+    });
+    req.io.to(req.user.id).emit("new-notification", notif);
 
     // Send success response
     res.status(200).json({
@@ -304,7 +305,7 @@ exports.updateFormVisibility = async (req, res) => {
     const updatedForm = await Form.findByIdAndUpdate(
       formId,
       { $set: { visibility, publicUrl } },
-      { new: true } 
+      { new: true }
     );
 
     if (!updatedForm) {
