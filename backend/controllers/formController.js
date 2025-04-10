@@ -116,14 +116,13 @@ exports.getFormById = async (req, res) => {
 exports.updateForm = async (req, res) => {
   const { id } = req.params;
   const {
-    userId,
     title,
     description,
     field_order = [],
     fields = [],
     values,
   } = req.body;
-  console.log("userId", req.body);
+  
   try {
     if (!Array.isArray(fields)) {
       return res
@@ -152,7 +151,7 @@ exports.updateForm = async (req, res) => {
     // Find and update the form, ensuring arrays are replaced properly
     const updatedForm = await Form.findByIdAndUpdate(
       id,
-      { userId, title, description, field_order, fields, values },
+      { title, description, field_order, fields, values },
       { new: true } // Return updated form & validate fields
     );
 
@@ -168,7 +167,7 @@ exports.updateForm = async (req, res) => {
     });
 
     // Send real-time notification via Socket.IO (make sure req.io is available)
-    req.io.to(userId).emit("new-notification", notif);
+    req.io.to(id).emit("new-notification", notif);
 
     // Send success response
     res.status(200).json({
