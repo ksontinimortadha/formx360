@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaUserCircle, FaUser, FaPowerOff, FaBell } from "react-icons/fa";
 import logo from "../images/logo.png";
 import socket from "../socket";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 function NavbarComponent({ userId: propUserId }) {
   const [userId, setUserId] = useState(
@@ -63,17 +65,27 @@ function NavbarComponent({ userId: propUserId }) {
     }).catch((err) => console.error("🔴 Failed to mark all as read:", err));
   };
 
-  const markSingleAsRead = (id) => {
-    if (!id) return;
-    setNotifications((prev) =>
-      prev.map((n) => (n.id === id ? { ...n, read: true } : n))
-    );
+  // if you're using toast notifications
 
-    fetch(`https://formx360.onrender.com/notifications/read/${id}`, {
-      method: "POST",
-    }).catch((err) =>
-      console.error("🔴 Failed to mark notification as read:", err)
-    );
+  const markSingleAsRead = async (id) => {
+    if (!id) return;
+
+    try {
+      // Optimistically update UI
+      setNotifications((prev) =>
+        prev.map((n) => (n.id === id ? { ...n, read: true } : n))
+      );
+
+      const res = await axios.patch(
+        `https://formx360.onrender.com/notifications/read/${id}`
+      );
+      console.log("res", res);
+      // Optionally show a toast
+      // toast.success("Notification marked as read");
+    } catch (error) {
+      console.error("🔴 Failed to mark notification as read:", error);
+      toast.error("Failed to mark as read. Please try again.");
+    }
   };
 
   return (
