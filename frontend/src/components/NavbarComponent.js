@@ -26,35 +26,13 @@ function NavbarComponent({ userId: propUserId }) {
             id: notif._id,
             message: notif.message,
             read: notif.read,
-            createdBy: notif.createdByName, 
+            createdBy: notif.createdByName || "Someone",
             createdAt: notif.createdAt,
           }))
         )
       )
       .catch((err) => console.error("🔴 Notification fetch error:", err));
   }, [userId]);
-
-  useEffect(() => {
-    const handleNewNotification = (data) => {
-      setNotifications((prev) => [
-        {
-          id: data._id,
-          message: data.message,
-          read: false,
-          createdBy: data.createdByName || "Someone",
-          createdAt: data.createdAt || new Date().toISOString(),
-        },
-        ...prev,
-      ]);
-      console.log("data", data);
-
-    };
-
-    socket.on("new_notification", handleNewNotification);
-    return () => {
-      socket.off("new_notification", handleNewNotification);
-    };
-  }, []);
 
   const unreadCount = notifications.filter((n) => !n.read).length;
 

@@ -1,19 +1,32 @@
 const Notification = require("../models/Notification");
 const User = require("../models/User");
 
-// Get notifications for a specific user (personal + company-wide)
+// Get notifications for a specific user (both personal and company-wide notifications)
 exports.getNotifications = async (req, res) => {
   const userId = req.params.userId;
 
   try {
+    // Fetch user's information to get companyId
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    const notifications = await Notification.find({ userId }).sort({
+    // Get personal notifications
+    const personalNotifications = await Notification.find({ userId }).sort({
       createdAt: -1,
     });
+
+    // Get company-wide notifications for the user's company
+    const companyNotifications = await Notification.find({
+      companyId: user.companyId,
+    }).sort({ createdAt: -1 });
+
+    // Combine personal and company notifications
+    const notifications = [
+      ...personalNotifications,
+      ...companyNotifications,
+    ].sort((a, b) => b.createdAt - a.createdAt); // Sort by most recent first
 
     res.json(notifications);
   } catch (error) {
@@ -24,7 +37,6 @@ exports.getNotifications = async (req, res) => {
     });
   }
 };
-
 // Create a notification for all users in a company
 exports.createNotification = async (req, res) => {
   const { userId, companyId, message, createdBy } = req.body;
