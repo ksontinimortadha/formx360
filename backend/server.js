@@ -10,7 +10,7 @@ const app = express();
 
 // CORS configuration
 const corsOptions = {
-  origin: "http://localhost:3000", // Allow only your frontend
+  origin: ["http://localhost:3000", "https://formx360.vercel.app"], // Allow only your frontend
   methods: ["GET", "POST", "DELETE", "PUT", "PATCH"],
   credentials: true, // Allow cookies and other credentials
 };
@@ -22,8 +22,8 @@ app.use(bodyParser.json());
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: "http://localhost:3000", // Allow only your frontend
-    methods: ["GET", "POST", "DELETE", "PUT","PATCH"],
+    origin: ["http://localhost:3000", "https://formx360.vercel.app"], // Allow only your frontend
+    methods: ["GET", "POST", "DELETE", "PUT", "PATCH"],
     credentials: true,
   },
 });

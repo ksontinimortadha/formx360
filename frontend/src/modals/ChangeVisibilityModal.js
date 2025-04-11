@@ -12,10 +12,7 @@ function ChangeVisibilityModal({
 
   const newVisibility = form.visibility === "public" ? "private" : "public";
   const publicUrl = `https://formx360.vercel.app/responses/public/${form._id}`;
-  const privateUrl = `https://formx360.vercel.app/responses/private/${form._id}`;
-
-  console.log("visibility", form.visibility);
-  console.log("newVisibility", newVisibility);
+  const privateUrl = `https://formx360.vercel.app/responses/${form._id}`;
 
   const handleConfirmChange = async () => {
     await handleVisibilityChange(form);
@@ -32,18 +29,20 @@ function ChangeVisibilityModal({
           Are you sure you want to change the visibility of the form{" "}
           <strong>{form.title}</strong> to <strong>{newVisibility}</strong>?
         </p>
-        {newVisibility === "private" && publicUrl && (
-          <Alert variant="success" style={{ wordWrap: "break-word" }}>
-            The form is now public! You can share the following link to allow
-            users to access and submit the form:
+
+        {newVisibility === "public" && (
+          <Alert variant="info" style={{ wordWrap: "break-word" }}>
+            This will make your form public. You will be able to share the
+            following link with anyone:
             <br />
             <strong>{publicUrl}</strong>
           </Alert>
         )}
-        {newVisibility === "public" && privateUrl && (
-          <Alert variant="success" style={{ wordWrap: "break-word" }}>
-            The form is now public! You can share the following link to allow
-            users to access and submit the form:
+
+        {newVisibility === "private" && (
+          <Alert variant="warning" style={{ wordWrap: "break-word" }}>
+            This will restrict access to only selected users. The new private
+            link will look like:
             <br />
             <strong>{privateUrl}</strong>
           </Alert>

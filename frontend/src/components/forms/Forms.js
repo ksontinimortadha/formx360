@@ -79,27 +79,35 @@ function Forms() {
       return;
     }
 
+    const newVisibility = form.visibility === "public" ? "private" : "public";
+
+    const payload = { visibility: newVisibility };
+
+    if (newVisibility === "public") {
+      payload.publicUrl = `https://formx360.vercel.app/form/response/${form._id}`;
+    }
+
     try {
-      const newVisibility = form.visibility === "public" ? "private" : "public";
-      const publicUrl =
-        newVisibility === "public"
-          ? `https://formx360.vercel.app/form/response/${form._id}`
-          : null;
-      await axios.put(
+      const response = await axios.put(
         `https://formx360.onrender.com/forms/${form._id}/visibility`,
-        { visibility: newVisibility, publicUrl: publicUrl }
+        payload
       );
 
-      // Update local state
-      setForms((prevForms) =>
-        prevForms.map((f) =>
-          f._id === form._id ? { ...f, visibility: newVisibility } : f
-        )
-      );
+      const updatedForm = response.data.form;
 
       toast.success(`Form is now ${newVisibility}`);
 
-      // Fetch latest data from the server
+      // Update local state with full updated form (includes privateUrl or publicUrl)
+      setForms((prevForms) =>
+        prevForms.map((f) => (f._id === form._id ? updatedForm : f))
+      );
+
+      // Optional: show the private link to the user
+      if (newVisibility === "private" && updatedForm.privateUrl) {
+        toast.info(`Private URL: ${updatedForm.privateUrl}`);
+      }
+
+      // Refresh form list
       fetchForms(companyId);
     } catch (error) {
       console.error("Error updating visibility:", error.response || error);
