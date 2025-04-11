@@ -27,40 +27,34 @@ exports.getNotifications = async (req, res) => {
 
 // Create a notification for all users in a company
 exports.createNotification = async (req, res) => {
-  const { companyId, message, createdBy, createdByName } = req.body;
+  const { userId, companyId, message, createdBy } = req.body;
 
   try {
-    const users = await User.find({ companyId });
+    const creator = await User.findById(createdBy);
+    if (!creator) {
+      return res.status(404).json({ message: "Creator user not found." });
+    }
 
-    const createdNotifs = await Promise.all(
-      users.map((user) =>
-        Notification.create({
-          userId: user._id,
-          companyId,
-          message,
-          createdBy,
-          createdByName,
-        })
-      )
-    );
-
-    // Emit to all users in the company
-    users.forEach((user, i) => {
-      req.io.to(user._id.toString()).emit("new_notification", createdNotifs[i]);
+    const notif = await Notification.create({
+      userId,
+      companyId,
+      message,
+      createdBy,
+      createdByName: `${creator.firstName} ${creator.lastName}`, // Or creator.name if that's your schema
     });
 
-    res.status(201).json({
-      message: "Notifications sent to all company users",
-      count: createdNotifs.length,
-    });
+    req.io.to(companyId).emit("new_notification", notif);
+
+    res.status(201).json(notif);
   } catch (error) {
-    console.error("❌ Error creating notifications:", error);
+    console.error("❌ Error creating notification:", error);
     res.status(500).json({
       message: "Failed to create notification.",
       error: error.message,
     });
   }
 };
+
 
 // Mark one notification as read
 exports.markAsRead = async (req, res) => {

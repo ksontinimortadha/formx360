@@ -26,7 +26,7 @@ function NavbarComponent({ userId: propUserId }) {
             id: notif._id,
             message: notif.message,
             read: notif.read,
-            createdBy: notif.createdByName, // Assuming backend sends this field
+            createdBy: notif.createdByName, 
             createdAt: notif.createdAt,
           }))
         )
