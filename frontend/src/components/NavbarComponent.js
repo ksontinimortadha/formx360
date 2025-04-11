@@ -6,7 +6,9 @@ import logo from "../images/logo.png";
 import socket from "../socket";
 
 function NavbarComponent({ userId: propUserId }) {
-  const [userId, setUserId] = useState(propUserId || sessionStorage.getItem("userId"));
+  const [userId, setUserId] = useState(
+    propUserId || sessionStorage.getItem("userId")
+  );
   const [notifications, setNotifications] = useState([]);
   const navigate = useNavigate();
 
@@ -15,20 +17,32 @@ function NavbarComponent({ userId: propUserId }) {
 
     fetch(`https://formx360.onrender.com/notifications/${userId}`)
       .then((res) => res.json())
-      .then(setNotifications)
+      .then((data) =>
+        setNotifications(
+          data.map((notif) => ({
+            id: notif._id,
+            message: notif.message,
+            read: notif.read,
+          }))
+        )
+      )
+
       .catch((err) => console.error("🔴 Notification fetch error:", err));
   }, [userId]);
 
   useEffect(() => {
     const handleNewNotification = (data) => {
       setNotifications((prev) => [
-        { id: Date.now(), message: data.message, read: false },
+        {
+          id: data._id, // Backend must send full notification with _id
+          message: data.message,
+          read: false,
+        },
         ...prev,
       ]);
     };
 
     socket.on("new_notification", handleNewNotification);
-
     return () => {
       socket.off("new_notification", handleNewNotification);
     };
@@ -41,31 +55,26 @@ function NavbarComponent({ userId: propUserId }) {
     navigate("/users/login");
   };
 
- const markAllAsRead = () => {
-   // Optimistic UI update
-   setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
+  const markAllAsRead = () => {
+    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
 
-   // Call backend to persist change
-   fetch(`https://formx360.onrender.com/notifications/read-all/${userId}`, {
-     method: "POST",
-   }).catch((err) => console.error("🔴 Failed to mark all as read:", err));
- };
-
+    fetch(`https://formx360.onrender.com/notifications/read-all/${userId}`, {
+      method: "POST",
+    }).catch((err) => console.error("🔴 Failed to mark all as read:", err));
+  };
 
   const markSingleAsRead = (id) => {
-    // Update UI immediately (optimistic update)
+    if (!id) return;
     setNotifications((prev) =>
       prev.map((n) => (n.id === id ? { ...n, read: true } : n))
     );
 
-    // Persist change in the backend
     fetch(`https://formx360.onrender.com/notifications/read/${id}`, {
       method: "POST",
     }).catch((err) =>
       console.error("🔴 Failed to mark notification as read:", err)
     );
   };
-
 
   return (
     <Navbar bg="light" expand="lg" className="shadow-sm py-2 border-bottom">
@@ -91,28 +100,49 @@ function NavbarComponent({ userId: propUserId }) {
               )}
             </Dropdown.Toggle>
 
-            <Dropdown.Menu align="end" className="px-2" style={{ minWidth: "280px", maxHeight: "300px", overflowY: "auto" }}>
+            <Dropdown.Menu
+              align="end"
+              className="px-2"
+              style={{
+                minWidth: "280px",
+                maxHeight: "300px",
+                overflowY: "auto",
+              }}
+            >
               <div className="d-flex justify-content-between align-items-center px-2 pt-2">
                 <span className="fw-bold">Notifications</span>
                 {unreadCount > 0 && (
-                  <button onClick={markAllAsRead} className="btn btn-sm btn-outline-primary">
+                  <button
+                    onClick={markAllAsRead}
+                    className="btn btn-sm btn-outline-primary"
+                  >
                     Mark all as read
                   </button>
                 )}
               </div>
               <Dropdown.Divider />
               {notifications.length === 0 ? (
-                <Dropdown.ItemText className="text-muted text-center">No notifications</Dropdown.ItemText>
+                <Dropdown.ItemText className="text-muted text-center">
+                  No notifications
+                </Dropdown.ItemText>
               ) : (
                 notifications.map((notif, index) => (
                   <Dropdown.ItemText
                     key={notif.id || index}
                     onClick={() => markSingleAsRead(notif.id)}
-                    className={`d-flex justify-content-between align-items-center px-2 py-2 ${!notif.read ? "bg-light" : ""}`}
-                    style={{ cursor: "pointer" }}
+                    className={`d-flex justify-content-between align-items-center px-2 py-2 ${
+                      !notif.read ? "bg-light" : ""
+                    }`}
+                    style={{ cursor: notif.id ? "pointer" : "default" }}
                   >
-                    <span className="me-2" style={{ fontSize: "0.9rem" }}>{notif.message}</span>
-                    {!notif.read && <span style={{ fontSize: "0.75rem", color: "red" }}>●</span>}
+                    <span className="me-2" style={{ fontSize: "0.9rem" }}>
+                      {notif.message}
+                    </span>
+                    {!notif.read && (
+                      <span style={{ fontSize: "0.75rem", color: "red" }}>
+                        ●
+                      </span>
+                    )}
                   </Dropdown.ItemText>
                 ))
               )}
