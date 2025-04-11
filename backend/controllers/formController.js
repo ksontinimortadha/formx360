@@ -347,8 +347,24 @@ exports.updateFormVisibility = async (req, res) => {
       return res.status(404).json({ message: "Form not found" });
     }
 
+    // Create a relevant notification
+    const visibilityMessage =
+      visibility === "public"
+        ? `Your form "${updatedForm.title}" is now public.`
+        : `Your form "${updatedForm.title}" is now private.`;
+
+    const notif = await Notification.create({
+      userId: updatedForm.user_id,
+      message: visibilityMessage,
+    });
+
+    // Emit socket event (if req.io is available)
+    if (req.io) {
+      req.io.to(updatedForm.user_id.toString()).emit("new-notification", notif);
+    }
+
     res.status(200).json({
-      message: `Form visibility updated to ${visibility} and link ${publicUrl}`,
+      message: visibilityMessage,
       form: updatedForm,
     });
   } catch (err) {
@@ -356,3 +372,4 @@ exports.updateFormVisibility = async (req, res) => {
     res.status(500).json({ message: "Server error", error: err.message });
   }
 };
+

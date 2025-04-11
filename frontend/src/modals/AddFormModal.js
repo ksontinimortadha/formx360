@@ -1,22 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 function AddFormModal({ show, handleClose, fetchForms, companyId }) {
   const [formTitle, setFormTitle] = useState("");
   const [formDescription, setFormDescription] = useState("");
-  const navigate = useNavigate();
 
   const handleTitleChange = (e) => setFormTitle(e.target.value);
   const handleDescriptionChange = (e) => setFormDescription(e.target.value);
-
-  // Retrieve user ID from sessionStorage
-  useEffect(() => {
-    const userId = sessionStorage.getItem("userId");
-    console.log("User ID retrieved from sessionStorage:", userId);
-  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,7 +21,6 @@ function AddFormModal({ show, handleClose, fetchForms, companyId }) {
     try {
       // Include the token in the Authorization header
       const token = localStorage.getItem("token");
-      console.log("first", token); // Assuming the token is stored in localStorage
       if (!token) {
         toast.error("You need to log in first.");
         return;
@@ -39,17 +30,16 @@ function AddFormModal({ show, handleClose, fetchForms, companyId }) {
         `https://formx360.onrender.com/forms/${companyId}/forms`,
         {
           title: formTitle,
-          description: formDescription, // Sending description
+          description: formDescription,
         },
         {
           headers: {
-            Authorization: `Bearer ${token}`, // Sending the token for authentication
+            Authorization: `Bearer ${token}`,
           },
         }
       );
 
       toast.success("Form added successfully!");
-      navigate(`/form-builder/${response.data.formId}`);
       handleClose();
     } catch (error) {
       console.error("Error:", error.response?.data || error.message);
