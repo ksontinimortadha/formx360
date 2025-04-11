@@ -1,32 +1,19 @@
 const Notification = require("../models/Notification");
 const User = require("../models/User");
 
-// Get notifications for a specific user (both personal and company-wide notifications)
+// Get notifications for a specific user (personal + company-wide)
 exports.getNotifications = async (req, res) => {
   const userId = req.params.userId;
 
   try {
-    // Fetch user's information to get companyId
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Get personal notifications
-    const personalNotifications = await Notification.find({ userId }).sort({
+    const notifications = await Notification.find({ userId }).sort({
       createdAt: -1,
     });
-
-    // Get company-wide notifications for the user's company
-    const companyNotifications = await Notification.find({
-      companyId: user.companyId,
-    }).sort({ createdAt: -1 });
-
-    // Combine personal and company notifications
-    const notifications = [
-      ...personalNotifications,
-      ...companyNotifications,
-    ].sort((a, b) => b.createdAt - a.createdAt); // Sort by most recent first
 
     res.json(notifications);
   } catch (error) {
@@ -38,20 +25,36 @@ exports.getNotifications = async (req, res) => {
   }
 };
 
-// Create a new notification (Company-wide)
+// Create a notification for all users in a company
 exports.createNotification = async (req, res) => {
-  const { userId, companyId, message } = req.body;
+  const { companyId, message, createdBy, createdByName } = req.body;
 
   try {
-    // Create a new notification
-    const notif = await Notification.create({ userId, companyId, message });
+    const users = await User.find({ companyId });
 
-    // Emit via WebSocket (send to all users in the company)
-    req.io.to(companyId).emit("new_notification", notif);
+    const createdNotifs = await Promise.all(
+      users.map((user) =>
+        Notification.create({
+          userId: user._id,
+          companyId,
+          message,
+          createdBy,
+          createdByName,
+        })
+      )
+    );
 
-    res.status(201).json(notif);
+    // Emit to all users in the company
+    users.forEach((user, i) => {
+      req.io.to(user._id.toString()).emit("new_notification", createdNotifs[i]);
+    });
+
+    res.status(201).json({
+      message: "Notifications sent to all company users",
+      count: createdNotifs.length,
+    });
   } catch (error) {
-    console.error("❌ Error creating notification:", error);
+    console.error("❌ Error creating notifications:", error);
     res.status(500).json({
       message: "Failed to create notification.",
       error: error.message,

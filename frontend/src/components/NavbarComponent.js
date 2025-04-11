@@ -5,6 +5,7 @@ import { FaUserCircle, FaUser, FaPowerOff, FaBell } from "react-icons/fa";
 import logo from "../images/logo.png";
 import socket from "../socket";
 import axios from "axios";
+import moment from "moment";
 import { toast } from "react-toastify";
 
 function NavbarComponent({ userId: propUserId }) {
@@ -25,10 +26,11 @@ function NavbarComponent({ userId: propUserId }) {
             id: notif._id,
             message: notif.message,
             read: notif.read,
+            createdBy: notif.createdByName, // Assuming backend sends this field
+            createdAt: notif.createdAt,
           }))
         )
       )
-
       .catch((err) => console.error("🔴 Notification fetch error:", err));
   }, [userId]);
 
@@ -36,9 +38,11 @@ function NavbarComponent({ userId: propUserId }) {
     const handleNewNotification = (data) => {
       setNotifications((prev) => [
         {
-          id: data._id, // Backend must send full notification with _id
+          id: data._id,
           message: data.message,
           read: false,
+          createdBy: data.createdByName || "Someone",
+          createdAt: data.createdAt || new Date().toISOString(),
         },
         ...prev,
       ]);
@@ -63,7 +67,7 @@ function NavbarComponent({ userId: propUserId }) {
     try {
       setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
 
-      const res = await axios.patch(
+      await axios.patch(
         `https://formx360.onrender.com/notifications/read-all/${userId}`
       );
     } catch (error) {
@@ -80,7 +84,7 @@ function NavbarComponent({ userId: propUserId }) {
         prev.map((n) => (n.id === id ? { ...n, read: true } : n))
       );
 
-      const res = await axios.patch(
+      await axios.patch(
         `https://formx360.onrender.com/notifications/read/${id}`
       );
     } catch (error) {
@@ -155,19 +159,20 @@ function NavbarComponent({ userId: propUserId }) {
                   <Dropdown.ItemText
                     key={notif.id || index}
                     onClick={() => markSingleAsRead(notif.id)}
-                    className={`d-flex justify-content-between align-items-center px-2 py-2 ${
+                    className={`d-flex flex-column px-2 py-2 ${
                       !notif.read ? "bg-light" : ""
                     }`}
                     style={{ cursor: notif.id ? "pointer" : "default" }}
                   >
-                    <span className="me-2" style={{ fontSize: "0.9rem" }}>
-                      {notif.message}
-                    </span>
-                    {!notif.read && (
-                      <span style={{ fontSize: "0.75rem", color: "red" }}>
-                        ●
-                      </span>
-                    )}
+                    <span style={{ fontSize: "0.9rem" }}>{notif.message}</span>
+                    <div className="d-flex justify-content-between mt-1">
+                      <small className="text-muted">
+                        {notif.createdBy ? `By ${notif.createdBy}` : ""}
+                      </small>
+                      <small className="text-muted">
+                        {moment(notif.createdAt).fromNow()}
+                      </small>
+                    </div>
                   </Dropdown.ItemText>
                 ))
               )}

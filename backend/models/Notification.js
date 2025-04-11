@@ -6,7 +6,6 @@ const notificationSchema = new mongoose.Schema({
     ref: "Company",
     required: true,
   },
-
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
@@ -24,6 +23,8 @@ const notificationSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  createdByName: { type: String },
 });
 
 module.exports = mongoose.model("Notification", notificationSchema);
