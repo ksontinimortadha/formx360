@@ -195,27 +195,38 @@ exports.updateForm = async (req, res) => {
 // Delete a Form
 exports.deleteForm = async (req, res) => {
   const { id } = req.params;
-  
+
   try {
-    const deletedForm = await Form.findByIdAndDelete(id);
-    if (!deletedForm)
-      return res.status(404).json({ message: "Form not found" });
+    // Find the form
+    const form = await Form.findById(id);
+    if (!form) {
+      return res.status(404).json({ message: "Form not found." });
+    }
 
-    const userId = deletedForm.user_id; // Retrieve userId from the form
+    // Optionally, remove form from the company’s forms array
+    await Company.updateMany({ forms: id }, { $pull: { forms: id } });
 
-    // Create a notification about the form update
+    // Delete the form
+    await Form.findByIdAndDelete(id);
+
+    // Create a notification (optional)
     const notif = await Notification.create({
-      userId,
-      message: `Your form "${updatedForm.title}" was deleted.`,
+      userId: form.user_id,
+      message: `Your form "${form.title}" has been deleted.`,
     });
 
-    // Send real-time notification via Socket.IO (make sure req.io is available)
-    req.io.to(userId).emit("new-notification", notif);
-    res.status(200).json({ message: "Form deleted successfully" });
+    // Emit socket event (if req.io is available)
+    if (req.io) {
+      req.io.to(form.user_id.toString()).emit("new-notification", notif);
+    }
+
+    res.status(200).json({ message: "Form deleted successfully." });
   } catch (err) {
-    res.status(500).json({ message: "Server error", error: err.message });
+    console.error("Error deleting form:", err);
+    res.status(500).json({ message: "Server error while deleting form." });
   }
 };
+
 
 // Update form theme
 exports.updateFormStyle = async (req, res) => {
