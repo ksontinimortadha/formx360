@@ -84,7 +84,7 @@ function Forms() {
     const payload = { visibility: newVisibility };
 
     if (newVisibility === "public") {
-      payload.publicUrl = `https://formx360.vercel.app/form/response/${form._id}`;
+      payload.publicUrl = `https://formx360.vercel.app/responses/public/${form._id}`;
     }
 
     try {
