@@ -15,9 +15,11 @@ function NavbarComponent({ userId: propUserId }) {
 
   const getUserNameById = async (id) => {
     try {
-      const res = await axios.get(`https://formx360.onrender.com/users/${id}`);
-      console.log("res", res);
-      return res.data?.name || "Someone";
+      const res = await axios.get(
+        `https://formx360.onrender.com/users/${id}`
+      );
+      console.log("res", res.data);
+      return res.data.name;
     } catch (err) {
       console.error("❌ Error fetching user name:", err);
       return "Someone";
@@ -39,7 +41,7 @@ function NavbarComponent({ userId: propUserId }) {
           data.map(async (notif) => {
             const name =
               notif.createdByName ||
-              (notif.createdBy && (await getUserNameById(notif.createdBy)));
+              (notif.createdBy && (await getUserNameById(userId)));
             console.log("name", name);
             return {
               id: notif._id,

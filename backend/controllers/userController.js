@@ -284,13 +284,14 @@ exports.getUserNameById = async (req, res) => {
   try {
     const userId = req.params.id;
 
-    const user = await User.findById(userId).select("name");
+    const user = await User.findById(userId).select("firstName lastName");
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    res.json({ name: user.name });
+    const fullName = `${user.firstName} ${user.lastName}`;
+    res.json({ name: fullName });
   } catch (error) {
     console.error("❌ Error fetching user by ID:", error);
     res.status(500).json({ message: "Internal server error" });
