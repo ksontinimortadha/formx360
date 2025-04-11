@@ -48,7 +48,7 @@ exports.createForm = async (req, res) => {
     });
 
     // Send real-time notification via Socket.IO
-    req.io.to(userId).emit("new-notification", notif);
+    req.io.to(userId).emit("new_notification", notif);
     // Respond with the newly created form ID
     res.status(201).json({
       message: "Form created successfully!",
@@ -177,7 +177,7 @@ exports.updateForm = async (req, res) => {
     });
 
     // Send real-time notification via Socket.IO (make sure req.io is available)
-    req.io.to(userId).emit("new-notification", notif);
+    req.io.to(userId).emit("new_notification", notif);
 
     // Send success response
     res.status(200).json({
@@ -190,7 +190,6 @@ exports.updateForm = async (req, res) => {
     res.status(500).json({ message: "Server error", error: err.message });
   }
 };
-
 
 // Delete a Form
 exports.deleteForm = async (req, res) => {
@@ -217,7 +216,7 @@ exports.deleteForm = async (req, res) => {
 
     // Emit socket event (if req.io is available)
     if (req.io) {
-      req.io.to(form.user_id.toString()).emit("new-notification", notif);
+      req.io.to(form.user_id.toString()).emit("new_notification", notif);
     }
 
     res.status(200).json({ message: "Form deleted successfully." });
@@ -226,7 +225,6 @@ exports.deleteForm = async (req, res) => {
     res.status(500).json({ message: "Server error while deleting form." });
   }
 };
-
 
 // Update form theme
 exports.updateFormStyle = async (req, res) => {
@@ -360,7 +358,7 @@ exports.updateFormVisibility = async (req, res) => {
 
     // Emit socket event (if req.io is available)
     if (req.io) {
-      req.io.to(updatedForm.user_id.toString()).emit("new-notification", notif);
+      req.io.to(updatedForm.user_id.toString()).emit("new_notification", notif);
     }
 
     res.status(200).json({
@@ -372,4 +370,3 @@ exports.updateFormVisibility = async (req, res) => {
     res.status(500).json({ message: "Server error", error: err.message });
   }
 };
-

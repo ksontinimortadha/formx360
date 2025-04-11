@@ -1,23 +1,62 @@
 const Notification = require("../models/Notification");
+const User = require("../models/User");
 
-// Get user notifications
+// Get notifications for a specific user (both personal and company-wide notifications)
 exports.getNotifications = async (req, res) => {
   const userId = req.params.userId;
-  const notifications = await Notification.find({ userId }).sort({
-    createdAt: -1,
-  });
-  res.json(notifications);
+
+  try {
+    // Fetch user's information to get companyId
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Get personal notifications
+    const personalNotifications = await Notification.find({ userId }).sort({
+      createdAt: -1,
+    });
+
+    // Get company-wide notifications for the user's company
+    const companyNotifications = await Notification.find({
+      companyId: user.companyId,
+    }).sort({ createdAt: -1 });
+
+    // Combine personal and company notifications
+    const notifications = [
+      ...personalNotifications,
+      ...companyNotifications,
+    ].sort((a, b) => b.createdAt - a.createdAt); // Sort by most recent first
+
+    res.json(notifications);
+  } catch (error) {
+    console.error("❌ Error fetching notifications:", error);
+    res.status(500).json({
+      message: "Server error",
+      error: error.message,
+    });
+  }
 };
 
-// Create a new notification
+// Create a new notification (Company-wide)
 exports.createNotification = async (req, res) => {
-  const { userId, message } = req.body;
-  const notif = await Notification.create({ userId, message });
+  const { userId, companyId, message } = req.body;
 
-  // Emit via WebSocket
-  req.io.to(userId).emit("new-notification", notif);
+  try {
+    // Create a new notification
+    const notif = await Notification.create({ userId, companyId, message });
 
-  res.status(201).json(notif);
+    // Emit via WebSocket (send to all users in the company)
+    req.io.to(companyId).emit("new_notification", notif);
+
+    res.status(201).json(notif);
+  } catch (error) {
+    console.error("❌ Error creating notification:", error);
+    res.status(500).json({
+      message: "Failed to create notification.",
+      error: error.message,
+    });
+  }
 };
 
 // Mark one notification as read
@@ -40,7 +79,7 @@ exports.markAsRead = async (req, res) => {
       notification: notif,
     });
   } catch (error) {
-    console.error("Error marking notification as read:", error);
+    console.error("❌ Error marking notification as read:", error);
     res.status(500).json({
       message: "Server error",
       error: error.message,
@@ -48,8 +87,7 @@ exports.markAsRead = async (req, res) => {
   }
 };
 
-
-// Mark all notifications as read
+// Mark all notifications as read for a specific user
 exports.markAllAsRead = async (req, res) => {
   const { userId } = req.params;
 
@@ -64,7 +102,7 @@ exports.markAllAsRead = async (req, res) => {
       message: `${result.modifiedCount} notifications marked as read.`,
     });
   } catch (error) {
-    console.error("Error marking all notifications as read:", error);
+    console.error("❌ Error marking all notifications as read:", error);
     res.status(500).json({
       success: false,
       message: "Failed to mark notifications as read.",
@@ -72,4 +110,3 @@ exports.markAllAsRead = async (req, res) => {
     });
   }
 };
-

@@ -57,21 +57,25 @@ function NavbarComponent({ userId: propUserId }) {
     navigate("/users/login");
   };
 
-  const markAllAsRead = () => {
-    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
+  const markAllAsRead = async () => {
+    if (!userId) return;
 
-    fetch(`https://formx360.onrender.com/notifications/read-all/${userId}`, {
-      method: "POST",
-    }).catch((err) => console.error("🔴 Failed to mark all as read:", err));
+    try {
+      setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
+
+      const res = await axios.patch(
+        `https://formx360.onrender.com/notifications/read-all/${userId}`
+      );
+    } catch (error) {
+      console.error("🔴 Failed to mark all as read:", error);
+      toast.error("Failed to mark all as read. Please try again.");
+    }
   };
-
-  // if you're using toast notifications
 
   const markSingleAsRead = async (id) => {
     if (!id) return;
 
     try {
-      // Optimistically update UI
       setNotifications((prev) =>
         prev.map((n) => (n.id === id ? { ...n, read: true } : n))
       );
@@ -79,9 +83,6 @@ function NavbarComponent({ userId: propUserId }) {
       const res = await axios.patch(
         `https://formx360.onrender.com/notifications/read/${id}`
       );
-      console.log("res", res);
-      // Optionally show a toast
-      // toast.success("Notification marked as read");
     } catch (error) {
       console.error("🔴 Failed to mark notification as read:", error);
       toast.error("Failed to mark as read. Please try again.");
@@ -106,7 +107,19 @@ function NavbarComponent({ userId: propUserId }) {
             >
               <FaBell />
               {unreadCount > 0 && (
-                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
+                <span
+                  style={{
+                    position: "absolute",
+                    top: "0px",
+                    left: "-15px",
+                    background: "#56ADDE",
+                    color: "white",
+                    borderRadius: "50%",
+                    fontSize: "0.65rem",
+                    padding: "2px 5px",
+                    lineHeight: "1",
+                  }}
+                >
                   {unreadCount}
                 </span>
               )}
