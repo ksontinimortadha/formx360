@@ -15,18 +15,16 @@ function NavbarComponent({ userId: propUserId }) {
 
   const getUserNameById = async (id) => {
     try {
-      const res = await axios.get(
-        `https://formx360.onrender.com/users/${id}`
-      );
-      console.log("res", res.data);
-      return res.data.name;
+      const res = await axios.get(`https://formx360.onrender.com/users/${id}`);
+      console.log("first", res.data);
+      return res.data?.name;
     } catch (err) {
       console.error("❌ Error fetching user name:", err);
       return "Someone";
     }
   };
 
-  // 📨 Initial notification fetch
+  // 📨 Initial fetch for notifications
   useEffect(() => {
     if (!userId) return;
 
@@ -35,27 +33,25 @@ function NavbarComponent({ userId: propUserId }) {
         const res = await axios.get(
           `https://formx360.onrender.com/notifications/${userId}`
         );
-        const data = res.data;
-
-        const enhanced = await Promise.all(
-          data.map(async (notif) => {
+        const notifications = await Promise.all(
+          res.data.map(async (notif) => {
             const name =
               notif.createdByName ||
-              (notif.createdBy && (await getUserNameById(userId)));
+              (notif.userId && (await getUserNameById(notif.userId)));
             console.log("name", name);
             return {
               id: notif._id,
               message: notif.message,
               read: notif.read,
-              createdBy: name,
+              createdBy: name || "Someone",
               createdAt: notif.createdAt,
             };
           })
         );
 
-        // Deduplicate (just in case)
+        // Remove any duplicates
         const unique = Array.from(
-          new Map(enhanced.map((n) => [n.id, n])).values()
+          new Map(notifications.map((n) => [n.id, n])).values()
         );
         setNotifications(unique);
       } catch (err) {
@@ -66,7 +62,7 @@ function NavbarComponent({ userId: propUserId }) {
     fetchNotifications();
   }, [userId]);
 
-  // 🔁 Real-time notification listener
+  // 🔁 Real-time listener for new notifications
   useEffect(() => {
     const handleNewNotification = async (data) => {
       const name =

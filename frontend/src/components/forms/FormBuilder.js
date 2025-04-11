@@ -112,7 +112,6 @@ const FormBuilder = () => {
         description: formDescription,
         fields: updatedFields,
       });
-      console.log("form ", updatedFields);
 
       setProgress(100);
       toast.success("Form saved successfully!");

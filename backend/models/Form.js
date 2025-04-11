@@ -15,6 +15,7 @@ const formSchema = new mongoose.Schema(
       default: "private", // Default visibility is "private"
     }, // visibitly of the form
     publicUrl: { type: String, default: null },
+    privateUrl: { type: String, default: null },
     theme: { type: String },
     fields: [
       {

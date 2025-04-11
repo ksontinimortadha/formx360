@@ -52,6 +52,7 @@ function ThemeSelector({ onThemeChange }) {
       // Check if the update was successful (status code 200)
       if (response.status === 200) {
         toast.success("Theme saved successfully!");
+        navigate("/forms");
       }
 
       setIsSaving(false);

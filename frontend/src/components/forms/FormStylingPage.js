@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./FormStylingPage.css";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import FormPreview from "./FormPreview";
 import ThemeSelector from "./ThemeSelector";
 import EditStyleModal from "../../modals/EditStyleModal";
+import { FaArrowLeft } from "react-icons/fa";
+import { Button } from "react-bootstrap";
 
 const FormStylingPage = () => {
   const [formData, setFormData] = useState(null);
@@ -15,6 +17,7 @@ const FormStylingPage = () => {
   const [fieldStyles, setFieldStyles] = useState({});
   const [showModal, setShowModal] = useState(false);
   const { formId } = useParams();
+  const navigate = useNavigate();
 
   // Fetch form data from the API
   useEffect(() => {
@@ -199,9 +202,39 @@ const FormStylingPage = () => {
     return null;
   };
 
+  const handleBackButtonClick = (form) => {
+    navigate(`/form-builder/${form._id}`);
+  };
+
   return (
     <div className="form-styling-page">
-      <h1 className="text-center">Style Your Form</h1>
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <div className="d-flex align-items-center">
+          <Button
+            variant="outline-secondary"
+            onClick={handleBackButtonClick}
+            className="mr-3"
+          >
+            <FaArrowLeft className="mr-2" />
+          </Button>
+        </div>
+        <h1
+          className="text-center w-100 form-builder-title mx-auto"
+          style={{ paddingTop: "15px", fontSize: "30px" }}
+        >
+          Style Your Form
+        </h1>
+        <div className="d-flex align-items-center">
+          <Button
+            size="sm"
+            onClick={() => navigate(`/forms`)}
+            className="next-step-btn mr-3"
+            style={{ marginTop: "15px" }}
+          >
+            Back to Forms Dashboard
+          </Button>
+        </div>
+      </div>
 
       <div className="d-flex justify-content-between">
         {/* Left side: Form Preview */}

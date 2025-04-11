@@ -1,6 +1,8 @@
 const Form = require("../models/Form");
 const Company = require("../models/Company");
 const Notification = require("../models/Notification");
+const crypto = require("crypto");
+const User = require("../models/User");
 
 // Create a new form for a specific company
 exports.createForm = async (req, res) => {
@@ -322,51 +324,92 @@ exports.updateFieldStyle = async (req, res) => {
   }
 };
 
-// Update form visibility
+
 exports.updateFormVisibility = async (req, res) => {
   const { formId } = req.params;
   const { visibility, publicUrl } = req.body;
 
   try {
-    // Validate visibility value
     const validVisibilities = ["public", "private"];
     if (!validVisibilities.includes(visibility)) {
       return res.status(400).json({ message: "Invalid visibility value." });
     }
 
-    // Update the form's visibility
+    const form = await Form.findById(formId).populate("user_id");
+    if (!form) {
+      return res.status(404).json({ message: "Form not found." });
+    }
+
+    let privateUrl = null;
+    if (visibility === "private") {
+      let token, exists;
+      do {
+        token = crypto.randomBytes(12).toString("hex");
+        privateUrl = `/forms/private/${token}`;
+        exists = await Form.findOne({ privateUrl });
+      } while (exists);
+    }
+
     const updatedForm = await Form.findByIdAndUpdate(
       formId,
-      { $set: { visibility, publicUrl } },
+      {
+        $set: {
+          visibility,
+          publicUrl: visibility === "public" ? publicUrl : null,
+          privateUrl: visibility === "private" ? privateUrl : null,
+        },
+      },
       { new: true }
     );
 
-    if (!updatedForm) {
-      return res.status(404).json({ message: "Form not found" });
-    }
-
-    // Create a relevant notification
     const visibilityMessage =
       visibility === "public"
-        ? `Your form "${updatedForm.title}" is now public.`
-        : `Your form "${updatedForm.title}" is now private.`;
+        ? `Your form \"${form.title}\" is now public.`
+        : `Your form \"${form.title}\" is now private and accessible to your company.`;
 
     const notif = await Notification.create({
-      userId: updatedForm.user_id,
+      userId: form.user_id._id,
       message: visibilityMessage,
     });
 
-    // Emit socket event (if req.io is available)
     if (req.io) {
-      req.io.to(updatedForm.user_id.toString()).emit("new_notification", notif);
+      req.io.to(form.user_id._id.toString()).emit("new_notification", notif);
     }
 
-    res.status(200).json({
-      message: visibilityMessage,
-      form: updatedForm,
-    });
+    res.status(200).json({ message: visibilityMessage, form: updatedForm });
   } catch (err) {
     console.error("Error updating form visibility:", err);
     res.status(500).json({ message: "Server error", error: err.message });
   }
 };
+
+exports.getPrivateFormByToken = async (req, res) => {
+  const { token } = req.params;
+  const userId = req.user.id;
+
+  try {
+    const user = await User.findById(userId);
+    if (!user || !user.companyId) {
+      return res.status(403).json({ message: "User not part of a company." });
+    }
+
+    const form = await Form.findOne({
+      privateUrl: `/forms/private/${token}`,
+    }).populate("user_id");
+    if (!form) {
+      return res.status(404).json({ message: "Private form not found." });
+    }
+
+    if (form.user_id.companyId.toString() !== user.companyId.toString()) {
+      return res
+        .status(403)
+        .json({ message: "Access denied. You are not in the same company." });
+    }
+
+    res.status(200).json({ message: "Private form access granted", form });
+  } catch (err) {
+    console.error("Error accessing private form:", err);
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+};
+
