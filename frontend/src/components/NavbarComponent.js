@@ -46,6 +46,8 @@ function NavbarComponent({ userId: propUserId }) {
         },
         ...prev,
       ]);
+      console.log("data", data);
+
     };
 
     socket.on("new_notification", handleNewNotification);

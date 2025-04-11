@@ -4,7 +4,6 @@ const notificationSchema = new mongoose.Schema({
   companyId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Company",
-    required: true,
   },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
