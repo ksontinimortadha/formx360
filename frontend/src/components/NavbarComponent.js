@@ -9,50 +9,88 @@ import moment from "moment";
 import { toast } from "react-toastify";
 
 function NavbarComponent({ userId: propUserId }) {
-  const [userId, setUserId] = useState(
-    propUserId || sessionStorage.getItem("userId")
-  );
+  const [userId, setUserId] = useState(sessionStorage.getItem("userId"));
   const [notifications, setNotifications] = useState([]);
   const navigate = useNavigate();
 
+  const getUserNameById = async (id) => {
+    try {
+      const res = await axios.get(`https://formx360.onrender.com/users/${id}`);
+      console.log("res", res);
+      return res.data?.name || "Someone";
+    } catch (err) {
+      console.error("❌ Error fetching user name:", err);
+      return "Someone";
+    }
+  };
+
+  // 📨 Initial notification fetch
   useEffect(() => {
     if (!userId) return;
 
-    fetch(`https://formx360.onrender.com/notifications/${userId}`)
-      .then((res) => res.json())
-      .then((data) =>
-        setNotifications(
-          data.map((notif) => ({
-            id: notif._id,
-            message: notif.message,
-            read: notif.read,
-            createdBy: notif.createdByName || "Someone", 
-            createdAt: notif.createdAt,
-          }))
-        )
-      )
-      .catch((err) => console.error("🔴 Notification fetch error:", err));
-  }, [userId]);
+    const fetchNotifications = async () => {
+      try {
+        const res = await axios.get(
+          `https://formx360.onrender.com/notifications/${userId}`
+        );
+        const data = res.data;
 
-useEffect(() => {
-  const handleNewNotification = (data) => {
-    const newNotif = {
-      id: data._id,
-      message: data.message,
-      read: false,
-      createdBy: data.createdByName || "Someone",
-      createdAt: data.createdAt || new Date().toISOString(),
+        const enhanced = await Promise.all(
+          data.map(async (notif) => {
+            const name =
+              notif.createdByName ||
+              (notif.createdBy && (await getUserNameById(notif.createdBy)));
+            console.log("name", name);
+            return {
+              id: notif._id,
+              message: notif.message,
+              read: notif.read,
+              createdBy: name,
+              createdAt: notif.createdAt,
+            };
+          })
+        );
+
+        // Deduplicate (just in case)
+        const unique = Array.from(
+          new Map(enhanced.map((n) => [n.id, n])).values()
+        );
+        setNotifications(unique);
+      } catch (err) {
+        console.error("🔴 Notification fetch error:", err);
+      }
     };
 
-    setNotifications((prev) => [newNotif, ...prev]);
-  };
+    fetchNotifications();
+  }, [userId]);
 
-  socket.on("new_notification", handleNewNotification);
-  return () => {
-    socket.off("new_notification", handleNewNotification);
-  };
-}, []);
+  // 🔁 Real-time notification listener
+  useEffect(() => {
+    const handleNewNotification = async (data) => {
+      const name =
+        data.createdByName ||
+        (data.createdBy && (await getUserNameById(data.createdBy)));
 
+      setNotifications((prev) => {
+        const exists = prev.some((n) => n.id === data._id);
+        if (exists) return prev;
+
+        return [
+          {
+            id: data._id,
+            message: data.message,
+            read: false,
+            createdBy: name || "Someone",
+            createdAt: data.createdAt || new Date().toISOString(),
+          },
+          ...prev,
+        ];
+      });
+    };
+
+    socket.on("new_notification", handleNewNotification);
+    return () => socket.off("new_notification", handleNewNotification);
+  }, []);
 
   const unreadCount = notifications.filter((n) => !n.read).length;
 
@@ -66,7 +104,6 @@ useEffect(() => {
 
     try {
       setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
-
       await axios.patch(
         `https://formx360.onrender.com/notifications/read-all/${userId}`
       );
@@ -83,7 +120,6 @@ useEffect(() => {
       setNotifications((prev) =>
         prev.map((n) => (n.id === id ? { ...n, read: true } : n))
       );
-
       await axios.patch(
         `https://formx360.onrender.com/notifications/read/${id}`
       );
@@ -155,14 +191,14 @@ useEffect(() => {
                   No notifications
                 </Dropdown.ItemText>
               ) : (
-                notifications.map((notif, index) => (
+                notifications.map((notif) => (
                   <Dropdown.ItemText
-                    key={notif.id || index}
+                    key={notif.id}
                     onClick={() => markSingleAsRead(notif.id)}
                     className={`d-flex flex-column px-2 py-2 ${
                       !notif.read ? "bg-light" : ""
                     }`}
-                    style={{ cursor: notif.id ? "pointer" : "default" }}
+                    style={{ cursor: "pointer" }}
                   >
                     <span style={{ fontSize: "0.9rem" }}>{notif.message}</span>
                     <div className="d-flex justify-content-between mt-1">

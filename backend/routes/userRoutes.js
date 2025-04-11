@@ -12,6 +12,7 @@ const {
   verifyEmail,
   addUserToCompany,
   changePassword,
+  getUserNameById,
 } = require("../controllers/userController");
 const authenticateUser = require("../middlewares/authenticateUser");
 
@@ -22,9 +23,10 @@ router.post("/login", loginUser);
 // Reset password
 router.post("/reset-password-request", resetPasswordRequest);
 router.post("/reset-password", resetPassword);
-router.put("/change-password", authenticateUser, changePassword); 
+router.put("/change-password", authenticateUser, changePassword);
 
 // Email verification route
 router.get("/verify-email", verifyEmail);
 
+router.get("/:id", getUserNameById);
 module.exports = router;
