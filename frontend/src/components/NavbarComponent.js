@@ -6,217 +6,136 @@ import logo from "../images/logo.png";
 import socket from "../socket";
 
 function NavbarComponent({ userId: propUserId }) {
-  const [userId, setUserId] = useState(propUserId);
+  const [userId, setUserId] = useState(propUserId || sessionStorage.getItem("userId"));
   const [notifications, setNotifications] = useState([]);
   const navigate = useNavigate();
 
-  // Fetch notifications from backend
   useEffect(() => {
-    // Check if userId is available
-    const currentUserId = userId || sessionStorage.getItem("userId");
+    if (!userId) return;
 
-    if (currentUserId) {
-      // Fetch notifications from the backend for the logged-in user
-      fetch(`https://formx360.onrender.com/notifications/${currentUserId}`)
-        .then((response) => response.json())
-        .then((data) => {
-          setNotifications(data);
-        })
-        .catch((error) =>
-          console.error("Error fetching notifications:", error)
-        );
-    }
+    fetch(`https://formx360.onrender.com/notifications/${userId}`)
+      .then((res) => res.json())
+      .then(setNotifications)
+      .catch((err) => console.error("🔴 Notification fetch error:", err));
   }, [userId]);
 
   useEffect(() => {
-    // Listen to new notifications via socket
-    socket.on("new_notification", (data) => {
-      console.log("📬 New Notification:", data);
+    const handleNewNotification = (data) => {
       setNotifications((prev) => [
         { id: Date.now(), message: data.message, read: false },
         ...prev,
       ]);
-    });
+    };
+
+    socket.on("new_notification", handleNewNotification);
 
     return () => {
-      socket.off("new_notification");
+      socket.off("new_notification", handleNewNotification);
     };
   }, []);
 
-  // Unread notifications count
   const unreadCount = notifications.filter((n) => !n.read).length;
 
-  useEffect(() => {
-    const sessionUserId = sessionStorage.getItem("userId");
-    if (!userId && sessionUserId) {
-      setUserId(sessionUserId); // Fallback to sessionStorage if prop is not provided
-    }
-  }, [userId]);
-
   const handleLogout = () => {
-    sessionStorage.removeItem("companyId");
-    sessionStorage.removeItem("userId");
+    sessionStorage.clear();
     navigate("/users/login");
   };
 
-  // Mark all notifications as read
-  const markAllAsRead = () => {
-    setNotifications((prev) => prev.map((notif) => ({ ...notif, read: true })));
-  };
+ const markAllAsRead = () => {
+   // Optimistic UI update
+   setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
 
-  // Mark a single notification as read
+   // Call backend to persist change
+   fetch(`https://formx360.onrender.com/notifications/read-all/${userId}`, {
+     method: "POST",
+   }).catch((err) => console.error("🔴 Failed to mark all as read:", err));
+ };
+
+
   const markSingleAsRead = (id) => {
+    // Update UI immediately (optimistic update)
     setNotifications((prev) =>
-      prev.map((notif) => (notif.id === id ? { ...notif, read: true } : notif))
+      prev.map((n) => (n.id === id ? { ...n, read: true } : n))
+    );
+
+    // Persist change in the backend
+    fetch(`https://formx360.onrender.com/notifications/read/${id}`, {
+      method: "POST",
+    }).catch((err) =>
+      console.error("🔴 Failed to mark notification as read:", err)
     );
   };
 
+
   return (
-    <Navbar
-      bg="light"
-      expand="lg"
-      className="shadow-sm py-2"
-      style={{ borderBottom: "1px solid #e0e0e0" }}
-    >
+    <Navbar bg="light" expand="lg" className="shadow-sm py-2 border-bottom">
       <Container fluid>
         <Navbar.Brand as={Link} to="/dashboard">
           <img src={logo} width="130" height="20" alt="Logo" />
         </Navbar.Brand>
+
         <div className="d-flex align-items-center ms-auto">
-          {/* Notification Dropdown */}
+          {/* 🔔 Notifications */}
           <Dropdown align="end" className="me-3">
             <Dropdown.Toggle
               variant="link"
               className="p-0 position-relative"
               id="dropdown-notifications"
-              style={{
-                fontSize: "1.4rem",
-                color: "#28499A",
-                backgroundColor: "transparent",
-                border: "none",
-              }}
+              style={{ fontSize: "1.4rem", color: "#28499A" }}
             >
-              <FaBell style={{ color: "#28499A" }} />
+              <FaBell />
               {unreadCount > 0 && (
-                <span
-                  style={{
-                    position: "absolute",
-                    top: "0px",
-                    left: "-15px",
-                    background: "#56ADDE",
-                    color: "white",
-                    borderRadius: "50%",
-                    fontSize: "0.65rem",
-                    padding: "2px 5px",
-                    lineHeight: "1",
-                  }}
-                >
+                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
                   {unreadCount}
                 </span>
               )}
             </Dropdown.Toggle>
 
-            <Dropdown.Menu
-              align="end"
-              style={{
-                minWidth: "280px",
-                borderRadius: "8px",
-                boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
-                maxHeight: "300px",
-                overflowY: "auto",
-              }}
-            >
-              <div className="d-flex justify-content-between align-items-center px-3 pt-2">
+            <Dropdown.Menu align="end" className="px-2" style={{ minWidth: "280px", maxHeight: "300px", overflowY: "auto" }}>
+              <div className="d-flex justify-content-between align-items-center px-2 pt-2">
                 <span className="fw-bold">Notifications</span>
                 {unreadCount > 0 && (
-                  <button
-                    onClick={markAllAsRead}
-                    className="btn btn-sm btn-outline-primary"
-                    style={{
-                      fontSize: "0.75rem",
-                      padding: "2px 6px",
-                      borderRadius: "5px",
-                    }}
-                  >
+                  <button onClick={markAllAsRead} className="btn btn-sm btn-outline-primary">
                     Mark all as read
                   </button>
                 )}
               </div>
-
               <Dropdown.Divider />
-
               {notifications.length === 0 ? (
-                <Dropdown.ItemText className="text-muted text-center">
-                  No notifications
-                </Dropdown.ItemText>
+                <Dropdown.ItemText className="text-muted text-center">No notifications</Dropdown.ItemText>
               ) : (
                 notifications.map((notif, index) => (
                   <Dropdown.ItemText
                     key={notif.id || index}
                     onClick={() => markSingleAsRead(notif.id)}
-                    className="d-flex justify-content-between align-items-center px-3 py-2"
-                    style={{
-                      cursor: "pointer",
-                      backgroundColor: notif.read ? "inherit" : "#f8f9fa",
-                    }}
+                    className={`d-flex justify-content-between align-items-center px-2 py-2 ${!notif.read ? "bg-light" : ""}`}
+                    style={{ cursor: "pointer" }}
                   >
-                    <span style={{ fontSize: "0.9rem" }}>{notif.message}</span>
-                    {!notif.read && (
-                      <span style={{ fontSize: "0.75rem", color: "red" }}>
-                        ●
-                      </span>
-                    )}
+                    <span className="me-2" style={{ fontSize: "0.9rem" }}>{notif.message}</span>
+                    {!notif.read && <span style={{ fontSize: "0.75rem", color: "red" }}>●</span>}
                   </Dropdown.ItemText>
                 ))
               )}
             </Dropdown.Menu>
           </Dropdown>
 
-          {/* Profile Dropdown */}
+          {/* 👤 Profile */}
           <Dropdown align="end">
             <Dropdown.Toggle
               variant="link"
               className="p-0 ms-2"
               id="dropdown-profile"
-              style={{
-                fontSize: "1.5rem",
-                cursor: "pointer",
-                color: "#28499A",
-                backgroundColor: "transparent",
-                border: "none",
-              }}
+              style={{ fontSize: "1.5rem", color: "#28499A" }}
             >
-              <FaUserCircle style={{ fontSize: "1.6rem" }} />
+              <FaUserCircle />
             </Dropdown.Toggle>
 
-            <Dropdown.Menu
-              align="end"
-              style={{
-                minWidth: "160px",
-                borderRadius: "8px",
-                boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
-              }}
-            >
-              <Dropdown.Item
-                as={Link}
-                to={`/profile/${userId}`}
-                style={{
-                  fontSize: "1rem",
-                  padding: "10px 20px",
-                  borderRadius: "8px",
-                }}
-              >
+            <Dropdown.Menu align="end">
+              <Dropdown.Item as={Link} to={`/profile/${userId}`}>
                 <FaUser className="me-2" />
                 Profile Page
               </Dropdown.Item>
-              <Dropdown.Item
-                onClick={handleLogout}
-                style={{
-                  fontSize: "1rem",
-                  padding: "10px 20px",
-                  borderRadius: "8px",
-                }}
-              >
+              <Dropdown.Item onClick={handleLogout}>
                 <FaPowerOff className="me-2" />
                 Logout
               </Dropdown.Item>

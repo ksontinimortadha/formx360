@@ -23,17 +23,53 @@ exports.createNotification = async (req, res) => {
 // Mark one notification as read
 exports.markAsRead = async (req, res) => {
   const { id } = req.params;
-  const notif = await Notification.findByIdAndUpdate(
-    id,
-    { read: true },
-    { new: true }
-  );
-  res.json(notif);
+
+  try {
+    const notif = await Notification.findByIdAndUpdate(
+      id,
+      { read: true },
+      { new: true }
+    );
+
+    if (!notif) {
+      return res.status(404).json({ message: "Notification not found" });
+    }
+
+    res.status(200).json({
+      message: "Notification marked as read",
+      notification: notif,
+    });
+  } catch (error) {
+    console.error("Error marking notification as read:", error);
+    res.status(500).json({
+      message: "Server error",
+      error: error.message,
+    });
+  }
 };
+
 
 // Mark all notifications as read
 exports.markAllAsRead = async (req, res) => {
   const { userId } = req.params;
-  await Notification.updateMany({ userId }, { read: true });
-  res.json({ success: true });
+
+  try {
+    const result = await Notification.updateMany(
+      { userId, read: false },
+      { $set: { read: true } }
+    );
+
+    res.status(200).json({
+      success: true,
+      message: `${result.modifiedCount} notifications marked as read.`,
+    });
+  } catch (error) {
+    console.error("Error marking all notifications as read:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to mark notifications as read.",
+      error: error.message,
+    });
+  }
 };
+
