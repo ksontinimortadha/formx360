@@ -106,7 +106,7 @@ function Forms() {
       if (newVisibility === "private" && updatedForm.privateUrl) {
         toast.info(`Private URL: ${updatedForm.privateUrl}`);
       }
-
+      console.log("first", updatedForm);
       // Refresh form list
       fetchForms(companyId);
     } catch (error) {

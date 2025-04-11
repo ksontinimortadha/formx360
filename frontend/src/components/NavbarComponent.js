@@ -16,7 +16,6 @@ function NavbarComponent({ userId: propUserId }) {
   const getUserNameById = async (id) => {
     try {
       const res = await axios.get(`https://formx360.onrender.com/users/${id}`);
-      console.log("first", res.data);
       return res.data?.name;
     } catch (err) {
       console.error("❌ Error fetching user name:", err);
@@ -38,7 +37,6 @@ function NavbarComponent({ userId: propUserId }) {
             const name =
               notif.createdByName ||
               (notif.userId && (await getUserNameById(notif.userId)));
-            console.log("name", name);
             return {
               id: notif._id,
               message: notif.message,

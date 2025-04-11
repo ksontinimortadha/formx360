@@ -345,7 +345,7 @@ exports.updateFormVisibility = async (req, res) => {
       let token, exists;
       do {
         token = crypto.randomBytes(12).toString("hex");
-        privateUrl = `/forms/private/${token}`;
+        privateUrl = `https://formx360.vercel.app/responses/private/${token}`;
         exists = await Form.findOne({ privateUrl });
       } while (exists);
     }
