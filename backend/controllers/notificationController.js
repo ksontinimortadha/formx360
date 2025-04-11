@@ -54,9 +54,12 @@ exports.createNotification = async (req, res) => {
       createdBy,
       createdByName: `${creator.firstName} ${creator.lastName}`, // Or creator.name if that's your schema
     });
+    console.log("notif", notif);
 
-    req.io.to(companyId).emit("new_notification", notif);
-
+ req.io.to(companyId).emit("new_notification", {
+   ...notif._doc,
+   createdByName: `${creator.firstName} ${creator.lastName}`,
+ });
     res.status(201).json(notif);
   } catch (error) {
     console.error("❌ Error creating notification:", error);
@@ -66,7 +69,6 @@ exports.createNotification = async (req, res) => {
     });
   }
 };
-
 
 // Mark one notification as read
 exports.markAsRead = async (req, res) => {
