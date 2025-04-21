@@ -3,13 +3,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import NavbarComponent from "./NavbarComponent";
-import Paginations from "./Paginations";
 import { Button, Container, Navbar } from "react-bootstrap";
 import {
   FaArrowLeft,
   FaRegArrowAltCircleDown,
   FaRegArrowAltCircleUp,
 } from "react-icons/fa";
+import ExportModal from "../modals/ExportModal";
+import exportUtils from "./exportUtils";
 
 const ResponsePage = () => {
   const { formId } = useParams();
@@ -20,6 +21,24 @@ const ResponsePage = () => {
   const [itemsPerPage] = useState(10);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
   const navigate = useNavigate();
+  const [showExportModal, setShowExportModal] = useState(false);
+
+  const handleExport = (format) => {
+    setShowExportModal(false);
+    switch (format) {
+      case "csv":
+        exportUtils.exportToCSV(responses, headers);
+        break;
+      case "pdf":
+        exportUtils.exportToPDF(responses, headers);
+        break;
+      case "excel":
+        exportUtils.exportToExcel(responses, headers);
+        break;
+      default:
+        toast.warn("Unsupported export format.");
+    }
+  };
 
   // Fetch responses from the API
   const fetchResponses = async () => {
@@ -150,7 +169,10 @@ const ResponsePage = () => {
           <Navbar.Toggle />
           <Navbar.Collapse className="justify-content-end">
             <Navbar.Text>
-              <button className="bg-blue-500 text-white px-4 py-2 rounded-md">
+              <button
+                className="bg-blue-500 text-white px-4 py-2 rounded-md"
+                onClick={() => setShowExportModal(true)}
+              >
                 Export All
               </button>
             </Navbar.Text>
@@ -257,6 +279,11 @@ const ResponsePage = () => {
        </Navbar>
        
        */}
+      <ExportModal
+        show={showExportModal}
+        handleClose={() => setShowExportModal(false)}
+        handleExport={handleExport}
+      />
     </>
   );
 };

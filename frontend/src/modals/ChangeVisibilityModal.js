@@ -1,6 +1,14 @@
-import React from "react";
-import { Modal, Button, Alert } from "react-bootstrap";
-import { FaCheck, FaTimes } from "react-icons/fa";
+import React, { useState } from "react";
+import {
+  Modal,
+  Button,
+  Alert,
+  OverlayTrigger,
+  Tooltip,
+  Toast,
+  ToastContainer,
+} from "react-bootstrap";
+import { FaCheck, FaTimes, FaCopy, FaLink } from "react-icons/fa";
 
 function ChangeVisibilityModal({
   show,
@@ -8,55 +16,107 @@ function ChangeVisibilityModal({
   form,
   handleVisibilityChange,
 }) {
+  const [showToast, setShowToast] = useState(false);
+
+  // ✅ Prevent access before checking `form`
   if (!form) return null;
 
   const newVisibility = form.visibility === "public" ? "private" : "public";
   const publicUrl = `https://formx360.vercel.app/responses/public/${form._id}`;
-  const privateUrl = `https://formx360.vercel.app/responses/${form._id}`;
+  const privateUrl = `https://formx360.vercel.app/responses/private/${form._id}`;
+  const currentUrl = form.visibility === "public" ? publicUrl : privateUrl;
+  const newUrl = newVisibility === "public" ? publicUrl : privateUrl;
 
   const handleConfirmChange = async () => {
     await handleVisibilityChange(form);
     handleClose();
   };
 
+  const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text);
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 2000);
+  };
+
+  const renderCopyButton = (text) => (
+    <OverlayTrigger
+      placement="top"
+      overlay={<Tooltip>Copy to clipboard</Tooltip>}
+    >
+      <Button
+        variant="outline-secondary"
+        size="sm"
+        onClick={() => copyToClipboard(text)}
+        style={{ marginLeft: "10px" }}
+        aria-label="Copy URL"
+      >
+        <FaCopy />
+      </Button>
+    </OverlayTrigger>
+  );
+
   return (
-    <Modal show={show} onHide={handleClose}>
-      <Modal.Header closeButton>
-        <Modal.Title>Change Visibility</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <p>
-          Are you sure you want to change the visibility of the form{" "}
-          <strong>{form.title}</strong> to <strong>{newVisibility}</strong>?
-        </p>
-
-        {newVisibility === "public" && (
-          <Alert variant="info" style={{ wordWrap: "break-word" }}>
-            This will make your form public. You will be able to share the
-            following link with anyone:
+    <>
+      <Modal show={show} onHide={handleClose} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Change Form Visibility</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div className="mb-3">
+            <strong>Current visibility:</strong>{" "}
+            <span className="text-capitalize">{form.visibility}</span>
             <br />
-            <strong>{publicUrl}</strong>
-          </Alert>
-        )}
+            <strong>Current link:</strong>
+            <Alert
+              variant="light"
+              className="mt-2 d-flex align-items-center justify-content-between"
+              style={{ wordBreak: "break-word" }}
+            >
+              <span style={{ flex: 1 }}>{currentUrl}</span>
+              {renderCopyButton(currentUrl)}
+            </Alert>
+          </div>
 
-        {newVisibility === "private" && (
-          <Alert variant="warning" style={{ wordWrap: "break-word" }}>
-            This will restrict access to only selected users. The new private
-            link will look like:
-            <br />
-            <strong>{privateUrl}</strong>
-          </Alert>
-        )}
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>
-          <FaTimes /> Cancel
-        </Button>
-        <Button variant="primary" onClick={handleConfirmChange}>
-          <FaCheck /> Confirm
-        </Button>
-      </Modal.Footer>
-    </Modal>
+          <div className="mb-3">
+            <p>
+              Are you sure you want to change the visibility of{" "}
+              <strong>{form.title}</strong> to{" "}
+              <strong
+                className={newVisibility === "public" ? "public" : "private"}
+              >
+                {newVisibility}
+              </strong>
+              ?
+            </p>
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="outline-secondary" onClick={handleClose}>
+            <FaTimes className="me-2" />
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={handleConfirmChange}>
+            <FaCheck className="me-2" />
+            Confirm Change
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* ✅ Toast Confirmation */}
+      <ToastContainer position="bottom-end" className="p-3">
+        <Toast
+          show={showToast}
+          onClose={() => setShowToast(false)}
+          delay={2000}
+          autohide
+        >
+          <Toast.Body className="text-black">
+            <FaLink style={{ marginRight: "5px" }} />
+            Link copied to clipboard!
+          </Toast.Body>
+        </Toast>
+      </ToastContainer>
+    </>
   );
 }
 

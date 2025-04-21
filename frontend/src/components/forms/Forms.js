@@ -23,7 +23,7 @@ import ChangeVisibilityModal from "../../modals/ChangeVisibilityModal";
 function Forms() {
   const [forms, setForms] = useState([]);
   const [filteredForms, setFilteredForms] = useState([]);
-  const [searchTerm, setSearchTerm] = useState(""); // Add state for the search term
+  const [searchTerm, setSearchTerm] = useState(""); 
   const [showAddModal, setShowAddModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showVisibilityModal, setShowVisibilityModal] = useState(false);
@@ -47,7 +47,7 @@ function Forms() {
         `https://formx360.onrender.com/forms/${companyId}/forms`
       );
       setForms(response.data);
-      setFilteredForms(response.data); // Initially set filtered forms to all fetched forms
+      setFilteredForms(response.data); 
     } catch (error) {
       console.error("Error fetching forms:", error);
       toast.error("Failed to fetch forms.");
@@ -106,7 +106,6 @@ function Forms() {
       if (newVisibility === "private" && updatedForm.privateUrl) {
         toast.info(`Private URL: ${updatedForm.privateUrl}`);
       }
-      console.log("first", updatedForm);
       // Refresh form list
       fetchForms(companyId);
     } catch (error) {

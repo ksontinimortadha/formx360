@@ -1,16 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import {
-  Container,
-  Form,
-  Button,
-  Row,
-  Col,
-  Card,
-  Table,
-  Modal,
-} from "react-bootstrap";
+import { Container, Form, Button, Row, Col, Card } from "react-bootstrap";
 import { toast } from "react-toastify";
 import {
   FaPlus,
@@ -20,6 +11,8 @@ import {
   FaArrowLeft,
 } from "react-icons/fa";
 import NavbarComponent from "../NavbarComponent";
+import ExportReport from "./ExportReport";
+import exportUtilsReport from "./exportUtilsReport";
 
 function ReportBuilder() {
   const { reportId } = useParams();
@@ -30,6 +23,7 @@ function ReportBuilder() {
   const [availableFields, setAvailableFields] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [showExportModal, setShowExportModal] = useState(false);
 
   useEffect(() => {
     fetchReport();
@@ -71,19 +65,15 @@ function ReportBuilder() {
 
   const generateReport = async () => {
     setLoading(true);
-    console.log(filters);
     try {
       const response = await axios.post(
         `https://formx360.onrender.com/reports/report/${reportId}/filter`,
         { filters }
       );
       setReportData(response.data);
-      // Log each responses array individually
-      response.data.forEach((entry, index) => {
-        console.log(`Responses for entry ${index + 1}:`, entry.responses);
-      });
       setShowModal(true);
-      toast.success("success");
+      setShowExportModal(true); // Show the export modal
+      toast.success("Report generated successfully!");
     } catch (error) {
       console.error("Error generating report:", error);
       toast.error("Failed to generate report.");
@@ -91,6 +81,8 @@ function ReportBuilder() {
       setLoading(false);
     }
   };
+
+  
 
   return (
     <>
@@ -208,41 +200,13 @@ function ReportBuilder() {
           </Button>
         </div>
 
-        {/* Report Data Modal */}
-        <Modal show={showModal} onHide={() => setShowModal(false)} size="lg">
-          <Modal.Header closeButton>
-            <Modal.Title>Report Results</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            {reportData.length > 0 ? (
-              <Table striped bordered hover responsive className="shadow-sm">
-                <thead className="bg-primary text-white">
-                  <tr>
-                    {reportData[0].responses.map((response, index) => (
-                      <th key={index}>{response.field_name}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {reportData.map((entry, rowIndex) => (
-                    <tr key={rowIndex}>
-                      {entry.responses.map((response, colIndex) => (
-                        <td key={colIndex}>{response.value}</td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </Table>
-            ) : (
-              <p>No data found based on your filters.</p>
-            )}
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={() => setShowModal(false)}>
-              Close
-            </Button>
-          </Modal.Footer>
-        </Modal>
+        {/* Export Report Modal */}
+        <ExportReport
+          showModal={showExportModal}
+          setShowModal={setShowExportModal}
+          reportData={reportData}
+          availableFields={availableFields}
+        />
       </Container>
     </>
   );
