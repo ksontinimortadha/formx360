@@ -73,17 +73,17 @@ function Login() {
           className="shadow border-light"
           style={{ maxWidth: "600px", margin: "5px auto" }}
         >
-          <Card.Header className="bg-white border-0 d-flex align-items-center">
+          <Card.Header className="bg-white border-0 d-flex justify-content-start">
             <Button
               variant="light"
               className="d-flex align-items-center"
               onClick={() => navigate("/")}
             >
-              <FaArrowLeft className="me-2" /> Back
+              <FaArrowLeft className="me-2" />
             </Button>
           </Card.Header>
           <Card.Body className="p-4">
-            <div className="text-center mb-4">
+            <div className="text-center mb-4" style={{ marginTop: "-45px" }}>
               <img
                 className="img-fluid mb-3"
                 loading="lazy"
@@ -105,9 +105,7 @@ function Login() {
                 )}
                 <Col xs={12}>
                   <Form.Group controlId="formEmail">
-                    <Form.Label>
-                      Email Address <span className="text-danger">*</span>
-                    </Form.Label>
+                    <Form.Label>Email Address</Form.Label>
                     <Form.Control
                       type="email"
                       placeholder="Enter your email"
@@ -120,9 +118,7 @@ function Login() {
                 </Col>
                 <Col xs={12}>
                   <Form.Group controlId="formPassword">
-                    <Form.Label>
-                      Password <span className="text-danger">*</span>
-                    </Form.Label>
+                    <Form.Label>Password</Form.Label>
                     <div className="input-group">
                       <Form.Control
                         type={showPassword ? "text" : "password"}

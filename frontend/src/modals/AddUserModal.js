@@ -1,5 +1,6 @@
 import React from "react";
-import { Modal, Button, Form } from "react-bootstrap";
+import { Modal, Button, Form, Row, Col } from "react-bootstrap";
+import { FaSave, FaTimes } from "react-icons/fa";
 
 function AddUserModal({
   show,
@@ -8,7 +9,7 @@ function AddUserModal({
   firstName = "",
   lastName = "",
   email = "",
-  role = "User",
+  role = "",
   password = "",
   setFirstName,
   setLastName,
@@ -18,63 +19,86 @@ function AddUserModal({
   isValid,
 }) {
   return (
-    <Modal show={show} onHide={handleClose}>
+    <Modal show={show} onHide={handleClose} centered size="lg">
       <Modal.Header closeButton>
-        <Modal.Title>Add User</Modal.Title>
+        <Modal.Title>Add New User</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form>
-          <Form.Group controlId="firstName">
-            <Form.Label>First Name</Form.Label>
-            <Form.Control
-              type="text"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-            />
-          </Form.Group>
-          <Form.Group controlId="lastName">
-            <Form.Label>Last Name</Form.Label>
-            <Form.Control
-              type="text"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-            />
-          </Form.Group>
-          <Form.Group controlId="email">
-            <Form.Label>Email</Form.Label>
-            <Form.Control
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </Form.Group>
-          <Form.Group controlId="role">
-            <Form.Label>Role</Form.Label>
-            <Form.Control
-              as="select"
-              value={role}
-              onChange={(e) => setRole(e.target.value)}
-            >
-              <option>User</option>
-              <option>Admin</option>
-            </Form.Control>
-          </Form.Group>
-          <Form.Group controlId="password">
-            <Form.Label>Password</Form.Label>
-            <Form.Control
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </Form.Group>
+          <Row className="g-3">
+            <Col md={6}>
+              <Form.Group controlId="firstName">
+                <Form.Label>First Name</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter first name"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  required
+                  autoFocus
+                />
+              </Form.Group>
+            </Col>
+            <Col md={6}>
+              <Form.Group controlId="lastName">
+                <Form.Label>Last Name</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter last name"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  required
+                />
+              </Form.Group>
+            </Col>
+            <Col md={6}>
+              <Form.Group controlId="email">
+                <Form.Label>Email Address</Form.Label>
+                <Form.Control
+                  type="email"
+                  placeholder="Enter email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </Form.Group>
+            </Col>
+            <Col md={6}>
+              <Form.Group controlId="role">
+                <Form.Label>Role</Form.Label>
+                <Form.Select
+                  style={{ marginTop: "-0.5px" }}
+                  value={role}
+                  onChange={(e) => setRole(e.target.value)}
+                  required
+                >
+                  <option value="">Select role</option>
+                  <option value="User">User</option>
+                  <option value="Admin">Admin</option>
+                </Form.Select>
+              </Form.Group>
+            </Col>
+            <Col md={6}>
+              <Form.Group controlId="password">
+                <Form.Label>Password</Form.Label>
+                <Form.Control
+                  type="password"
+                  placeholder="Enter password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </Form.Group>
+            </Col>
+          </Row>
         </Form>
       </Modal.Body>
-      <Modal.Footer>
+      <Modal.Footer className="d-flex justify-content-between">
         <Button variant="secondary" onClick={handleClose}>
-          Close
+          Cancel
         </Button>
         <Button variant="primary" onClick={handleSaveUser} disabled={!isValid}>
-          Save
+          Save User
         </Button>
       </Modal.Footer>
     </Modal>

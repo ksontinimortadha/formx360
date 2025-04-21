@@ -54,17 +54,17 @@ function RequestReset() {
           className="shadow border-light"
           style={{ maxWidth: "600px", margin: "5px auto" }}
         >
-          <Card.Header className="bg-white border-0 d-flex align-items-center">
+          <Card.Header className="bg-white border-0 d-flex justify-content-start">
             <Button
               variant="light"
               className="d-flex align-items-center"
               onClick={() => navigate("/")}
             >
-              <FaArrowLeft className="me-2" /> Back
+              <FaArrowLeft className="me-2" />
             </Button>
           </Card.Header>
           <Card.Body className="p-4">
-            <div className="text-center mb-4">
+            <div className="text-center mb-4" style={{ marginTop: "-45px" }}>
               <img
                 className="img-fluid mb-3"
                 loading="lazy"
@@ -84,10 +84,11 @@ function RequestReset() {
             <Form onSubmit={handleSubmit}>
               <Row className="gy-2">
                 <Col xs={12}>
-                  <Form.Group controlId="email">
-                    <Form.Label>
-                      Email Address <span className="text-danger">*</span>
-                    </Form.Label>
+                  <Form.Group
+                    controlId="email"
+                    style={{ marginBottom: "15px" }}
+                  >
+                    <Form.Label>Email Address</Form.Label>
                     <Form.Control
                       type="email"
                       placeholder="Enter your email"
@@ -105,16 +106,16 @@ function RequestReset() {
               </Row>
             </Form>
 
-            <div className="text-center mt-4">
+            <div className="text-center mt-4" style={{ marginTop: "-15px" }}>
               <hr className="border-secondary-subtle" />
               <p className="text-secondary small">
                 Remembered your password?
                 <span
                   className="text-primary text-decoration-none"
-                  style={{ cursor: "pointer" }}
-                  onClick={() => navigate("/login")}
+                  style={{ cursor: "pointer", marginLeft: "5px" }}
+                  onClick={() => navigate("/users/login")}
                 >
-                  Log In
+                  Login
                 </span>
               </p>
             </div>
