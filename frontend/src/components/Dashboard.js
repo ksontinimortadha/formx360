@@ -1,8 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Container, Row, Col, Button, Card, Table } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Button,
+  Card,
+  Table,
+  OverlayTrigger,
+  Tooltip,
+} from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useNavigate } from "react-router-dom";
-import { FaTrash, FaPencilAlt } from "react-icons/fa";
+import { FaTrash, FaPencilAlt, FaEdit, FaSave } from "react-icons/fa";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -31,6 +40,8 @@ function Dashboard() {
   const [editingUserId, setEditingUserId] = useState(null);
   const [newRole, setNewRole] = useState("");
   const navigate = useNavigate();
+
+  const [currentUserRole, setCurrentUserRole] = useState("");
 
   useEffect(() => {
     const savedCompanyId = sessionStorage.getItem("companyId");
@@ -62,12 +73,23 @@ function Dashboard() {
       const response = await axios.get(
         `https://formx360.onrender.com/companies/company/${companyId}/users`
       );
-      console.log("Fetched users:", response.data.users); // Debug
-      setUsers(response.data.users || []); // Assure que `users` est toujours un tableau
+
+      const userList = response.data.users || [];
+      setUsers(userList);
+
+      // Get current user ID from sessionStorage
+      const currentUserId = sessionStorage.getItem("userId");
+
+      if (currentUserId) {
+        const currentUser = userList.find((user) => user._id === currentUserId);
+        if (currentUser) {
+          setCurrentUserRole(currentUser.role);
+        }
+      }
     } catch (error) {
       console.error("Error fetching users:", error);
       toast.error("Failed to fetch users.");
-      setUsers([]); // Sécurise en cas d'erreur
+      setUsers([]);
     }
   };
 
@@ -213,11 +235,13 @@ function Dashboard() {
             style={{ borderBottom: "1px solid #ddd" }}
           >
             <h4>Company Management</h4>
-            {companyDetails && (
-              <Button variant="primary" onClick={handleShow}>
-                Add User
-              </Button>
-            )}
+            {companyDetails &&
+              (currentUserRole === "Super Admin" ||
+                currentUserRole === "Admin") && (
+                <Button variant="primary" onClick={handleShow}>
+                  Add User
+                </Button>
+              )}
           </header>
 
           <Container className="py-4">
@@ -242,22 +266,24 @@ function Dashboard() {
                           </div>
 
                           {/* Minimalistic Buttons with Icons */}
-                          <div className="d-flex gap-2">
-                            <Button
-                              variant="outline-secondary"
-                              className="rounded-pill px-3 d-flex align-items-center gap-1"
-                              onClick={handleShowEditCompanyModal}
-                            >
-                              <FaPencilAlt size={16} /> Edit
-                            </Button>
-                            <Button
-                              variant="outline-danger"
-                              className="rounded-pill px-3 d-flex align-items-center gap-1"
-                              onClick={handleShowDeleteCompanyModal}
-                            >
-                              <FaTrash size={16} /> Delete
-                            </Button>
-                          </div>
+                          {currentUserRole === "Super Admin" && (
+                            <div className="d-flex gap-2">
+                              <Button
+                                variant="outline-secondary"
+                                className="rounded-pill px-3 d-flex align-items-center gap-1"
+                                onClick={handleShowEditCompanyModal}
+                              >
+                                <FaPencilAlt size={16} /> Edit
+                              </Button>
+                              <Button
+                                variant="outline-danger"
+                                className="rounded-pill px-3 d-flex align-items-center gap-1"
+                                onClick={handleShowDeleteCompanyModal}
+                              >
+                                <FaTrash size={16} /> Delete
+                              </Button>
+                            </div>
+                          )}
                         </div>
                       </Card.Body>
                     </Card>
@@ -290,61 +316,96 @@ function Dashboard() {
                           </td>
                           {/* Email Column */}
                           <td>{user?.email}</td>
-
                           {/* Role Column */}
                           <td>
                             {editingUserId === user?._id ? (
-                              <select
-                                value={newRole}
-                                onChange={(e) => setNewRole(e.target.value)}
-                                className="form-select form-select-sm"
-                              >
-                                <option value="Super Admin">Super Admin</option>
-                                <option value="Admin">Admin</option>
-                                <option value="User">User</option>
-                              </select>
+                              currentUserRole === "Super Admin" ||
+                              currentUserRole === "Admin" ? (
+                                <select
+                                  value={newRole}
+                                  onChange={(e) => setNewRole(e.target.value)}
+                                  className="form-select form-select-sm"
+                                >
+                                  <option value="Super Admin">
+                                    Super Admin
+                                  </option>
+                                  <option value="Admin">Admin</option>
+                                  <option value="User">User</option>
+                                </select>
+                              ) : (
+                                user?.role
+                              )
                             ) : (
                               user?.role
                             )}
                           </td>
-
                           {/* Action Buttons */}
-                          <td>
-                            <div className="d-flex gap-2">
-                              {editingUserId === user?._id ? (
-                                <Button
-                                  variant="outline-success"
-                                  size="sm"
-                                  onClick={() => handleEditRole(user?._id)}
+
+                          {(currentUserRole === "Super Admin" ||
+                            currentUserRole === "Admin") && (
+                            <div className="d-flex gap-2 align-items-center">
+                              {/* Edit Role button logic */}
+                              {(user.role !== "Super Admin" ||
+                                user._id ===
+                                  sessionStorage.getItem("userId")) && (
+                                <OverlayTrigger
+                                  placement="top"
+                                  overlay={<Tooltip>Edit Role</Tooltip>}
                                 >
-                                  Save
-                                </Button>
-                              ) : (
-                                <Button
-                                  variant="outline-primary"
-                                  size="sm"
-                                  onClick={() => {
-                                    setEditingUserId(user?._id);
-                                    setNewRole(user?.role);
-                                  }}
-                                >
-                                  Edit Role
-                                </Button>
+                                  <Button
+                                    variant="secondary"
+                                    size="sm"
+                                    className="d-flex align-items-center gap-1"
+                                    onClick={() => {
+                                      setEditingUserId(user._id);
+                                      setNewRole(user.role);
+                                    }}
+                                  >
+                                    <FaEdit />
+                                  </Button>
+                                </OverlayTrigger>
                               )}
 
-                              {/* Delete button, only visible if not a Super Admin */}
-                              <Button
-                                variant="outline-danger"
-                                size="sm"
-                                onClick={() => {
-                                  setUserToEdit(user);
-                                  handleShowDeleteModal();
-                                }}
-                              >
-                                <FaTrash />
-                              </Button>
+                              {/* Save button if editing */}
+                              {editingUserId === user._id && (
+                                <OverlayTrigger
+                                  placement="top"
+                                  overlay={<Tooltip>Save Role</Tooltip>}
+                                >
+                                  <Button
+                                    variant="success"
+                                    size="sm"
+                                    className="d-flex align-items-center gap-1"
+                                    onClick={() => handleEditRole(user._id)}
+                                  >
+                                    <FaSave />
+                                  </Button>
+                                </OverlayTrigger>
+                              )}
+
+                              {/* Delete button, only for Super Admin and not self */}
+                              {currentUserRole === "Super Admin" &&
+                                user._id !==
+                                  sessionStorage.getItem("userId") && (
+                                  <OverlayTrigger
+                                    placement="top"
+                                    overlay={<Tooltip>Delete User</Tooltip>}
+                                  >
+                                    <Button
+                                      variant="danger"
+                                      size="sm"
+                                      className="d-flex align-items-center gap-1"
+                                      onClick={() => {
+                                        setUserToEdit(user);
+                                        handleShowDeleteModal();
+                                      }}
+                                    >
+                                      <FaTrash />
+                                    </Button>
+                                  </OverlayTrigger>
+                                )}
                             </div>
-                          </td>
+                          )}
                         </tr>
                       ))
                     )}

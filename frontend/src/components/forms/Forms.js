@@ -53,7 +53,38 @@ function Forms() {
       toast.error("Failed to fetch forms.");
     }
   };
+    const [currentUserRole, setCurrentUserRole] = useState("");
+    const [users, setUsers] = useState([]);
+  
+const fetchUsers = async (companyId) => {
+  if (!companyId) {
+    toast.error("Company ID is missing!");
+    return;
+  }
 
+  try {
+    const response = await axios.get(
+      `https://formx360.onrender.com/companies/company/${companyId}/users`
+    );
+
+    const userList = response.data.users || [];
+    setUsers(userList);
+
+    // Get current user ID from sessionStorage
+    const currentUserId = sessionStorage.getItem("userId");
+
+    if (currentUserId) {
+      const currentUser = userList.find((user) => user._id === currentUserId);
+      if (currentUser) {
+        setCurrentUserRole(currentUser.role);
+      }
+    }
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    toast.error("Failed to fetch users.");
+    setUsers([]);
+  }
+};
   const handleEditForm = (form) => {
     navigate(`/form-builder/${form._id}`);
   };

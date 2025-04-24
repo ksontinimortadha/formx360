@@ -32,6 +32,7 @@ function Login() {
       if (response.data?.user?.id) {
         // Store user data
         sessionStorage.setItem("userId", response.data.user.id);
+        sessionStorage.setItem("role", response.data.user.role);
         sessionStorage.setItem("token", response.data.token);
         localStorage.setItem("token", response.data.token);
 
