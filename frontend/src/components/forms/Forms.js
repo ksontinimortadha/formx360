@@ -19,24 +19,39 @@ import AddFormModal from "../../modals/AddFormModal";
 import NavbarComponent from "../NavbarComponent";
 import DeleteFormModal from "../../modals/DeleteFormModal";
 import ChangeVisibilityModal from "../../modals/ChangeVisibilityModal";
+import PermissionsModal from "../../modals/PermissionsModal";
 
 function Forms() {
   const [forms, setForms] = useState([]);
   const [filteredForms, setFilteredForms] = useState([]);
-  const [searchTerm, setSearchTerm] = useState(""); 
+  const [searchTerm, setSearchTerm] = useState("");
   const [showAddModal, setShowAddModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showVisibilityModal, setShowVisibilityModal] = useState(false);
   const [formToEdit, setFormToEdit] = useState(null);
   const [companyId, setCompanyId] = useState("");
-
+  const [currentUserRole, setCurrentUserRole] = useState("");
+  const [users, setUsers] = useState([]);
   const navigate = useNavigate();
+const [showPermissionsModal, setShowPermissionsModal] = useState(false);
+const [selectedForm, setSelectedForm] = useState(null);
+
+const handlePermissions = (form) => {
+  setSelectedForm(form);
+  setShowPermissionsModal(true);
+};
+
+const handleSavePermissions = (formId, permissions) => {
+  console.log("Saving permissions for form:", formId, permissions);
+  // call your backend API here
+};
 
   useEffect(() => {
     const storedCompanyId = sessionStorage.getItem("companyId");
     if (storedCompanyId) {
       setCompanyId(storedCompanyId);
       fetchForms(storedCompanyId);
+      fetchUsers(storedCompanyId);
     }
   }, []);
 
@@ -47,44 +62,43 @@ function Forms() {
         `https://formx360.onrender.com/forms/${companyId}/forms`
       );
       setForms(response.data);
-      setFilteredForms(response.data); 
+      setFilteredForms(response.data);
     } catch (error) {
       console.error("Error fetching forms:", error);
       toast.error("Failed to fetch forms.");
     }
   };
-    const [currentUserRole, setCurrentUserRole] = useState("");
-    const [users, setUsers] = useState([]);
-  
-const fetchUsers = async (companyId) => {
-  if (!companyId) {
-    toast.error("Company ID is missing!");
-    return;
-  }
 
-  try {
-    const response = await axios.get(
-      `https://formx360.onrender.com/companies/company/${companyId}/users`
-    );
-
-    const userList = response.data.users || [];
-    setUsers(userList);
-
-    // Get current user ID from sessionStorage
-    const currentUserId = sessionStorage.getItem("userId");
-
-    if (currentUserId) {
-      const currentUser = userList.find((user) => user._id === currentUserId);
-      if (currentUser) {
-        setCurrentUserRole(currentUser.role);
-      }
+  const fetchUsers = async (companyId) => {
+    if (!companyId) {
+      toast.error("Company ID is missing!");
+      return;
     }
-  } catch (error) {
-    console.error("Error fetching users:", error);
-    toast.error("Failed to fetch users.");
-    setUsers([]);
-  }
-};
+
+    try {
+      const response = await axios.get(
+        `https://formx360.onrender.com/companies/company/${companyId}/users`
+      );
+
+      const userList = response.data.users || [];
+      setUsers(userList);
+
+      // Get current user ID from sessionStorage
+      const currentUserId = sessionStorage.getItem("userId");
+
+      if (currentUserId) {
+        const currentUser = userList.find((user) => user._id === currentUserId);
+        if (currentUser) {
+          setCurrentUserRole(currentUser.role);
+          console.log("role", currentUser.role);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching users:", error);
+      toast.error("Failed to fetch users.");
+      setUsers([]);
+    }
+  };
   const handleEditForm = (form) => {
     navigate(`/form-builder/${form._id}`);
   };
@@ -180,6 +194,7 @@ const fetchUsers = async (companyId) => {
                 <Card.Body>
                   <div className="d-flex justify-content-between align-items-center">
                     <h4>Forms Management</h4>
+
                     <Form.Control
                       style={{ width: "auto", marginLeft: "350px" }}
                       type="search"
@@ -189,13 +204,18 @@ const fetchUsers = async (companyId) => {
                       onChange={handleSearchChange}
                     />
 
-                    <Button variant="primary" onClick={handleShowAddModal}>
-                      <FaPlus /> Add Form
-                    </Button>
+                    {(currentUserRole === "Super Admin" ||
+                      currentUserRole === "Admin") && (
+                      <Button variant="primary" onClick={handleShowAddModal}>
+                        <FaPlus className="me-1" />
+                        Add Form
+                      </Button>
+                    )}
                   </div>
                 </Card.Body>
               </Card>
             </Row>
+
             <Row>
               {filteredForms.length === 0 ? (
                 <Col className="text-center">No forms found.</Col>
@@ -238,28 +258,81 @@ const fetchUsers = async (companyId) => {
 
                             <Dropdown.Menu>
                               {/* Visibility Settings */}
-                              <Dropdown.Item
-                                onClick={() => handleShowVisibilityModal(form)}
-                              >
-                                Visibility Settings
-                              </Dropdown.Item>
+                              {currentUserRole === "Super Admin" ||
+                              currentUserRole === "Admin" ? (
+                                <Dropdown.Item
+                                  onClick={() =>
+                                    handleShowVisibilityModal(form)
+                                  }
+                                >
+                                  Visibility Settings
+                                </Dropdown.Item>
+                              ) : (
+                                <Dropdown.Item
+                                  disabled
+                                  title="Only Admins can manage visibility"
+                                >
+                                  <span className="text-muted">
+                                    Visibility Settings (Restricted)
+                                  </span>
+                                </Dropdown.Item>
+                              )}
 
                               {/* Responses */}
-                              <Dropdown.Item
-                                onClick={() => handleResponses(form)}
-                              >
-                                View Responses
-                              </Dropdown.Item>
-                              {/* stats */}
-                              <Dropdown.Item onClick={() => handleStats(form)}>
-                                View Statistics Dashboard
-                              </Dropdown.Item>
+                              {currentUserRole === "Super Admin" ||
+                              currentUserRole === "Admin" ? (
+                                <Dropdown.Item
+                                  onClick={() => handleResponses(form)}
+                                >
+                                  View Responses
+                                </Dropdown.Item>
+                              ) : (
+                                <Dropdown.Item
+                                  disabled
+                                  title="Only Admins can view responses"
+                                >
+                                  <span className="text-muted">
+                                    View Responses (Restricted)
+                                  </span>
+                                </Dropdown.Item>
+                              )}
+
+                              {currentUserRole === "Super Admin" ||
+                              currentUserRole === "Admin" ? (
+                                <Dropdown.Item
+                                  onClick={() => handleStats(form)}
+                                >
+                                  View Statistics Dashboard
+                                </Dropdown.Item>
+                              ) : (
+                                <Dropdown.Item
+                                  disabled
+                                  title="Only Admins can view statistics"
+                                >
+                                  <span className="text-muted">
+                                    View Statistics (Restricted)
+                                  </span>
+                                </Dropdown.Item>
+                              )}
 
                               {/* Permissions */}
-                              <Dropdown.Item /* onClick={() => handlePermissions(form)} */
-                              >
-                                Permissions
-                              </Dropdown.Item>
+                              {currentUserRole === "Super Admin" ||
+                              currentUserRole === "Admin" ? (
+                                <Dropdown.Item
+                                  onClick={() => handlePermissions(form)}
+                                >
+                                  Permissions
+                                </Dropdown.Item>
+                              ) : (
+                                <Dropdown.Item
+                                  disabled
+                                  title="Only Admins can manage permissions"
+                                >
+                                  <span className="text-muted">
+                                    Permissions (Restricted)
+                                  </span>
+                                </Dropdown.Item>
+                              )}
 
                               {/* Duplicate Form */}
                               <Dropdown.Item /* onClick={() => handleDuplicateForm(form)} */
@@ -306,6 +379,13 @@ const fetchUsers = async (companyId) => {
             handleClose={handleCloseVisibilityModal}
             form={formToEdit}
             handleVisibilityChange={handleVisibilityChange}
+          />
+          <PermissionsModal
+            show={showPermissionsModal}
+            handleClose={() => setShowPermissionsModal(false)}
+            form={selectedForm}
+            users={users}
+            onSave={handleSavePermissions}
           />
         </main>
         <ToastContainer />
