@@ -72,7 +72,7 @@ const formSchema = new mongoose.Schema(
         style: { type: String }, // CSS for individual field styles
         tooltip: { type: String }, // Tooltip text for the field
         visibility_rules: { type: mongoose.Schema.Types.Mixed }, // Conditional visibility logic
-        order: { type: Number, required: true }, // Position of the field
+        order: { type: Number, required: false }, // Position of the field
       },
     ],
     fieldStyles: {
