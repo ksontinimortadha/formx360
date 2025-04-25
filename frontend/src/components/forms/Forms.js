@@ -1,16 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  Container,
-  Row,
-  Col,
-  Button,
-  Card,
-  Dropdown,
-  Form,
-} from "react-bootstrap";
+import { Container, Row, Col, Button, Card, Form } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { FaPencilAlt, FaTrash, FaPlus, FaEllipsisV } from "react-icons/fa";
+import { FaPencilAlt, FaTrash, FaPlus } from "react-icons/fa";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -20,6 +12,7 @@ import NavbarComponent from "../NavbarComponent";
 import DeleteFormModal from "../../modals/DeleteFormModal";
 import ChangeVisibilityModal from "../../modals/ChangeVisibilityModal";
 import PermissionsModal from "../../modals/PermissionsModal";
+import FormActionsDropdown from "./FormActionsDropdown ";
 
 function Forms() {
   const [forms, setForms] = useState([]);
@@ -33,18 +26,9 @@ function Forms() {
   const [currentUserRole, setCurrentUserRole] = useState("");
   const [users, setUsers] = useState([]);
   const navigate = useNavigate();
-const [showPermissionsModal, setShowPermissionsModal] = useState(false);
-const [selectedForm, setSelectedForm] = useState(null);
-
-const handlePermissions = (form) => {
-  setSelectedForm(form);
-  setShowPermissionsModal(true);
-};
-
-const handleSavePermissions = (formId, permissions) => {
-  console.log("Saving permissions for form:", formId, permissions);
-  // call your backend API here
-};
+  const [showPermissionsModal, setShowPermissionsModal] = useState(false);
+  const [selectedForm, setSelectedForm] = useState(null);
+  const [existingPermissions, setExistingPermissions] = useState([]);
 
   useEffect(() => {
     const storedCompanyId = sessionStorage.getItem("companyId");
@@ -54,6 +38,55 @@ const handleSavePermissions = (formId, permissions) => {
       fetchUsers(storedCompanyId);
     }
   }, []);
+  const handlePermissions = (form) => {
+    setSelectedForm(form);
+    fetchFormPermissions(form._id);
+    setShowPermissionsModal(true);
+  };
+
+  const handleSavePermissions = async (formId, permissions) => {
+    try {
+      const response = await axios.post(
+        "https://formx360.onrender.com/permissions/save",
+        {
+          formId,
+          permissions,
+        }
+      );
+      toast.success("Permissions saved successfully!");
+      await fetchForms(companyId);
+    } catch (error) {
+      console.error("Error saving permissions:", error);
+      toast.error("Failed to save permissions.");
+    }
+  };
+
+  // Fetch existing permissions for a form
+  const fetchFormPermissions = async (formId) => {
+    try {
+      const response = await axios.get(
+        `https://formx360.onrender.com/permissions/${formId}`
+      );
+      const fetched = response.data.permissions;
+
+      const flatPermissions = fetched.flatMap((perm) =>
+        perm.permissions.map((p) => ({
+          userId: perm.userId._id,
+          permission: p,
+        }))
+      );
+
+      setExistingPermissions((prev) => ({
+        ...prev,
+        [formId]: flatPermissions,
+      }));
+
+      console.log("Permissions for form", formId, flatPermissions);
+    } catch (error) {
+      console.error("Failed to fetch permissions:", error);
+      toast.error("Failed to load permissions.");
+    }
+  };
 
   const fetchForms = async (companyId) => {
     if (!companyId) return;
@@ -63,6 +96,10 @@ const handleSavePermissions = (formId, permissions) => {
       );
       setForms(response.data);
       setFilteredForms(response.data);
+      // Fetch permissions for each form
+      response.data.forEach((form) => {
+        fetchFormPermissions(form._id);
+      });
     } catch (error) {
       console.error("Error fetching forms:", error);
       toast.error("Failed to fetch forms.");
@@ -90,7 +127,6 @@ const handleSavePermissions = (formId, permissions) => {
         const currentUser = userList.find((user) => user._id === currentUserId);
         if (currentUser) {
           setCurrentUserRole(currentUser.role);
-          console.log("role", currentUser.role);
         }
       }
     } catch (error) {
@@ -181,6 +217,21 @@ const handleSavePermissions = (formId, permissions) => {
     );
     setFilteredForms(filtered);
   };
+  const hasPermission = (form, ...requiredPermissions) => {
+    const currentUserId = sessionStorage.getItem("userId");
+    if (currentUserRole === "Super Admin") return true;
+    if (!form || !form._id || !currentUserId) return false;
+
+    const perms = existingPermissions[form._id] || [];
+    return perms.some(
+      (perm) =>
+        perm.userId === currentUserId &&
+        requiredPermissions.includes(perm.permission)
+    );
+  };
+
+  const canManagePermissions = () =>
+    currentUserRole === "Super Admin" || currentUserRole === "Admin";
 
   return (
     <div>
@@ -229,130 +280,56 @@ const handleSavePermissions = (formId, permissions) => {
                           <Card.Text>{form.description}</Card.Text>
                         </div>
                         <div className="d-flex align-items-center">
-                          <Button
-                            variant="secondary"
-                            onClick={() => handleEditForm(form)}
-                          >
-                            <FaPencilAlt size={16} />
-                          </Button>
-                          <Button
-                            variant="danger"
-                            className="ms-2"
-                            onClick={() => handleShowDeleteModal(form)}
-                          >
-                            <FaTrash size={16} />
-                          </Button>
+                          {hasPermission(form, "edit") ? (
+                            <Button
+                              variant="secondary"
+                              onClick={() => handleEditForm(form)}
+                              title="Edit Form"
+                            >
+                              <FaPencilAlt size={16} />
+                            </Button>
+                          ) : (
+                            <Button
+                              variant="secondary"
+                              disabled
+                              title="You don't have edit permission"
+                            >
+                              <FaPencilAlt size={16} />
+                            </Button>
+                          )}
+
+                          {hasPermission(form, "delete") ? (
+                            <Button
+                              variant="danger"
+                              className="ms-2"
+                              onClick={() => handleShowDeleteModal(form)}
+                              title="Delete Form"
+                            >
+                              <FaTrash size={16} />
+                            </Button>
+                          ) : (
+                            <Button
+                              variant="danger"
+                              className="ms-2"
+                              disabled
+                              title="You don't have delete permission"
+                            >
+                              <FaTrash size={16} />
+                            </Button>
+                          )}
 
                           {/* Dropdown for form settings */}
-                          <Dropdown align="end" className="ms-2">
-                            <Dropdown.Toggle
-                              variant="link"
-                              id="dropdown-custom-components"
-                              style={{ color: "black" }}
-                            >
-                              <FaEllipsisV
-                                size={16}
-                                style={{ color: "black" }}
-                              />
-                            </Dropdown.Toggle>
-
-                            <Dropdown.Menu>
-                              {/* Visibility Settings */}
-                              {currentUserRole === "Super Admin" ||
-                              currentUserRole === "Admin" ? (
-                                <Dropdown.Item
-                                  onClick={() =>
-                                    handleShowVisibilityModal(form)
-                                  }
-                                >
-                                  Visibility Settings
-                                </Dropdown.Item>
-                              ) : (
-                                <Dropdown.Item
-                                  disabled
-                                  title="Only Admins can manage visibility"
-                                >
-                                  <span className="text-muted">
-                                    Visibility Settings (Restricted)
-                                  </span>
-                                </Dropdown.Item>
-                              )}
-
-                              {/* Responses */}
-                              {currentUserRole === "Super Admin" ||
-                              currentUserRole === "Admin" ? (
-                                <Dropdown.Item
-                                  onClick={() => handleResponses(form)}
-                                >
-                                  View Responses
-                                </Dropdown.Item>
-                              ) : (
-                                <Dropdown.Item
-                                  disabled
-                                  title="Only Admins can view responses"
-                                >
-                                  <span className="text-muted">
-                                    View Responses (Restricted)
-                                  </span>
-                                </Dropdown.Item>
-                              )}
-
-                              {currentUserRole === "Super Admin" ||
-                              currentUserRole === "Admin" ? (
-                                <Dropdown.Item
-                                  onClick={() => handleStats(form)}
-                                >
-                                  View Statistics Dashboard
-                                </Dropdown.Item>
-                              ) : (
-                                <Dropdown.Item
-                                  disabled
-                                  title="Only Admins can view statistics"
-                                >
-                                  <span className="text-muted">
-                                    View Statistics (Restricted)
-                                  </span>
-                                </Dropdown.Item>
-                              )}
-
-                              {/* Permissions */}
-                              {currentUserRole === "Super Admin" ||
-                              currentUserRole === "Admin" ? (
-                                <Dropdown.Item
-                                  onClick={() => handlePermissions(form)}
-                                >
-                                  Permissions
-                                </Dropdown.Item>
-                              ) : (
-                                <Dropdown.Item
-                                  disabled
-                                  title="Only Admins can manage permissions"
-                                >
-                                  <span className="text-muted">
-                                    Permissions (Restricted)
-                                  </span>
-                                </Dropdown.Item>
-                              )}
-
-                              {/* Duplicate Form */}
-                              <Dropdown.Item /* onClick={() => handleDuplicateForm(form)} */
-                              >
-                                Duplicate Form
-                              </Dropdown.Item>
-
-                              {/* Export Form */}
-                              <Dropdown.Item /* onClick={() => handleExportForm(form)} */
-                              >
-                                Export Form
-                              </Dropdown.Item>
-
-                              {/* Lock Form */}
-                              <Dropdown.Item /* onClick={() => handleLockForm(form)} */
-                              >
-                                Lock Form
-                              </Dropdown.Item>
-                            </Dropdown.Menu>
-                          </Dropdown>
+                          <FormActionsDropdown
+                            form={form}
+                            hasPermission={hasPermission}
+                            handleShowVisibilityModal={
+                              handleShowVisibilityModal
+                            }
+                            handleResponses={handleResponses}
+                            handleStats={handleStats}
+                            handlePermissions={handlePermissions}
+                            canManagePermissions={canManagePermissions}
+                          />
                         </div>
                       </Card.Body>
                     </Card>
@@ -385,7 +362,10 @@ const handleSavePermissions = (formId, permissions) => {
             handleClose={() => setShowPermissionsModal(false)}
             form={selectedForm}
             users={users}
+            currentUserRole={currentUserRole}
             onSave={handleSavePermissions}
+            initialPermissions={existingPermissions}
+            fetchForms={fetchForms}
           />
         </main>
         <ToastContainer />
