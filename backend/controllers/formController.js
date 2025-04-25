@@ -442,7 +442,7 @@ exports.duplicatedForm = async (req, res) => {
 };
 
 // Export Form as JSON
-exports.existingForm = async (req, res) => {
+exports.exportForm = async (req, res) => {
   const { formId } = req.params;
 
   try {

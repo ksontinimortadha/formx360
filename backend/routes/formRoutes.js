@@ -9,6 +9,9 @@ const {
   updateFormStyle,
   updateFieldStyle,
   updateFormVisibility,
+  duplicatedForm,
+  exportForm,
+  lockForm,
 } = require("../controllers/formController");
 const authenticateUser = require("../middlewares/authenticateUser");
 
@@ -31,9 +34,18 @@ router.put("/style/:id", updateFormStyle);
 router.put("/:formId/fields/:fieldId/style", updateFieldStyle);
 
 // Delete a form by ID
-router.delete("/:id", deleteForm);4
+router.delete("/:id", deleteForm);
+4;
 
 // Update form visibility
-router.put("/:formId/visibility", updateFormVisibility); 
+router.put("/:formId/visibility", updateFormVisibility);
 
+// Duplicate
+router.post("/duplicate", duplicatedForm);
+
+// export
+router.get("/export/:formId", exportForm);
+
+// Lock
+router.post("lock", lockForm);
 module.exports = router;
