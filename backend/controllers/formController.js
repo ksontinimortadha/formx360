@@ -414,7 +414,7 @@ exports.getPrivateFormByToken = async (req, res) => {
 
 // Duplicate Form
 exports.duplicatedForm = async (req, res) => {
-  const { formId } = req.body;
+  const { formId } = req.params;
 
   try {
     // Find the existing form by ID

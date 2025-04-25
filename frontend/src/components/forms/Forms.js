@@ -231,6 +231,34 @@ function Forms() {
   const canManagePermissions = () =>
     currentUserRole === "Super Admin" || currentUserRole === "Admin";
 
+  const handleLockForm = async (formId, lockStatus) => {
+    try {
+      const response = await axios.put(
+        `https://formx360.onrender.com/forms/lock/${formId}`,
+        { lockStatus }
+      );
+      await fetchForms(companyId);
+
+      toast.success(`Form ${lockStatus ? "locked" : "unlocked"} successfully`);
+    } catch (error) {
+      console.error("Error locking/unlocking form:", error);
+      toast.error("Failed to change lock status");
+    }
+  };
+
+  const handleDuplicateForm = async (form) => {
+    try {
+      const response = await axios.post(
+        `https://formx360.onrender.com/forms/duplicate/${form._id}`
+      );
+      toast.success("Form duplicated successfully!");
+      // Optionally, you can update the UI with the new form data
+      console.log("Duplicated form:", response.data);
+    } catch (error) {
+      console.error("Error duplicating form:", error);
+      toast.error("Failed to duplicate the form.");
+    }
+  };
   return (
     <div>
       <NavbarComponent />
@@ -343,6 +371,8 @@ function Forms() {
                             }
                             handlePermissions={handlePermissions}
                             canManagePermissions={canManagePermissions}
+                            handleLockForm={handleLockForm}
+                            handleDuplicateForm={handleDuplicateForm}
                           />
                         </div>
                       </Card.Body>
