@@ -198,13 +198,8 @@ function Forms() {
   const handleShowAddModal = () => setShowAddModal(true);
   const handleCloseAddModal = () => setShowAddModal(false);
 
-  const handleResponses = (form) => {
-    navigate(`/responses/form/${form._id}`);
-  };
 
-  const handleStats = (form) => {
-    navigate(`/report-dashboard/${form._id}`);
-  };
+  
 
   // Handle the search input change
   const handleSearchChange = (e) => {
@@ -325,8 +320,6 @@ function Forms() {
                             handleShowVisibilityModal={
                               handleShowVisibilityModal
                             }
-                            handleResponses={handleResponses}
-                            handleStats={handleStats}
                             handlePermissions={handlePermissions}
                             canManagePermissions={canManagePermissions}
                           />

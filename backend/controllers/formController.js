@@ -413,3 +413,79 @@ exports.getPrivateFormByToken = async (req, res) => {
   }
 };
 
+// Duplicate Form
+exports.duplicatedForm = async (req, res) => {
+  const { formId } = req.body;
+
+  try {
+    // Find the existing form by ID
+    const existingForm = await Form.findById(formId);
+
+    if (!existingForm) {
+      return res.status(404).json({ message: 'Form not found' });
+    }
+
+    // Create a new form with the same data
+    const duplicatedForm = new Form({
+      ...existingForm.toObject(), // Copy all fields from the original form
+      title: `${existingForm.title} - Copy`, // You might want to modify the title
+      _id: mongoose.Types.ObjectId(), // Generate a new ID for the duplicated form
+    });
+
+    // Save the duplicated form
+    const savedForm = await duplicatedForm.save();
+    res.status(201).json(savedForm);
+  } catch (error) {
+    console.error('Error duplicating form:', error);
+    res.status(500).json({ message: 'Failed to duplicate form' });
+  }
+};
+
+// Export Form as JSON
+exports.existingForm = async (req, res) => {
+  const { formId } = req.params;
+
+  try {
+    // Find the form by ID
+    const form = await Form.findById(formId);
+
+    if (!form) {
+      return res.status(404).json({ message: 'Form not found' });
+    }
+
+    // Set headers for file download (e.g., JSON format)
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Content-Disposition', `attachment; filename=${form.title}.json`);
+
+    // Send the form data as JSON
+    res.status(200).json(form);
+  } catch (error) {
+    console.error('Error exporting form:', error);
+    res.status(500).json({ message: 'Failed to export form' });
+  }
+};
+
+// Lock Form
+exports.lockForm = async (req, res) => {
+  const { formId, lockStatus } = req.body;
+
+  try {
+    // Find the form by ID
+    const form = await Form.findById(formId);
+
+    if (!form) {
+      return res.status(404).json({ message: 'Form not found' });
+    }
+
+    // Set the lock status
+    form.locked = lockStatus;
+
+    // Save the form with the updated lock status
+    const updatedForm = await form.save();
+
+    res.status(200).json(updatedForm);
+  } catch (error) {
+    console.error('Error locking form:', error);
+    res.status(500).json({ message: 'Failed to lock form' });
+  }
+};

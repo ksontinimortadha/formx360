@@ -8,6 +8,7 @@ const formSchema = new mongoose.Schema(
       required: true,
     },
     title: { type: String, required: true },
+    locked: { type: Boolean, default: false },
     description: { type: String },
     visibility: {
       type: String,
