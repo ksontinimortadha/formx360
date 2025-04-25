@@ -61,23 +61,24 @@ const FormActionsDropdown = ({
     }
   };
 
-  const handleLockForm = async (form) => {
-    try {
-      const response = await axios.post(
-        `https://formx360.onrender.com/forms/lock/`,
-        {
-          formId: form._id,
-          lockStatus: true, // Lock the form
-        }
-      );
-      toast.success("Form locked successfully!");
-      // Optionally, update the UI with the new locked status
-      console.log("Form locked:", response.data);
-    } catch (error) {
-      console.error("Error locking form:", error);
-      toast.error("Failed to lock the form.");
-    }
-  };
+const handleLockForm = async (formId, lockStatus) => {
+  try {
+    const response = await axios.put(
+      "https://formx360.onrender.com/forms/lock",
+      {
+        formId,
+        lockStatus,
+      }
+    );
+
+    toast.success(`Form ${lockStatus ? "locked" : "unlocked"} successfully`);
+
+  } catch (error) {
+    console.error("Error locking/unlocking form:", error);
+    toast.error("Failed to change lock status");
+  }
+};
+
 
 
   
@@ -153,9 +154,22 @@ const FormActionsDropdown = ({
         </Dropdown.Item>
 
         {/* Lock Form */}
-        <Dropdown.Item onClick={() => handleLockForm(form)}>
-          Lock Form
-        </Dropdown.Item>
+        {canManagePermissions() ? (
+          <Dropdown.Item
+            onClick={() => handleLockForm(form._id, !form.locked)}
+            title={form.locked ? "Unlock this form" : "Lock this form"}
+          >
+            {form.locked ? "Unlock Form" : "Lock Form"}
+          </Dropdown.Item>
+        ) : (
+          <Dropdown.Item disabled title="Only Admins can lock/unlock forms">
+            <span className="text-muted">
+              {form.locked
+                ? "Unlock Form (Restricted)"
+                : "Lock Form (Restricted)"}
+            </span>
+          </Dropdown.Item>
+        )}
       </Dropdown.Menu>
     </Dropdown>
   );

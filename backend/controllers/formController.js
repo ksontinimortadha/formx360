@@ -474,8 +474,6 @@ exports.lockForm = async (req, res) => {
   try {
     // Find the form by ID
     const form = await Form.findById(formId);
-    console.log("Found form:", form);
-    console.log("Received formId:", formId);
 
     if (!form) {
       return res.status(404).json({ message: "Form not found" });

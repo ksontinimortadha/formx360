@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Container, Row, Col, Button, Card, Form } from "react-bootstrap";
+import { Container, Row, Col, Button, Card, Form, Badge } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FaPencilAlt, FaTrash, FaPlus } from "react-icons/fa";
 import axios from "axios";
@@ -271,11 +271,20 @@ function Forms() {
                     <Card className="shadow-sm border-0 rounded-4">
                       <Card.Body className="d-flex justify-content-between align-items-center">
                         <div>
-                          <Card.Title>{form.title}</Card.Title>
+                          <Card.Title>
+                            {form.title}{" "}
+                            {form.locked && (
+                              <Badge bg="secondary" className="ms-2">
+                                Locked
+                              </Badge>
+                            )}
+                          </Card.Title>
                           <Card.Text>{form.description}</Card.Text>
                         </div>
+
                         <div className="d-flex align-items-center">
-                          {hasPermission(form, "edit") ? (
+                          {/* Edit Button */}
+                          {hasPermission(form, "edit") && !form.locked ? (
                             <Button
                               variant="secondary"
                               onClick={() => handleEditForm(form)}
@@ -287,13 +296,18 @@ function Forms() {
                             <Button
                               variant="secondary"
                               disabled
-                              title="You don't have edit permission"
+                              title={
+                                form.locked
+                                  ? "Form is locked"
+                                  : "You don't have edit permission"
+                              }
                             >
                               <FaPencilAlt size={16} />
                             </Button>
                           )}
 
-                          {hasPermission(form, "delete") ? (
+                          {/* Delete Button */}
+                          {hasPermission(form, "delete") && !form.locked ? (
                             <Button
                               variant="danger"
                               className="ms-2"
@@ -307,13 +321,17 @@ function Forms() {
                               variant="danger"
                               className="ms-2"
                               disabled
-                              title="You don't have delete permission"
+                              title={
+                                form.locked
+                                  ? "Form is locked"
+                                  : "You don't have delete permission"
+                              }
                             >
                               <FaTrash size={16} />
                             </Button>
                           )}
 
-                          {/* Dropdown for form settings */}
+                          {/* Dropdown for Form Actions */}
                           <FormActionsDropdown
                             form={form}
                             hasPermission={hasPermission}
