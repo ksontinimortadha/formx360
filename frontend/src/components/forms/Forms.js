@@ -252,13 +252,15 @@ function Forms() {
         `https://formx360.onrender.com/forms/duplicate/${form._id}`
       );
       toast.success("Form duplicated successfully!");
-      // Optionally, you can update the UI with the new form data
-      console.log("Duplicated form:", response.data);
+
+      // Refresh the forms list
+      await fetchForms(companyId); // make sure companyId is available in scope
     } catch (error) {
       console.error("Error duplicating form:", error);
       toast.error("Failed to duplicate the form.");
     }
   };
+
   return (
     <div>
       <NavbarComponent />

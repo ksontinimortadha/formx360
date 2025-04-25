@@ -417,22 +417,25 @@ exports.duplicatedForm = async (req, res) => {
   const { formId } = req.params;
 
   try {
-    // Find the existing form by ID
     const existingForm = await Form.findById(formId);
 
     if (!existingForm) {
       return res.status(404).json({ message: "Form not found" });
     }
 
-    // Create a new form with the same data
-    const duplicatedForm = new Form({
-      ...existingForm.toObject(), // Copy all fields from the original form
-      title: `${existingForm.title} - Copy`, // You might want to modify the title
-      _id: mongoose.Types.ObjectId(), // Generate a new ID for the duplicated form
-    });
+    // Convert to plain object and exclude fields that shouldn't be duplicated
+    const formObj = existingForm.toObject();
+    delete formObj._id;
+    delete formObj.__v;
+    delete formObj.createdAt;
+    delete formObj.updatedAt;
+    delete formObj.responses; // remove responses if present
+    formObj.title = `${formObj.title} - Copy`;
 
-    // Save the duplicated form
+    // Create and save new form
+    const duplicatedForm = new Form(formObj);
     const savedForm = await duplicatedForm.save();
+
     res.status(201).json(savedForm);
   } catch (error) {
     console.error("Error duplicating form:", error);
