@@ -43,8 +43,7 @@ const PermissionsModal = ({ show, handleClose, form, users, onSave }) => {
     <Modal show={show} onHide={handleClose} size="lg" centered>
       <Modal.Header closeButton>
         <Modal.Title className="fw-semibold">
-          <span className="me-2">🔐</span>Manage Permissions —{" "}
-          <i>{form?.title}</i>
+          Manage Permissions : <i>{form?.title}</i>
         </Modal.Title>
       </Modal.Header>
       <Modal.Body style={{ maxHeight: "70vh", overflowY: "auto" }}>

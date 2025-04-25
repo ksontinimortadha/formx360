@@ -41,6 +41,7 @@ app.use("/responses", require("./routes/responseRoutes"));
 app.use("/companies", require("./routes/companyRoutes"));
 app.use("/reports", require("./routes/reportRoutes"));
 app.use("/notifications", require("./routes/notificationRoutes"));
+app.use("/permissions", require("./routes/permissionRoutes"));
 
 // Socket connection handler
 io.on("connection", (socket) => {
