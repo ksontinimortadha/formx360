@@ -41,11 +41,11 @@ router.delete("/:id", deleteForm);
 router.put("/:formId/visibility", updateFormVisibility);
 
 // Duplicate
-router.post("/duplicate", duplicatedForm);
+router.post("/duplicate/:formId", duplicatedForm);
 
 // export
 router.get("/export/:formId", exportForm);
 
 // Lock
-router.post("/lock", lockForm);
+router.post("/lock/:formId", lockForm);
 module.exports = router;

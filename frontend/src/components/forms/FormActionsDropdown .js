@@ -24,7 +24,7 @@ const FormActionsDropdown = ({
   const handleDuplicateForm = async (form) => {
     try {
       const response = await axios.post(
-        "https://formx360.onrender.com/forms/duplicate",
+        `https://formx360.onrender.com/forms/duplicate/${form._id}`,
         {
           formId: form._id,
         }
@@ -64,7 +64,7 @@ const FormActionsDropdown = ({
   const handleLockForm = async (form) => {
     try {
       const response = await axios.post(
-        "https://formx360.onrender.com/forms/lock",
+        `https://formx360.onrender.com/forms/lock/${form._id}`,
         {
           formId: form._id,
           lockStatus: true, // Lock the form
