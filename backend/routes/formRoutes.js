@@ -47,5 +47,5 @@ router.post("/duplicate", duplicatedForm);
 router.get("/export/:formId", exportForm);
 
 // Lock
-router.post("lock", lockForm);
+router.post("/lock", lockForm);
 module.exports = router;
