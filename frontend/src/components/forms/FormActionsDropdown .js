@@ -13,7 +13,7 @@ const FormActionsDropdown = ({
   canManagePermissions,
 }) => {
   const navigate = useNavigate();
-    
+
   const handleResponses = (form) => {
     navigate(`/responses/form/${form._id}`);
   };
@@ -61,27 +61,20 @@ const FormActionsDropdown = ({
     }
   };
 
-const handleLockForm = async (formId, lockStatus) => {
-  try {
-    const response = await axios.put(
-      "https://formx360.onrender.com/forms/lock",
-      {
-        formId,
-        lockStatus,
-      }
-    );
+  const handleLockForm = async (formId, lockStatus) => {
+    try {
+      const response = await axios.put(
+        `https://formx360.onrender.com/forms/lock${formId}`,
+        { lockStatus }
+      );
 
-    toast.success(`Form ${lockStatus ? "locked" : "unlocked"} successfully`);
+      toast.success(`Form ${lockStatus ? "locked" : "unlocked"} successfully`);
+    } catch (error) {
+      console.error("Error locking/unlocking form:", error);
+      toast.error("Failed to change lock status");
+    }
+  };
 
-  } catch (error) {
-    console.error("Error locking/unlocking form:", error);
-    toast.error("Failed to change lock status");
-  }
-};
-
-
-
-  
   return (
     <Dropdown align="end" className="ms-2">
       <Dropdown.Toggle

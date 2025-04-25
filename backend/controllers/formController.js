@@ -469,20 +469,16 @@ exports.exportForm = async (req, res) => {
 
 // Lock Form
 exports.lockForm = async (req, res) => {
-  const { formId, lockStatus } = req.body;
+  const { lockStatus } = req.body;
+  const { formId } = req.params;
 
   try {
-    // Find the form by ID
     const form = await Form.findById(formId);
-
     if (!form) {
       return res.status(404).json({ message: "Form not found" });
     }
 
-    // Set the lock status
     form.locked = lockStatus;
-
-    // Save the form with the updated lock status
     const updatedForm = await form.save();
 
     res.status(200).json(updatedForm);

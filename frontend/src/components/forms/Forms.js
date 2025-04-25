@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Container, Row, Col, Button, Card, Form, Badge } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Button,
+  Card,
+  Form,
+  Badge,
+} from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FaPencilAlt, FaTrash, FaPlus } from "react-icons/fa";
 import axios from "axios";
@@ -80,8 +88,6 @@ function Forms() {
         ...prev,
         [formId]: flatPermissions,
       }));
-
-      console.log("Permissions for form", formId, flatPermissions);
     } catch (error) {
       console.error("Failed to fetch permissions:", error);
       toast.error("Failed to load permissions.");
@@ -197,9 +203,6 @@ function Forms() {
 
   const handleShowAddModal = () => setShowAddModal(true);
   const handleCloseAddModal = () => setShowAddModal(false);
-
-
-  
 
   // Handle the search input change
   const handleSearchChange = (e) => {
