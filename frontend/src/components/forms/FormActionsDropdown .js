@@ -64,7 +64,7 @@ const FormActionsDropdown = ({
   const handleLockForm = async (form) => {
     try {
       const response = await axios.post(
-        `https://formx360.onrender.com/forms/lock/${form._id}`,
+        `https://formx360.onrender.com/forms/lock/`,
         {
           formId: form._id,
           lockStatus: true, // Lock the form

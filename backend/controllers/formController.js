@@ -324,7 +324,6 @@ exports.updateFieldStyle = async (req, res) => {
   }
 };
 
-
 exports.updateFormVisibility = async (req, res) => {
   const { formId } = req.params;
   const { visibility, publicUrl } = req.body;
@@ -422,7 +421,7 @@ exports.duplicatedForm = async (req, res) => {
     const existingForm = await Form.findById(formId);
 
     if (!existingForm) {
-      return res.status(404).json({ message: 'Form not found' });
+      return res.status(404).json({ message: "Form not found" });
     }
 
     // Create a new form with the same data
@@ -436,8 +435,8 @@ exports.duplicatedForm = async (req, res) => {
     const savedForm = await duplicatedForm.save();
     res.status(201).json(savedForm);
   } catch (error) {
-    console.error('Error duplicating form:', error);
-    res.status(500).json({ message: 'Failed to duplicate form' });
+    console.error("Error duplicating form:", error);
+    res.status(500).json({ message: "Failed to duplicate form" });
   }
 };
 
@@ -450,18 +449,21 @@ exports.exportForm = async (req, res) => {
     const form = await Form.findById(formId);
 
     if (!form) {
-      return res.status(404).json({ message: 'Form not found' });
+      return res.status(404).json({ message: "Form not found" });
     }
 
     // Set headers for file download (e.g., JSON format)
-    res.setHeader('Content-Type', 'application/json');
-    res.setHeader('Content-Disposition', `attachment; filename=${form.title}.json`);
+    res.setHeader("Content-Type", "application/json");
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename=${form.title}.json`
+    );
 
     // Send the form data as JSON
     res.status(200).json(form);
   } catch (error) {
-    console.error('Error exporting form:', error);
-    res.status(500).json({ message: 'Failed to export form' });
+    console.error("Error exporting form:", error);
+    res.status(500).json({ message: "Failed to export form" });
   }
 };
 
@@ -472,9 +474,11 @@ exports.lockForm = async (req, res) => {
   try {
     // Find the form by ID
     const form = await Form.findById(formId);
+    console.log("Found form:", form);
+    console.log("Received formId:", formId);
 
     if (!form) {
-      return res.status(404).json({ message: 'Form not found' });
+      return res.status(404).json({ message: "Form not found" });
     }
 
     // Set the lock status
@@ -485,7 +489,7 @@ exports.lockForm = async (req, res) => {
 
     res.status(200).json(updatedForm);
   } catch (error) {
-    console.error('Error locking form:', error);
-    res.status(500).json({ message: 'Failed to lock form' });
+    console.error("Error locking form:", error);
+    res.status(500).json({ message: "Failed to lock form" });
   }
 };
