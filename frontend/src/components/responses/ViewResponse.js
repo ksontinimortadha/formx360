@@ -8,9 +8,10 @@ const ViewResponse = () => {
 
   useEffect(() => {
     axios
-      .get(`https://formx360.onrender.com/responses/user/${responseId}`)
+      .get(`https://formx360.onrender.com/responses/${responseId}`)
       .then((res) => {
         setResponse(res.data);
+        console.log("response", res.data);
       })
       .catch((err) => {
         console.error("Error fetching response", err);

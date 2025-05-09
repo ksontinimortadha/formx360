@@ -6,6 +6,7 @@ const {
   getUserResponses,
   editResponse,
   deleteResponse,
+  getResponseById,
 } = require("../controllers/responseController");
 
 // Submit a response
