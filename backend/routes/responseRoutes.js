@@ -4,6 +4,8 @@ const {
   submitResponse,
   getFormResponses,
   getUserResponses,
+  editResponse,
+  deleteResponse,
 } = require("../controllers/responseController");
 
 // Submit a response
@@ -14,5 +16,11 @@ router.get("/form/:form_id", getFormResponses);
 
 // Get all responses submitted by a user
 router.get("/user/:user_id", getUserResponses);
+
+// Edit a response
+router.put("/:response_id", editResponse);
+
+// Delete a response
+router.delete("/:response_id", deleteResponse);
 
 module.exports = router;

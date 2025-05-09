@@ -17,7 +17,7 @@ import PreviewPage from "./components/forms/PreviewPage";
 import FormSubmit from "./components/forms/FormSubmit";
 import FormSubmissionSuccess from "./components/forms/FormSubmissionSuccess";
 import ProtectedRoute from "./components/ProtectedRoute ";
-import ResponsePage from "./components/ResponsePage ";
+import ResponsePage from "./components/responses/ResponsePage ";
 import Reports from "./components/reports/Reports";
 import ReportBuilder from "./components/reports/ReportBuilder";
 import ReportDashboard from "./components/reports/ReportDashboard";

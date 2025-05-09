@@ -37,6 +37,7 @@ function Forms() {
   const [showPermissionsModal, setShowPermissionsModal] = useState(false);
   const [selectedForm, setSelectedForm] = useState(null);
   const [existingPermissions, setExistingPermissions] = useState([]);
+  const [highlightedFormId, setHighlightedFormId] = useState(null);
 
   useEffect(() => {
     const storedCompanyId = sessionStorage.getItem("companyId");
@@ -246,20 +247,33 @@ function Forms() {
     }
   };
 
-  const handleDuplicateForm = async (form) => {
-    try {
-      const response = await axios.post(
-        `https://formx360.onrender.com/forms/duplicate/${form._id}`
-      );
-      toast.success("Form duplicated successfully!");
+ const handleDuplicateForm = async (form) => {
+   try {
+     // Call API to duplicate the form
+     const response = await axios.post(
+       `https://formx360.onrender.com/forms/duplicate/${form._id}`
+     );
 
-      // Refresh the forms list
-      await fetchForms(companyId); // make sure companyId is available in scope
-    } catch (error) {
-      console.error("Error duplicating form:", error);
-      toast.error("Failed to duplicate the form.");
-    }
-  };
+     toast.success("Form duplicated successfully!");
+
+     const newForm = response.data; // This is the duplicated form
+
+     // Optimistically update the state for immediate UI feedback
+     setForms((prev) => [newForm, ...prev]);
+     setFilteredForms((prev) => [newForm, ...prev]); // <- update filtered forms too
+
+     // Highlight the newly duplicated form
+     setHighlightedFormId(newForm._id);
+     setTimeout(() => setHighlightedFormId(null), 3000); // Highlight disappears after 3 seconds
+
+     // Optional: Fetch fresh list of forms from the backend to ensure data consistency
+     await fetchForms(companyId);
+   } catch (error) {
+     console.error("Error duplicating form:", error);
+     toast.error("Failed to duplicate the form.");
+   }
+ };
+
 
   return (
     <div>
@@ -301,7 +315,13 @@ function Forms() {
               ) : (
                 filteredForms.map((form) => (
                   <Col key={form._id} md={12} className="mb-3">
-                    <Card className="shadow-sm border-0 rounded-4">
+                    <Card
+                      className={`shadow-sm border-0 rounded-4 ${
+                        highlightedFormId === form._id
+                          ? "border border-success border-2"
+                          : ""
+                      }`}
+                    >
                       <Card.Body className="d-flex justify-content-between align-items-center">
                         <div>
                           <Card.Title>

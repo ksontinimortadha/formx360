@@ -2,15 +2,13 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
-import NavbarComponent from "./NavbarComponent";
-import { Button, Container, Navbar } from "react-bootstrap";
-import {
-  FaArrowLeft,
-  FaRegArrowAltCircleDown,
-  FaRegArrowAltCircleUp,
-} from "react-icons/fa";
-import ExportModal from "../modals/ExportModal";
-import exportUtils from "./exportUtils";
+import NavbarComponent from "../NavbarComponent";
+import { Container, Navbar } from "react-bootstrap";
+import { FaArrowLeft } from "react-icons/fa";
+import ExportModal from "../../modals/ExportModal";
+import exportUtils from "../exportUtils";
+import ResponseTable from "./ResponseTable";
+import NoResponses from "./NoResponses";
 
 const ResponsePage = () => {
   const { formId } = useParams();
@@ -125,26 +123,7 @@ const ResponsePage = () => {
   if (!responses.length) {
     return (
       <>
-        <NavbarComponent />
-        <Navbar className="bg-body-tertiary" style={{ marginBottom: "20px" }}>
-          <Container>
-            <Navbar.Brand style={{ fontWeight: "500" }}>
-              <FaArrowLeft
-                style={{ marginRight: "20px" }}
-                size={20}
-                color="darkgrey"
-                onClick={() => navigate("/forms")}
-              />
-              Form Responses
-            </Navbar.Brand>
-            <Navbar.Toggle />
-          </Container>
-        </Navbar>
-        <div className="flex justify-center items-center min-h-screen">
-          <p className="text-center text-gray-500 mt-6">
-            No responses found for this form.
-          </p>
-        </div>
+        <NoResponses />
       </>
     );
   }
@@ -152,6 +131,17 @@ const ResponsePage = () => {
   const handleBackClick = () => {
     navigate(`/forms`); // Navigate to the form page
   };
+
+  const handleEdit = (response) => {
+    // open modal or navigate to edit page with response data
+    console.log("Edit clicked", response);
+  };
+
+  const handleDelete = (responseId) => {
+    // confirm and delete the response
+    console.log("Delete clicked", responseId);
+  };
+
   return (
     <>
       <NavbarComponent />
@@ -181,83 +171,15 @@ const ResponsePage = () => {
       </Navbar>
 
       {/* Table for displaying responses */}
-      <table className="w-full table-auto" style={{ marginLeft: "35px" }}>
-        <thead className="bg-gray-100 text-gray-700">
-          <tr>
-            {/* Render column headers dynamically based on field names */}
-            {headers.map((fieldId) => {
-              const field = responses[0]?.responses.find(
-                (res) => res.field_id === fieldId
-              );
-              return (
-                <th
-                  key={fieldId}
-                  className="border p-3 text-left cursor-pointer"
-                >
-                  {field ? field.field_name : "Unknown Field"}{" "}
-                  {sortConfig.key === fieldId ? (
-                    sortConfig.direction === "asc" ? (
-                      <FaRegArrowAltCircleUp
-                        onClick={() => requestSort(fieldId)}
-                      />
-                    ) : (
-                      <FaRegArrowAltCircleDown
-                        onClick={() => requestSort(fieldId)}
-                      />
-                    )
-                  ) : (
-                    <FaRegArrowAltCircleDown
-                      onClick={() => requestSort(fieldId)}
-                    />
-                  )}
-                </th>
-              );
-            })}
-            <th
-              className="border p-3 text-left cursor-pointer"
-              onClick={() => requestSort("submitted_at")}
-            >
-              Submitted At{" "}
-              {sortConfig.key === "submitted_at" ? (
-                sortConfig.direction === "asc" ? (
-                  <FaRegArrowAltCircleUp />
-                ) : (
-                  <FaRegArrowAltCircleDown />
-                )
-              ) : (
-                <FaRegArrowAltCircleDown />
-              )}
-            </th>
-            <th className="border p-3 text-left">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {/* Render responses dynamically */}
-          {currentResponses.map((response) => (
-            <tr
-              key={response._id}
-              className="border hover:bg-gray-50 transition-all"
-            >
-              {headers.map((fieldId) => {
-                const field = response.responses.find(
-                  (res) => res.field_id === fieldId
-                );
-                return (
-                  <td key={fieldId} className="border p-3 text-gray-700">
-                    {field ? field.value : "N/A"}
-                  </td>
-                );
-              })}
-              <td className="border p-3 text-gray-700">
-                {new Date(response.submitted_at).toLocaleString()}
-              </td>
-              <td className="border p-3 text-gray-700">
-                <Button variant="secondary">View Details</Button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <ResponseTable
+        headers={headers}
+        responses={responses}
+        currentResponses={currentResponses}
+        sortConfig={sortConfig}
+        requestSort={requestSort}
+        handleEdit={handleEdit}
+        handleDelete={handleDelete}
+      />
 
       {/* Pagination controls */}
       {/**
