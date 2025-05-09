@@ -8,7 +8,7 @@ import axios from "axios";
 import moment from "moment";
 import { toast } from "react-toastify";
 
-function NavbarComponent({ userId: propUserId }) {
+function NavbarComponent() {
   const [userId, setUserId] = useState(sessionStorage.getItem("userId"));
   const [notifications, setNotifications] = useState([]);
   const navigate = useNavigate();

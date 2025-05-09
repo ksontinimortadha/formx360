@@ -25,6 +25,7 @@ import { useEffect } from "react";
 import socket from "./socket";
 import ViewResponse from "./components/responses/ViewResponse";
 import EditResponse from "./components/responses/EditResponse";
+import UserDashboard from "./components/UserDashboard";
 
 function App() {
   useEffect(() => {
@@ -61,6 +62,14 @@ function App() {
           element={
             <ProtectedRoute>
               <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/user-dashboard"
+          element={
+            <ProtectedRoute>
+              <UserDashboard />
             </ProtectedRoute>
           }
         />

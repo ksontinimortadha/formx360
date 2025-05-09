@@ -38,12 +38,18 @@ function Login() {
         localStorage.setItem("token", response.data.token);
         sessionStorage.setItem("companyId", response.data.user.companyId);
         const companyId = response.data.user.companyId;
-        const redirectTarget =
-          from !== "/dashboard"
-            ? from
-            : companyId
+        const role = response.data.user.role;
+        console.log("role", role);
+        let redirectTarget = from !== "/dashboard" ? from : "/dashboard";
+
+        if (role === "User") {
+          redirectTarget = `/user-dashboard`; // Redirect to the user dashboard
+        } else if (role === "admin") {
+          // Admin can be redirected to the company's dashboard or another page
+          redirectTarget = companyId
             ? `/dashboard?companyId=${companyId}`
             : `/companies/company`;
+        }
 
         navigate(redirectTarget, { replace: true });
       } else {
