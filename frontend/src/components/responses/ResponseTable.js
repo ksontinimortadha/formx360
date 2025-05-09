@@ -77,9 +77,10 @@ const ResponseTable = ({
         <thead className="bg-gray-100 text-gray-700">
           <tr>
             {headers.map((fieldId) => {
-              const field = responses[0]?.responses.find(
+              const field = responses[0]?.responses?.find(
                 (res) => res.field_id === fieldId
               );
+
               return (
                 <th
                   key={fieldId}

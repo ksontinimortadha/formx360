@@ -57,6 +57,7 @@ const ResponsePage = () => {
       }
 
       setResponses(response.data);
+      fetchResponses(formId);
     } catch (error) {
       console.error("Error fetching responses:", error);
       toast.error("Failed to fetch responses.");
@@ -132,14 +133,54 @@ const ResponsePage = () => {
     navigate(`/forms`); // Navigate to the form page
   };
 
-  const handleEdit = (response) => {
-    // open modal or navigate to edit page with response data
-    console.log("Edit clicked", response);
+  const handleEdit = async (updatedResponse) => {
+    try {
+      // Send PUT request to the backend to update the response
+      const response = await axios.put(
+        `https://formx360.onrender.com/responses/${updatedResponse._id}`,
+        updatedResponse
+      );
+
+      // Update the responses in the frontend state with the updated response
+      setResponses((prevResponses) =>
+        prevResponses.map((res) =>
+          res._id === updatedResponse._id
+            ? { ...res, ...response.data } 
+            : res
+        )
+      );
+
+
+      toast.success("Response edited successfully");
+    } catch (error) {
+      console.error("Error editing response:", error);
+      toast.error("Failed to edit response");
+    }
   };
 
-  const handleDelete = (responseId) => {
-    // confirm and delete the response
-    console.log("Delete clicked", responseId);
+  const handleDelete = async (responseId) => {
+    try {
+      // Ask for confirmation before deletion
+      const confirmed = window.confirm(
+        "Are you sure you want to delete this response? This action cannot be undone."
+      );
+      if (!confirmed) return;
+
+      // Send DELETE request to the backend to remove the response
+      await axios.delete(
+        `https://formx360.onrender.com/responses/${responseId}`
+      );
+
+      // Remove the deleted response from the state
+      setResponses((prevResponses) =>
+        prevResponses.filter((res) => res._id !== responseId)
+      );
+
+      toast.success("Response deleted successfully");
+    } catch (error) {
+      console.error("Error deleting response:", error);
+      toast.error("Failed to delete response");
+    }
   };
 
   return (

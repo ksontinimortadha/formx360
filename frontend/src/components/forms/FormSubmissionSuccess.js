@@ -1,8 +1,19 @@
 import React from "react";
 import { Button, Container, Row, Col } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
-const FormSubmissionSuccess = ({ responseId, formTitle }) => {
+const FormSubmissionSuccess = ({ formTitle }) => {
+  const { responseId } = useParams();
+  const navigate = useNavigate();
+
+  const handleView = () => {
+    navigate(`/view-response/${responseId}`);
+  };
+
+  const handleEdit = () => {
+    navigate(`/edit-response/${responseId}`);
+  };
+
   return (
     <Container className="mt-5">
       <Row className="justify-content-center">
@@ -11,15 +22,13 @@ const FormSubmissionSuccess = ({ responseId, formTitle }) => {
             <h2>Thank you for your submission!</h2>
             <p>Your response has been successfully submitted.</p>
             <p>You can view or edit your response at any time.</p>
-            <div>
-              <Link to={`/view-response/${responseId}`}>
-                <Button variant="primary" className="mr-3">
-                  View Response
-                </Button>
-              </Link>
-              <Link to={`/edit-response/${responseId}`}>
-                <Button variant="secondary">Edit Response</Button>
-              </Link>
+            <div className="d-flex justify-content-center gap-2">
+              <Button variant="primary" onClick={handleView}>
+                View Response
+              </Button>
+              <Button variant="secondary" onClick={handleEdit}>
+                Edit Response
+              </Button>
             </div>
           </div>
         </Col>

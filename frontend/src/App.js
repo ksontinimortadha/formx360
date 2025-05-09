@@ -23,6 +23,8 @@ import ReportBuilder from "./components/reports/ReportBuilder";
 import ReportDashboard from "./components/reports/ReportDashboard";
 import { useEffect } from "react";
 import socket from "./socket";
+import ViewResponse from "./components/responses/ViewResponse";
+import EditResponse from "./components/responses/EditResponse";
 
 function App() {
   useEffect(() => {
@@ -120,6 +122,8 @@ function App() {
           path="/responses/submission-success/:responseId"
           element={<FormSubmissionSuccess />}
         />
+        <Route path="/view-response/:responseId" element={<ViewResponse />} />
+        <Route path="/edit-response/:responseId" element={<EditResponse />} />
         <Route
           path="/responses/form/:formId"
           element={
