@@ -1,11 +1,12 @@
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
-// Pagination Component
 const Paginations = ({
   totalItems,
   itemsPerPage,
   currentPage,
   setCurrentPage,
+  className = "",
+  style = {},
 }) => {
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
@@ -16,25 +17,30 @@ const Paginations = ({
   };
 
   return (
-    <div className="flex justify-center items-center space-x-4 mt-4">
+    <div
+      className={`d-flex align-items-center justify-content-center ${className}`}
+      style={{ gap: "1rem", ...style }}
+    >
       <button
         onClick={() => handlePageChange(currentPage - 1)}
-        className="bg-gray-200 p-2 rounded-full hover:bg-gray-300 disabled:bg-gray-400"
+        className="btn btn-outline-secondary d-flex align-items-center justify-content-center"
         disabled={currentPage === 1}
-        style={{ marginRight: "10px" }}
+        aria-label="Previous Page"
       >
-        <FaArrowLeft className="text-gray-600" color="darkgrey" />
+        <FaArrowLeft />
       </button>
-      <span className="text-gray-700">
+
+      <span className="fw-semibold">
         Page {currentPage} of {totalPages}
       </span>
+
       <button
         onClick={() => handlePageChange(currentPage + 1)}
-        className="bg-gray-200 p-2 rounded-full hover:bg-gray-300 disabled:bg-gray-400"
+        className="btn btn-outline-secondary d-flex align-items-center justify-content-center"
         disabled={currentPage === totalPages}
-        style={{ marginLeft: "10px" }}
+        aria-label="Next Page"
       >
-        <FaArrowRight className="text-gray-600" color="darkgrey" />
+        <FaArrowRight />
       </button>
     </div>
   );

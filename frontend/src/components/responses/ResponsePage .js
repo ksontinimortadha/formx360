@@ -9,6 +9,7 @@ import ExportModal from "../../modals/ExportModal";
 import exportUtils from "../exportUtils";
 import ResponseTable from "./ResponseTable";
 import NoResponses from "./NoResponses";
+import Paginations from "../Paginations";
 
 const ResponsePage = () => {
   const { formId } = useParams();
@@ -16,7 +17,7 @@ const ResponsePage = () => {
   const [headers, setHeaders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(10);
+  const [itemsPerPage] = useState(5);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
   const navigate = useNavigate();
   const [showExportModal, setShowExportModal] = useState(false);
@@ -144,12 +145,9 @@ const ResponsePage = () => {
       // Update the responses in the frontend state with the updated response
       setResponses((prevResponses) =>
         prevResponses.map((res) =>
-          res._id === updatedResponse._id
-            ? { ...res, ...response.data } 
-            : res
+          res._id === updatedResponse._id ? { ...res, ...response.data } : res
         )
       );
-
 
       toast.success("Response edited successfully");
     } catch (error) {
@@ -223,25 +221,24 @@ const ResponsePage = () => {
       />
 
       {/* Pagination controls */}
-      {/**
-       <Navbar className="bg-body-tertiary" fixed="bottom">
-         <Container>
-           <Navbar.Brand style={{ fontWeight: "bolder" }}></Navbar.Brand>
-           <Navbar.Toggle />
-           <Navbar.Collapse className="justify-content-end">
-             <Navbar.Text>
-               <Paginations
-                 totalItems={responses.length}
-                 itemsPerPage={itemsPerPage}
-                 currentPage={currentPage}
-                 setCurrentPage={setCurrentPage}
-               />
-             </Navbar.Text>
-           </Navbar.Collapse>
-         </Container>
-       </Navbar>
-       
-       */}
+
+      <Navbar
+        className="bg-body-tertiary"
+        fixed="bottom"
+        style={{ height: "70px", borderTop: "1px solid #dee2e6" }}
+      >
+        <Container className="d-flex justify-content-between align-items-center">
+          <Navbar.Brand style={{ fontWeight: "bolder" }}></Navbar.Brand>
+          <Paginations
+            totalItems={responses.length}
+            itemsPerPage={itemsPerPage}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            style={{ marginBottom: "0" }}
+          />
+        </Container>
+      </Navbar>
+
       <ExportModal
         show={showExportModal}
         handleClose={() => setShowExportModal(false)}
