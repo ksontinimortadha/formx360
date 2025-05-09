@@ -31,14 +31,17 @@ const EditResponse = () => {
   }, [responseId]);
 
   const handleChange = (index, value) => {
-    setResponse((prev) =>
-      prev.map((item, i) => (i === index ? { ...item, value } : item))
-    );
+    setResponse((prev) => {
+      const updatedResponses = prev.responses.map((item, i) =>
+        i === index ? { ...item, value } : item
+      );
+      return { ...prev, responses: updatedResponses };
+    });
   };
 
   const handleCheckboxChange = (index, val) => {
-    setResponse((prev) =>
-      prev.map((item, i) => {
+    setResponse((prev) => {
+      const updatedResponses = prev.responses.map((item, i) => {
         if (i !== index) return item;
         const newValue = Array.isArray(item.value) ? [...item.value] : [];
         const exists = newValue.includes(val);
@@ -48,9 +51,11 @@ const EditResponse = () => {
             ? newValue.filter((v) => v !== val)
             : [...newValue, val],
         };
-      })
-    );
+      });
+      return { ...prev, responses: updatedResponses };
+    });
   };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -81,10 +86,12 @@ const EditResponse = () => {
     >
       <h1 className="mb-4 text-center">Update Your Response</h1>
       <form onSubmit={handleSubmit}>
-        {response.map((item, index) => {
+        {response.responses?.map((item, index) => {
           const fieldIndex = form.fields.findIndex(
             (f) => f._id === item.field_id
           );
+          if (fieldIndex === -1) return null;
+
           const field = form.fields[fieldIndex];
           const style = form.fieldStyles?.[fieldIndex] || {};
           const value = item.value;

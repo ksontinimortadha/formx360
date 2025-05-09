@@ -1,16 +1,17 @@
 import React from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 
 // ProtectedRoute component checks if the user is authenticated
 const ProtectedRoute = ({ children }) => {
-  const isAuthenticated = sessionStorage.getItem("companyId"); // or any other logic to check authentication
+  const location = useLocation();
+  const isAuthenticated = sessionStorage.getItem("token");
 
   if (!isAuthenticated) {
     // If not authenticated, redirect to login
-    return <Navigate to="/users/login" />;
+    return <Navigate to="/users/login" state={{ from: location }} replace />;
   }
 
-  return children; // If authenticated, render the children (protected route content)
+  return children; 
 };
 
 export default ProtectedRoute;

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Container, Row, Col, Form, Button, Card } from "react-bootstrap";
 import { FaEye, FaEyeSlash, FaArrowLeft } from "react-icons/fa";
 import logo from "./logo.png";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { loginUser } from "../../api";
 
 function Login() {
@@ -10,7 +10,10 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/dashboard";
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -23,33 +26,31 @@ function Login() {
     setError("");
 
     try {
-      // Send login request
       const response = await loginUser({
         email: formData.email,
         password: formData.password,
       });
 
       if (response.data?.user?.id) {
-        // Store user data
         sessionStorage.setItem("userId", response.data.user.id);
         sessionStorage.setItem("role", response.data.user.role);
         sessionStorage.setItem("token", response.data.token);
         localStorage.setItem("token", response.data.token);
-
-        // Retrieve company ID
+        sessionStorage.setItem("companyId", response.data.user.companyId);
         const companyId = response.data.user.companyId;
+        const redirectTarget =
+          from !== "/dashboard"
+            ? from
+            : companyId
+            ? `/dashboard?companyId=${companyId}`
+            : `/companies/company`;
 
-        // Save companyId if available
-        if (companyId) {
-          sessionStorage.setItem("companyId", companyId);
-          navigate(`/dashboard?companyId=${companyId}`);
-        } else {
-          navigate(`/companies/company`);
-        }
+        navigate(redirectTarget, { replace: true });
       } else {
         setError("Invalid credentials.");
       }
     } catch (err) {
+      console.error("⚠️ Login error:", err);
       setError(
         err.response?.data?.message ||
           (err.request ? "No response from server" : "An error occurred")

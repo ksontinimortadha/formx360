@@ -117,7 +117,14 @@ function App() {
 
         {/* Responses Routes */}
         <Route path="/responses/public/:formId" element={<FormSubmit />} />
-        <Route path="/responses/private/:formId" element={<FormSubmit />} />
+        <Route
+          path="/responses/private/:formId"
+          element={
+            <ProtectedRoute>
+              <FormSubmit />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/responses/submission-success/:responseId"
           element={<FormSubmissionSuccess />}
