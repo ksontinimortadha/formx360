@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -77,42 +77,41 @@ const ResponsePage = () => {
     if (sortConfig.key === key && sortConfig.direction === "asc") {
       direction = "desc";
     }
+    setSortConfig({ key, direction });
+  };
 
-    const sortedResponses = [...responses].sort((a, b) => {
+  const sortedResponses = useMemo(() => {
+    if (!sortConfig.key) return responses;
+
+    return [...responses].sort((a, b) => {
       let aValue = "";
       let bValue = "";
 
-      if (key === "submitted_at") {
-        // Handle "Submitted At" date sorting
+      if (sortConfig.key === "submitted_at") {
         aValue = new Date(a.submitted_at);
         bValue = new Date(b.submitted_at);
       } else {
-        const aField = a.responses.find((res) => res.field_id === key);
-        const bField = b.responses.find((res) => res.field_id === key);
+        const aField = a.responses.find(
+          (res) => res.field_id === sortConfig.key
+        );
+        const bField = b.responses.find(
+          (res) => res.field_id === sortConfig.key
+        );
         aValue = aField ? aField.value : "";
         bValue = bField ? bField.value : "";
       }
 
-      if (aValue < bValue) {
-        return direction === "asc" ? -1 : 1;
-      }
-      if (aValue > bValue) {
-        return direction === "asc" ? 1 : -1;
-      }
+      if (aValue < bValue) return sortConfig.direction === "asc" ? -1 : 1;
+      if (aValue > bValue) return sortConfig.direction === "asc" ? 1 : -1;
       return 0;
     });
+  }, [responses, sortConfig]);
 
-    setResponses(sortedResponses);
-    setSortConfig({ key, direction });
-  };
-
-  // Paginate responses
-  const indexOfLastResponse = currentPage * itemsPerPage;
-  const indexOfFirstResponse = indexOfLastResponse - itemsPerPage;
-  const currentResponses = responses.slice(
-    indexOfFirstResponse,
-    indexOfLastResponse
-  );
+  const currentResponses = useMemo(() => {
+    const indexOfLastResponse = currentPage * itemsPerPage;
+    const indexOfFirstResponse = indexOfLastResponse - itemsPerPage;
+    return sortedResponses.slice(indexOfFirstResponse, indexOfLastResponse);
+  }, [sortedResponses, currentPage, itemsPerPage]);
 
   if (loading) {
     return (

@@ -5,27 +5,50 @@ import axios from "axios";
 const EditResponse = () => {
   const { responseId } = useParams();
   const navigate = useNavigate();
-  const [responses, setResponses] = useState([]);
-  const [formTitle, setFormTitle] = useState("");
+  const [response, setResponse] = useState([]);
+  const [form, setForm] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios
-      .get(`https://formx360.onrender.com/responses/${responseId}`)
-      .then((res) => {
-        setFormTitle(res.data.form_id?.title || "Edit Response");
-        setResponses(res.data.responses || []);
+    const fetchResponse = async () => {
+      try {
+        const res = await axios.get(
+          `https://formx360.onrender.com/responses/${responseId}`
+        );
+        setResponse(res.data);
+        const formRes = await axios.get(
+          `https://formx360.onrender.com/forms/${res.data.form_id._id}`
+        );
+        setForm(formRes.data.form);
+      } catch (err) {
+        console.error("Error fetching data", err);
+      } finally {
         setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Error fetching response", err);
-        setLoading(false);
-      });
+      }
+    };
+
+    fetchResponse();
   }, [responseId]);
 
   const handleChange = (index, value) => {
-    setResponses((prev) =>
+    setResponse((prev) =>
       prev.map((item, i) => (i === index ? { ...item, value } : item))
+    );
+  };
+
+  const handleCheckboxChange = (index, val) => {
+    setResponse((prev) =>
+      prev.map((item, i) => {
+        if (i !== index) return item;
+        const newValue = Array.isArray(item.value) ? [...item.value] : [];
+        const exists = newValue.includes(val);
+        return {
+          ...item,
+          value: exists
+            ? newValue.filter((v) => v !== val)
+            : [...newValue, val],
+        };
+      })
     );
   };
 
@@ -33,7 +56,7 @@ const EditResponse = () => {
     e.preventDefault();
     try {
       await axios.put(`https://formx360.onrender.com/responses/${responseId}`, {
-        responses,
+        response,
       });
       navigate(`/view-response/${responseId}`);
     } catch (error) {
@@ -42,31 +65,69 @@ const EditResponse = () => {
   };
 
   if (loading) return <p className="text-center mt-5">Loading...</p>;
+  if (!form) return <p className="text-center mt-5">Form not found.</p>;
 
   return (
-    <div className="container mt-5">
-      <h1 className="mb-4 text-center">Update your Response</h1>
-      <form onSubmit={handleSubmit} className="card p-4 shadow-sm">
-        {responses.length > 0 ? (
-          responses.map((item, index) => (
-            <div className="mb-3" key={item.field_id || index}>
-              <label className="form-label">
-                {item.field_name || item.field_id}
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                value={
-                  Array.isArray(item.value) ? item.value.join(", ") : item.value
-                }
-                onChange={(e) => handleChange(index, e.target.value)}
-              />
+    <div
+      className={`container mt-5 ${form.theme || ""}`}
+      style={{
+        backgroundColor: "#f9f9f9",
+        padding: "20px",
+        borderRadius: "15px",
+        boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+        maxWidth: "600px",
+        margin: "20px auto",
+      }}
+    >
+      <h1 className="mb-4 text-center">Update Your Response</h1>
+      <form onSubmit={handleSubmit}>
+        {response.map((item, index) => {
+          const fieldIndex = form.fields.findIndex(
+            (f) => f._id === item.field_id
+          );
+          const field = form.fields[fieldIndex];
+          const style = form.fieldStyles?.[fieldIndex] || {};
+          const value = item.value;
+
+          return (
+            <div className="mb-4" key={index}>
+              <label className="form-label fw-bold">{field.label}</label>
+              {field.type === "textarea" ? (
+                <textarea
+                  className="form-control"
+                  style={style}
+                  value={value}
+                  onChange={(e) => handleChange(index, e.target.value)}
+                  rows={3}
+                />
+              ) : field.type === "checkbox" ? (
+                <div style={style}>
+                  {field.options?.map((option, optIdx) => (
+                    <div key={optIdx}>
+                      <input
+                        type="checkbox"
+                        checked={Array.isArray(value) && value.includes(option)}
+                        onChange={() => handleCheckboxChange(index, option)}
+                        className="form-check-input me-2"
+                      />
+                      <label className="form-check-label">{option}</label>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <input
+                  type={field.type === "email" ? "email" : "text"}
+                  className="form-control"
+                  style={style}
+                  value={value}
+                  onChange={(e) => handleChange(index, e.target.value)}
+                />
+              )}
             </div>
-          ))
-        ) : (
-          <p>No fields to edit.</p>
-        )}
-        <button type="submit" className="btn btn-primary">
+          );
+        })}
+
+        <button type="submit" className="btn btn-primary w-100">
           Update Response
         </button>
       </form>
