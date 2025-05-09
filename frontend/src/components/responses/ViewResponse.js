@@ -8,7 +8,7 @@ const ViewResponse = () => {
 
   useEffect(() => {
     axios
-      .get(`/api/responses/${responseId}`)
+      .get(`https://formx360.onrender.com/responses/user/${responseId}`)
       .then((res) => {
         setResponse(res.data);
       })

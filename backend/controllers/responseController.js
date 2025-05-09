@@ -240,19 +240,25 @@ exports.getFormResponses = async (req, res) => {
 };
 
 // Get Responses Submitted by a User
-exports.getUserResponses = async (req, res) => {
-  const { user_id } = req.params;
+exports.getResponseById = async (req, res) => {
+  const { responseId } = req.params;
 
   try {
-    const responses = await Response.find({ user_id }).populate(
+    const response = await Response.findById(responseId).populate(
       "form_id",
       "title"
     );
-    res.status(200).json(responses);
+
+    if (!response) {
+      return res.status(404).json({ message: "Response not found" });
+    }
+
+    res.status(200).json(response);
   } catch (err) {
     res.status(500).json({ message: "Server error", error: err.message });
   }
 };
+
 
 // Edit a Response
 exports.editResponse = async (req, res) => {
