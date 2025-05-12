@@ -14,7 +14,6 @@ import { FaPencilAlt } from "react-icons/fa";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Sidebar from "./Sidebar";
 import NavbarComponent from "./NavbarComponent";
 import UserSidebar from "./UserSideBar";
 
@@ -22,7 +21,6 @@ function UserDashboard() {
   const [forms, setForms] = useState([]);
   const [filteredForms, setFilteredForms] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [companyId, setCompanyId] = useState("");
   const [currentUserRole, setCurrentUserRole] = useState("");
   const [users, setUsers] = useState([]);
   const navigate = useNavigate();
@@ -41,8 +39,6 @@ function UserDashboard() {
 
     loadData();
   }, []);
-  
-
 
   // Fetch existing permissions for a form
   const fetchFormPermissions = async (formId) => {
@@ -77,6 +73,7 @@ function UserDashboard() {
         `https://formx360.onrender.com/forms/${companyId}/forms`
       );
       const formsData = response.data;
+
       const currentUserId = sessionStorage.getItem("userId");
 
       // Fetch all permissions for all forms first
@@ -123,7 +120,6 @@ function UserDashboard() {
       toast.error("Failed to fetch forms.");
     }
   };
-  
 
   const fetchUsers = async (companyId) => {
     if (!companyId) {
@@ -175,7 +171,6 @@ function UserDashboard() {
     if (!form || !form._id || !currentUserId) return false;
 
     const perms = existingPermissions[form._id] || [];
-    console.log(perms);
     return perms.some(
       (perm) =>
         perm.userId === currentUserId &&
@@ -225,9 +220,14 @@ function UserDashboard() {
                       <Card.Body
                         className="d-flex justify-content-between align-items-center"
                         style={{ cursor: "pointer" }}
-                        onClick={() =>
-                          navigate(`/responses/private/${form._id}`)
-                        }
+                        onClick={() => {
+                          const formUrl = form.privateUrl || form.publicUrl;
+                          if (formUrl) {
+                            window.open(formUrl, "_blank"); // Open in a new tab
+                          } else {
+                            toast.error("No URL available for this form.");
+                          }
+                        }}
                       >
                         <div>
                           <Card.Title>

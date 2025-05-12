@@ -29,14 +29,44 @@ const FormBuilder = () => {
   const { formId } = useParams();
   const navigate = useNavigate();
 
-  const [formTitle, setFormTitle] = useState();
+  const [formTitle, setFormTitle] = useState("");
   const [formDescription, setFormDescription] = useState("");
   const [formData, setFormData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isSaving, setIsSaving] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [users, setUsers] = useState([]);
+  const [currentUserRole, setCurrentUserRole] = useState("");
+  const fetchUsers = async (companyId) => {
+    if (!companyId) {
+      toast.error("Company ID is missing!");
+      return;
+    }
 
+    try {
+      const response = await axios.get(
+        `https://formx360.onrender.com/companies/company/${companyId}/users`
+      );
+
+      const userList = response.data.users || [];
+      setUsers(userList);
+
+      // Get current user ID from sessionStorage
+      const currentUserId = sessionStorage.getItem("userId");
+
+      if (currentUserId) {
+        const currentUser = userList.find((user) => user._id === currentUserId);
+        if (currentUser) {
+          setCurrentUserRole(currentUser.role);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching users:", error);
+      toast.error("Failed to fetch users.");
+      setUsers([]);
+    }
+  };
   useEffect(() => {
     const fetchFormData = async () => {
       try {
@@ -48,6 +78,11 @@ const FormBuilder = () => {
         setFormData(form);
         setFormTitle(form.title || "Untitled Form");
         setFormDescription(form.description || "");
+
+        // Call fetchUsers with companyId from the form
+        if (form.companyId) {
+          fetchUsers(form.companyId);
+        }
 
         const validatedFields =
           form.fields?.map((field, index) => {
@@ -63,7 +98,6 @@ const FormBuilder = () => {
           });
         }
 
-        // Set progress to 50% if fields are loaded
         setProgress(validatedFields.length > 0 ? 50 : 0);
       } catch (err) {
         console.error("Error fetching form data:", err);
@@ -132,7 +166,11 @@ const FormBuilder = () => {
   };
 
   const handleBackButtonClick = () => {
-    navigate("/forms");
+    if (currentUserRole === "Admin" || currentUserRole === "Super Admin") {
+      navigate("/forms"); 
+    } else {
+      navigate("/user-dashboard");
+    }
   };
 
   return (
@@ -145,7 +183,6 @@ const FormBuilder = () => {
                 <Button
                   variant="outline-secondary"
                   onClick={handleBackButtonClick}
-                  disabled={isSaving}
                   className="mr-3"
                 >
                   <FaArrowLeft className="mr-2" />

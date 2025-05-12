@@ -1,11 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Button, Card } from "react-bootstrap";
-import { FaUser, FaEdit, FaRegAddressCard, FaLock } from "react-icons/fa";
+import {
+  FaUser,
+  FaEdit,
+  FaRegAddressCard,
+  FaLock,
+  FaWpforms,
+} from "react-icons/fa";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import NavbarComponent from "./NavbarComponent";
 import { toast } from "react-toastify";
 import EditUserModal from "../modals/EditUserModal";
+import ProfileSidebar from "./ProfileSidebar";
 
 function Profile() {
   const [showModal, setShowModal] = useState(false);
@@ -14,6 +21,7 @@ function Profile() {
     lastName: "",
     email: "",
     phone: "",
+    role: "", // Make sure role is also included in userInfo
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null); // State to handle errors
@@ -38,9 +46,6 @@ function Profile() {
         fetchUserInfo(companyId, targetUserId); // Fetch user info with both companyId and userId
       }
     }
-
-    console.log("Company ID from sessionStorage:", savedCompanyId);
-    console.log("User ID from sessionStorage:", savedUserId);
   }, [userId, companyId]); // Only re-run if userId or companyId changes
 
   // Fetch user info
@@ -49,8 +54,7 @@ function Profile() {
       const response = await axios.get(
         `https://formx360.onrender.com/companies/company/${companyId}/users/${userId}`
       );
-      setUserInfo(response.data.user); // Ensure to access the user data properly
-      console.log("user info:", response.data.user);
+      setUserInfo(response.data.user);
       setLoading(false);
     } catch (error) {
       console.error("Failed to fetch user info", error);
@@ -79,17 +83,6 @@ function Profile() {
     }
   };
 
-  // Dynamically set the Profile path with userId
-  const menuItems = [
-    { path: "/dashboard", label: "Dashboard", icon: <FaUser /> },
-    {
-      path: `/profile/${userId}`,
-      label: "Profile",
-      icon: <FaRegAddressCard />,
-    },
-    { path: `/security/${userId}`, label: "Security", icon: <FaLock /> },
-  ];
-
   if (error) {
     return <div>{error}</div>;
   }
@@ -100,67 +93,7 @@ function Profile() {
 
       <Row className="mb-4">
         {/* Sidebar */}
-        <Col sm={3} md={3} lg={3} className="p-0">
-          <aside
-            style={{
-              width: "250px",
-              backgroundColor: "#0F283F",
-              color: "#fff",
-              minHeight: "100vh",
-              padding: "20px",
-              display: "flex",
-              flexDirection: "column",
-              transition: "all 0.3s ease",
-            }}
-          >
-            <ul className="list-unstyled">
-              {menuItems.map((item) => (
-                <li
-                  key={item.path}
-                  className="mb-3"
-                  style={{ border: "0", transition: "all 0.3s ease" }}
-                >
-                  <Button
-                    variant="link"
-                    className={`text-start w-100 d-flex align-items-center ${
-                      location.pathname === item.path ? "active" : ""
-                    }`}
-                    onClick={() => navigate(item.path)}
-                    style={{
-                      textDecoration: "none",
-                      fontSize: "18px",
-                      padding: "12px 20px",
-                      backgroundColor:
-                        location.pathname === item.path
-                          ? "#1E4D6B"
-                          : "transparent",
-                      color: "#fff",
-                      transition: "background-color 0.3s ease, color 0.3s ease",
-                      borderRadius: "8px",
-                    }}
-                    onMouseEnter={(e) =>
-                      (e.target.style.backgroundColor = "#1E4D6B")
-                    }
-                    onMouseLeave={(e) =>
-                      (e.target.style.backgroundColor =
-                        location.pathname === item.path
-                          ? "#1E4D6B"
-                          : "transparent")
-                    }
-                  >
-                    <span
-                      className="me-3"
-                      style={{ fontSize: "20px", transition: "all 0.3s ease" }}
-                    >
-                      {item.icon}
-                    </span>{" "}
-                    {item.label}
-                  </Button>
-                </li>
-              ))}
-            </ul>
-          </aside>
-        </Col>
+        <ProfileSidebar />
 
         {/* Main content */}
         <Col sm={9} md={9} lg={9}>

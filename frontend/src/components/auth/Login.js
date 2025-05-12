@@ -39,7 +39,6 @@ function Login() {
         sessionStorage.setItem("companyId", response.data.user.companyId);
         const companyId = response.data.user.companyId;
         const role = response.data.user.role;
-        console.log("role", role);
         let redirectTarget = from !== "/dashboard" ? from : "/dashboard";
 
         if (role === "User") {
