@@ -119,9 +119,6 @@ function Dashboard() {
   const handleShowEditCompanyModal = () => setShowEditCompanyModal(true);
   const handleCloseEditCompanyModal = () => setShowEditCompanyModal(false);
 
-  const handleShowDeleteCompanyModal = () => setShowDeleteCompanyModal(true);
-  const handleCloseDeleteCompanyModal = () => setShowDeleteCompanyModal(false);
-
   const handleSaveUser = async () => {
     const newUser = { firstName, lastName, email, role, password, companyId };
 
@@ -177,23 +174,6 @@ function Dashboard() {
       toast.error("Failed to update company.");
       console.error(
         "Error updating company:",
-        error.response?.data?.error || error.message
-      );
-    }
-  };
-
-  const handleDeleteCompany = async () => {
-    try {
-      await axios.delete(
-        `https://formx360.onrender.com/companies/company/${companyId}`
-      );
-      toast.success("Company deleted successfully!");
-      sessionStorage.removeItem("companyId");
-      navigate("/companies/company");
-    } catch (error) {
-      toast.error("Failed to delete company.");
-      console.error(
-        "Error deleting company:",
         error.response?.data?.error || error.message
       );
     }
@@ -274,13 +254,6 @@ function Dashboard() {
                                 onClick={handleShowEditCompanyModal}
                               >
                                 <FaPencilAlt size={16} /> Edit
-                              </Button>
-                              <Button
-                                variant="outline-danger"
-                                className="rounded-pill px-3 d-flex align-items-center gap-1"
-                                onClick={handleShowDeleteCompanyModal}
-                              >
-                                <FaTrash size={16} /> Delete
                               </Button>
                             </div>
                           )}
@@ -424,12 +397,6 @@ function Dashboard() {
         companyDetails={companyDetails}
         setCompanyDetails={setCompanyDetails}
         handleEditCompany={handleEditCompany}
-      />
-
-      <DeleteCompanyModal
-        show={showDeleteCompanyModal}
-        handleClose={handleCloseDeleteCompanyModal}
-        handleDeleteCompany={handleDeleteCompany}
       />
 
       <AddUserModal
