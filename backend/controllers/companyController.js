@@ -3,6 +3,7 @@ const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
 const nodemailer = require("nodemailer");
+const crypto = require("crypto");
 
 // Add a new company
 exports.addCompany = async (req, res) => {
@@ -137,7 +138,7 @@ exports.getUser = async (req, res) => {
 // Add a user to a company
 exports.addUserToCompany = async (req, res) => {
   const { companyId } = req.params;
-  const { firstName, lastName, email, role, password } = req.body;
+  const { firstName, lastName, email, role } = req.body;
 
   try {
     const company = await Company.findById(companyId);
@@ -147,7 +148,10 @@ exports.addUserToCompany = async (req, res) => {
     if (existingUser)
       return res.status(400).json({ error: "User already exists." });
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    // Generate a secure random password
+    const generatedPassword = crypto.randomBytes(8).toString("hex"); // 16 characters
+    const hashedPassword = await bcrypt.hash(generatedPassword, 10);
+
     const newUser = new User({
       firstName,
       lastName,
@@ -170,6 +174,7 @@ exports.addUserToCompany = async (req, res) => {
         pass: process.env.EMAIL_PASS,
       },
     });
+
     const loginLink = "https://formx360.vercel.app/users/login";
     const emailContent = `
       Hi ${firstName} ${lastName},
@@ -178,7 +183,7 @@ exports.addUserToCompany = async (req, res) => {
 
       Here are your login credentials:
       - Email: ${email}
-      - Password: ${password}
+      - Password: ${generatedPassword}
 
       For security reasons, we strongly recommend changing your password after logging in.
 
@@ -203,6 +208,7 @@ exports.addUserToCompany = async (req, res) => {
     res.status(500).json({ error: "Error adding user. Please try again." });
   }
 };
+
 
 // Edit a user
 exports.editUser = async (req, res) => {
