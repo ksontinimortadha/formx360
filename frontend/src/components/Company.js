@@ -24,7 +24,6 @@ function CompanyPage() {
   // Retrieve user ID from sessionStorage
   useEffect(() => {
     const userId = sessionStorage.getItem("userId");
-    console.log("User ID retrieved from sessionStorage:", userId);
   }, []);
 
   const handleFormSubmit = async (e) => {
@@ -34,10 +33,15 @@ function CompanyPage() {
 
     // Retrieve user ID from sessionStorage
     const userId = sessionStorage.getItem("userId");
-    console.log("User ID before form submission:", userId); // Log the userId before submitting
 
+    const generateCompanyId = () => {
+      const randomId = Math.random().toString(36).substring(2, 15); 
+      return `${randomId}`;
+    };
+
+    const companyId = generateCompanyId();
     // Simple validation for form fields
-    if (!companyName || !industry) {
+    if (!companyName || !industry || !companyId) {
       setErrorMessage("Please fill in all required fields.");
       setIsSubmitting(false);
       return;
@@ -54,6 +58,7 @@ function CompanyPage() {
       const response = await axios.post(
         "https://formx360.onrender.com/companies/company",
         {
+          id: companyId, // Include the company ID
           name: companyName,
           industry,
           description,
@@ -77,6 +82,7 @@ function CompanyPage() {
       setIsSubmitting(false);
     }
   };
+  
 
   return (
     <div style={{ height: "100vh", display: "flex", flexDirection: "column" }}>

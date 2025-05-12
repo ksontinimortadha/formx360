@@ -1,6 +1,5 @@
 import React from "react";
 import { Modal, Button, Form, Row, Col } from "react-bootstrap";
-import { FaSave, FaTimes } from "react-icons/fa";
 
 function AddUserModal({
   show,
@@ -10,12 +9,10 @@ function AddUserModal({
   lastName = "",
   email = "",
   role = "",
-  password = "",
   setFirstName,
   setLastName,
   setEmail,
   setRole,
-  setPassword,
   isValid,
 }) {
   return (
@@ -76,18 +73,6 @@ function AddUserModal({
                   <option value="User">User</option>
                   <option value="Admin">Admin</option>
                 </Form.Select>
-              </Form.Group>
-            </Col>
-            <Col md={6}>
-              <Form.Group controlId="password">
-                <Form.Label>Password</Form.Label>
-                <Form.Control
-                  type="password"
-                  placeholder="Enter password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
               </Form.Group>
             </Col>
           </Row>

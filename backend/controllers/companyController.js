@@ -7,29 +7,36 @@ const crypto = require("crypto");
 
 // Add a new company
 exports.addCompany = async (req, res) => {
-  const { name, description, industry, userId } = req.body;
+  const { name, description, industry, userId, id } = req.body; // Assuming 'id' is being passed in the request body
 
   try {
-    const existingCompany = await Company.findOne({ name });
+    // Check if a company already exists with the same custom 'id'
+    const existingCompany = await Company.findOne({ id });
     if (existingCompany)
       return res.status(400).json({ error: "Company already exists." });
 
+    // Create a new company with the provided id
     const newCompany = new Company({
+      id, 
       name,
       description,
       industry,
       users: [userId],
     });
 
+    // Save the new company to the database
     await newCompany.save();
-    res
-      .status(201)
-      .json({ message: "Company created successfully!", company: newCompany });
+
+    // Respond with the new company data
+    res.status(201).json({
+      message: "Company created successfully!",
+      company: newCompany,
+    });
   } catch (error) {
     console.error("Error creating company:", error.message);
-    res
-      .status(500)
-      .json({ error: "Error creating company. Please try again." });
+    res.status(500).json({
+      error: "Error creating company. Please try again.",
+    });
   }
 };
 
@@ -208,7 +215,6 @@ exports.addUserToCompany = async (req, res) => {
     res.status(500).json({ error: "Error adding user. Please try again." });
   }
 };
-
 
 // Edit a user
 exports.editUser = async (req, res) => {

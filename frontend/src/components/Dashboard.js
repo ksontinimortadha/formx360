@@ -189,7 +189,7 @@ function Dashboard() {
       );
       toast.success("Company deleted successfully!");
       sessionStorage.removeItem("companyId");
-      navigate("/dashboard");
+      navigate("/companies/company");
     } catch (error) {
       toast.error("Failed to delete company.");
       console.error(
