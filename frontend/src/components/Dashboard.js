@@ -120,7 +120,7 @@ function Dashboard() {
   const handleCloseEditCompanyModal = () => setShowEditCompanyModal(false);
 
   const handleSaveUser = async () => {
-    const newUser = { firstName, lastName, email, role, password, companyId };
+    const newUser = { firstName, lastName, email, role, companyId };
 
     try {
       const response = await axios.post(
