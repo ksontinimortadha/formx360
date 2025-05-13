@@ -58,6 +58,7 @@ function Dashboard() {
         `https://formx360.onrender.com/companies/company/${companyId}`
       );
       setCompanyDetails(response.data.company);
+      fetchUsers(response.data.company);
     } catch (error) {
       toast.error("Failed to fetch company details.");
     }
@@ -136,13 +137,13 @@ function Dashboard() {
         setUsers((prevUsers) => [...prevUsers, response.data.newUser]);
         toast.success("User added successfully!");
         handleCloseAddModal();
+        fetchUsers(companyId);
       }
     } catch (error) {
       console.error("Error adding user:", error);
       toast.error(error.response?.data?.error || "Failed to add user.");
     }
   };
-  
 
   const handleDeleteUser = async (userId) => {
     try {
