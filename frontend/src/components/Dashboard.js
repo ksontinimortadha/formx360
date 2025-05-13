@@ -120,25 +120,28 @@ function Dashboard() {
   const handleCloseEditCompanyModal = () => setShowEditCompanyModal(false);
 
   const handleSaveUser = async () => {
-    const newUser = { firstName, lastName, email, role, companyId };
-
     try {
       const response = await axios.post(
         `https://formx360.onrender.com/companies/company/${companyId}/users`,
-        newUser
+        {
+          firstName,
+          lastName,
+          email,
+          role,
+        }
       );
 
       if (response.status === 201 || response.status === 200) {
         setUsers((prevUsers) => [...prevUsers, response.data.newUser]);
-
         toast.success("User added successfully!");
         handleCloseAddModal();
       }
     } catch (error) {
       console.error("Error adding user:", error);
-      toast.error("Failed to add user.");
+      toast.error(error.response?.data?.error || "Failed to add user.");
     }
   };
+  
 
   const handleDeleteUser = async (userId) => {
     try {

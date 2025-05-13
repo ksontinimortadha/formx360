@@ -144,7 +144,8 @@ exports.getUser = async (req, res) => {
 
 // Add a user to a company
 exports.addUserToCompany = async (req, res) => {
-  const { firstName, lastName, email, role, companyId } = req.body;
+  const { companyId } = req.params;
+  const { firstName, lastName, email, role } = req.body;
 
   try {
     const company = await Company.findById(companyId);
