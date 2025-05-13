@@ -124,6 +124,7 @@ function Dashboard() {
       const response = await axios.post(
         `https://formx360.onrender.com/companies/company/${companyId}/users`,
         {
+          companyId,
           firstName,
           lastName,
           email,
@@ -321,8 +322,8 @@ function Dashboard() {
                             currentUserRole === "Admin") && (
                             <div className="d-flex gap-2 align-items-center">
                               {/* Edit Role button logic */}
-                              {(user.role !== "Super Admin" ||
-                                user._id ===
+                              {(user?.role !== "Super Admin" ||
+                                user?._id ===
                                   sessionStorage.getItem("userId")) && (
                                 <OverlayTrigger
                                   placement="top"
@@ -343,7 +344,7 @@ function Dashboard() {
                               )}
 
                               {/* Save button if editing */}
-                              {editingUserId === user._id && (
+                              {editingUserId === user?._id && (
                                 <OverlayTrigger
                                   placement="top"
                                   overlay={<Tooltip>Save Role</Tooltip>}
@@ -361,7 +362,7 @@ function Dashboard() {
 
                               {/* Delete button, only for Super Admin and not self */}
                               {currentUserRole === "Super Admin" &&
-                                user._id !==
+                                user?._id !==
                                   sessionStorage.getItem("userId") && (
                                   <OverlayTrigger
                                     placement="top"
