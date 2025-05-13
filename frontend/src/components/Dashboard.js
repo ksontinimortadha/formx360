@@ -353,7 +353,7 @@ function Dashboard() {
                                     variant="success"
                                     size="sm"
                                     className="d-flex align-items-center gap-1"
-                                    onClick={() => handleEditRole(user._id)}
+                                    onClick={() => handleEditRole(user?._id)}
                                   >
                                     <FaSave />
                                   </Button>
