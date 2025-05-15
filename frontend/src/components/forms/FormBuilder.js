@@ -38,6 +38,7 @@ const FormBuilder = () => {
   const [progress, setProgress] = useState(0);
   const [users, setUsers] = useState([]);
   const [currentUserRole, setCurrentUserRole] = useState("");
+
   const fetchUsers = async (companyId) => {
     if (!companyId) {
       toast.error("Company ID is missing!");
@@ -56,17 +57,28 @@ const FormBuilder = () => {
       const currentUserId = sessionStorage.getItem("userId");
 
       if (currentUserId) {
-        const currentUser = userList.find((user) => user._id === currentUserId);
+        // Compare as strings to avoid type issues
+        const currentUser = userList.find(
+          (user) => String(user._id) === String(currentUserId)
+        );
         if (currentUser) {
           setCurrentUserRole(currentUser.role);
+        } else {
+          console.warn("Current user not found in company users list.");
+          setCurrentUserRole(""); // fallback
         }
+      } else {
+        console.warn("No userId found in sessionStorage.");
+        setCurrentUserRole(""); // fallback
       }
     } catch (error) {
       console.error("Error fetching users:", error);
       toast.error("Failed to fetch users.");
       setUsers([]);
+      setCurrentUserRole(""); // fallback
     }
   };
+
   useEffect(() => {
     const fetchFormData = async () => {
       try {
@@ -78,10 +90,11 @@ const FormBuilder = () => {
         setFormData(form);
         setFormTitle(form.title || "Untitled Form");
         setFormDescription(form.description || "");
+        const companyId = sessionStorage.getItem("companyId");
 
         // Call fetchUsers with companyId from the form
-        if (form.companyId) {
-          fetchUsers(form.companyId);
+        if (companyId) {
+          await fetchUsers(companyId);
         }
 
         const validatedFields =
@@ -166,8 +179,9 @@ const FormBuilder = () => {
   };
 
   const handleBackButtonClick = () => {
-    if (currentUserRole === "Admin" || currentUserRole === "Super Admin") {
-      navigate("/forms"); 
+    const role = currentUserRole.toLowerCase().replace(/\s/g, "");
+    if (role === "admin" || role === "superadmin") {
+      navigate("/forms");
     } else {
       navigate("/user-dashboard");
     }
@@ -184,6 +198,7 @@ const FormBuilder = () => {
                   variant="outline-secondary"
                   onClick={handleBackButtonClick}
                   className="mr-3"
+                  aria-label="Back Button"
                 >
                   <FaArrowLeft className="mr-2" />
                 </Button>

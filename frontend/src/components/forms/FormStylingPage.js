@@ -202,8 +202,9 @@ const FormStylingPage = () => {
     return null;
   };
 
-  const handleBackButtonClick = (form) => {
-    navigate(`/form-builder/${form._id}`);
+  const handleBackButtonClick = () => {
+    console.log("first", formData);
+    navigate(`/form-builder/${formData._id}`);
   };
 
   return (
