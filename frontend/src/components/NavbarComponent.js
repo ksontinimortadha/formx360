@@ -18,7 +18,6 @@ function NavbarComponent() {
       const res = await axios.get(`https://formx360.onrender.com/users/${id}`);
       return res.data?.name;
     } catch (err) {
-      console.error("❌ Error fetching user name:", err);
       return "Someone";
     }
   };

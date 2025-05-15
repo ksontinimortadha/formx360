@@ -56,12 +56,11 @@ const EditResponse = () => {
     });
   };
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       await axios.put(`https://formx360.onrender.com/responses/${responseId}`, {
-        response,
+        responses: response.responses, 
       });
       navigate(`/view-response/${responseId}`);
     } catch (error) {
