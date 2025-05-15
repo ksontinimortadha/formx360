@@ -81,12 +81,6 @@ const FormBuilder = () => {
 
     fetchFormData();
   }, [formId]);
-  useEffect(() => {
-    if (formData) {
-      setFormTitle(formData.title || "");
-      setFormDescription(formData.description || "");
-    }
-  }, [formData]);
 
   const fetchUsers = async (companyId) => {
     if (!companyId) {
@@ -127,10 +121,25 @@ const FormBuilder = () => {
       setCurrentUserRole(""); // fallback
     }
   };
-
+  useEffect(() => {
+    if (formData ) {
+      setFormTitle(formData.title || "");
+      setFormDescription(formData.description || "");
+    }
+  }, [formData]);
   const handleSaveForm = async () => {
     try {
       setIsSaving(true);
+
+      // Grab title input value directly from DOM instead of relying on React state
+      const titleInputValue = document
+        .querySelector(".form-title-input")
+        ?.value?.trim();
+
+      // Also grab description directly if needed
+      const descriptionInputValue = document
+        .querySelector(".form-description-input")
+        ?.value?.trim();
 
       const updatedFields = JSON.parse(
         $(fb.current).data("formBuilder").actions.getData("json", true)
@@ -138,6 +147,7 @@ const FormBuilder = () => {
 
       if (!Array.isArray(updatedFields)) {
         toast.error("Invalid form data. Please refresh and try again.");
+        setIsSaving(false);
         return;
       }
 
@@ -151,18 +161,25 @@ const FormBuilder = () => {
         }
       });
 
-      console.log("Saving form with:", {
-        title: formTitle,
-        description: formDescription,
-        fields: updatedFields,
-      });
+      // Use the direct DOM values (fall back if missing)
+      const titleToSave = titleInputValue || formData?.title || "Untitled Form";
+      const descriptionToSave =
+        descriptionInputValue || formData?.description || "";
 
-      await axios.patch(`https://formx360.onrender.com/forms/${formId}`, {
-        title: formTitle.trim(),
-        description: formDescription.trim(),
-        fields: updatedFields,
-      });
+      const response = await axios.patch(
+        `https://formx360.onrender.com/forms/${formId}`,
+        {
+          title: titleToSave,
+          description: descriptionToSave,
+          fields: updatedFields,
+        }
+      );
 
+      if (response.data.form) {
+        setFormData(response.data.form);
+        setFormTitle(response.data.form.title || "");
+        setFormDescription(response.data.form.description || "");
+      }
       setProgress(100);
       toast.success("Form saved successfully!");
     } catch (err) {
@@ -172,6 +189,8 @@ const FormBuilder = () => {
       setIsSaving(false);
     }
   };
+  
+  
 
   const handleTitleChange = (e) => {
     setFormTitle(e.target.value);
