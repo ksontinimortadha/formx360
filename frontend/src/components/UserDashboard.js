@@ -193,7 +193,7 @@ function UserDashboard() {
               <Card className="shadow-sm border-0 rounded-4 w-100">
                 <Card.Body>
                   <div className="d-flex justify-content-between align-items-center">
-                    <h4>Forms Management</h4>
+                    <h4>My Forms</h4>
 
                     <Form.Control
                       style={{ width: "auto", marginLeft: "350px" }}

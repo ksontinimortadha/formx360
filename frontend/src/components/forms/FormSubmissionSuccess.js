@@ -2,6 +2,7 @@ import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { FaArrowLeft } from "react-icons/fa";
 
 const FormSubmissionSuccess = () => {
   const { responseId } = useParams();
@@ -13,6 +14,10 @@ const FormSubmissionSuccess = () => {
 
   const handleEdit = () => {
     navigate(`/edit-response/${responseId}`);
+  };
+
+  const handleExit = () => {
+    navigate(`/user-dashboard`);
   };
 
   return (
@@ -51,6 +56,14 @@ const FormSubmissionSuccess = () => {
                     Edit Response
                   </Button>
                 </div>
+                <Button
+                  variant="outline"
+                  onClick={handleExit}
+                  style={{ marginTop: "20px", color: "#325FD7" }}
+                >
+                  <FaArrowLeft style={{ marginRight: "10px" }} />
+                  back to Dashboard
+                </Button>
               </div>
             </Col>
           </Row>
