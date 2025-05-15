@@ -112,6 +112,10 @@ function UserDashboard() {
                   perm.userId === currentUserId && perm.permission === "view"
               );
             });
+      formsData.forEach((form) => {
+        console.log(" public", form.publicUrl);
+        console.log("prv", form.privateUrl);
+      });
 
       setForms(formsData);
       setFilteredForms(viewableForms);

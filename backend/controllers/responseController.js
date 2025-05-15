@@ -208,7 +208,6 @@ exports.submitResponse = async (req, res) => {
   }
 };
 
-
 // Get Responses for a Form
 exports.getFormResponses = async (req, res) => {
   const { form_id } = req.params;

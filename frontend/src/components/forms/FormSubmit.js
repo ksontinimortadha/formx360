@@ -26,7 +26,7 @@ const FormSubmit = () => {
         );
         setFormData(form.data.form);
         setFieldStyles(form.data.form.fieldStyles);
-        setSelectedTheme(form.data.form.theme); // Set the theme
+        setSelectedTheme(form.data.form.theme);
         formDataRef.current = form.data.form;
         setLoading(false);
       } catch (err) {
@@ -303,19 +303,63 @@ const FormSubmit = () => {
       color: "#333",
     },
   };
-
+  const handleBackToDashboard = () => {
+    navigate("/user-dashboard"); 
+  };
   return (
-    <div style={styles.container}>
-      <h1 style={styles.title}>{formData.title}</h1>
-      <form
-        onSubmit={handleSubmit}
-        className={`${selectedTheme}`}
-        style={{ paddingTop: "10px" }}
-      >
-        {renderFormFields()}
-      </form>
-      <ToastContainer />
-    </div>
+    <>
+      {formData.privateUrl && (
+        <div
+          style={{
+            position: "absolute",
+            top: "20px",
+            left: "20px",
+            zIndex: 10,
+          }}
+        >
+          <button
+            onClick={handleBackToDashboard}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+              padding: "8px 14px",
+              borderRadius: "8px",
+              backgroundColor: "#f0f4ff",
+              color: "#1a73e8",
+              border: "1px solid #1a73e8",
+              fontWeight: "500",
+              cursor: "pointer",
+              boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
+              transition: "all 0.3s ease",
+            }}
+            onMouseOver={(e) => {
+              e.target.style.backgroundColor = "#1a73e8";
+              e.target.style.color = "#fff";
+            }}
+            onMouseOut={(e) => {
+              e.target.style.backgroundColor = "#f0f4ff";
+              e.target.style.color = "#1a73e8";
+            }}
+          >
+            <span style={{ fontSize: "18px" }}>←</span> Back to Dashboard
+          </button>
+        </div>
+      )}
+
+      <div style={{ ...styles.container, position: "relative" }}>
+        <h1 style={styles.title}>{formData.title}</h1>
+
+        <form
+          onSubmit={handleSubmit}
+          className={`${selectedTheme}`}
+          style={{ paddingTop: "10px" }}
+        >
+          {renderFormFields()}
+        </form>
+        <ToastContainer />
+      </div>
+    </>
   );
 };
 

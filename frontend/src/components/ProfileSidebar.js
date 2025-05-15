@@ -51,8 +51,8 @@ const ProfileSidebar = () => {
 
       setMenuItems([
         {
-          path: userRole === "User" ? "/user-dashboard" : "/dashboard", // Change path based on role
-          label: userRole === "User" ? "Forms" : "/dashboard",
+          path: userRole === "User" ? "/user-dashboard" : "/dashboard", 
+          label: userRole === "User" ? "Forms" : "dashboard",
           icon: userRole === "User" ? <FaWpforms /> : <FaUser />,
         },
         {
