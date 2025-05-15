@@ -25,7 +25,7 @@ router.get("/:companyId/forms", getCompanyForms);
 router.get("/:id", getFormById);
 
 // Update a form by ID
-router.put("/:id", updateForm);
+router.patch("/:id", updateForm);
 
 // Update form style
 router.put("/style/:id", updateFormStyle);

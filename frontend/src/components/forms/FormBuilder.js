@@ -28,7 +28,6 @@ const FormBuilder = () => {
   const fb = useRef(null);
   const { formId } = useParams();
   const navigate = useNavigate();
-
   const [formTitle, setFormTitle] = useState("");
   const [formDescription, setFormDescription] = useState("");
   const [formData, setFormData] = useState(null);
@@ -38,47 +37,6 @@ const FormBuilder = () => {
   const [progress, setProgress] = useState(0);
   const [users, setUsers] = useState([]);
   const [currentUserRole, setCurrentUserRole] = useState("");
-
-  const fetchUsers = async (companyId) => {
-    if (!companyId) {
-      toast.error("Company ID is missing!");
-      return;
-    }
-
-    try {
-      const response = await axios.get(
-        `https://formx360.onrender.com/companies/company/${companyId}/users`
-      );
-
-      const userList = response.data.users || [];
-      setUsers(userList);
-
-      // Get current user ID from sessionStorage
-      const currentUserId = sessionStorage.getItem("userId");
-
-      if (currentUserId) {
-        // Compare as strings to avoid type issues
-        const currentUser = userList.find(
-          (user) => String(user._id) === String(currentUserId)
-        );
-        if (currentUser) {
-          setCurrentUserRole(currentUser.role);
-        } else {
-          console.warn("Current user not found in company users list.");
-          setCurrentUserRole(""); // fallback
-        }
-      } else {
-        console.warn("No userId found in sessionStorage.");
-        setCurrentUserRole(""); // fallback
-      }
-    } catch (error) {
-      console.error("Error fetching users:", error);
-      toast.error("Failed to fetch users.");
-      setUsers([]);
-      setCurrentUserRole(""); // fallback
-    }
-  };
-
   useEffect(() => {
     const fetchFormData = async () => {
       try {
@@ -123,12 +81,57 @@ const FormBuilder = () => {
 
     fetchFormData();
   }, [formId]);
+  useEffect(() => {
+    if (formData) {
+      setFormTitle(formData.title || "");
+      setFormDescription(formData.description || "");
+    }
+  }, [formData]);
+
+  const fetchUsers = async (companyId) => {
+    if (!companyId) {
+      toast.error("Company ID is missing!");
+      return;
+    }
+
+    try {
+      const response = await axios.get(
+        `https://formx360.onrender.com/companies/company/${companyId}/users`
+      );
+
+      const userList = response.data.users || [];
+      setUsers(userList);
+
+      // Get current user ID from sessionStorage
+      const currentUserId = sessionStorage.getItem("userId");
+
+      if (currentUserId) {
+        // Compare as strings to avoid type issues
+        const currentUser = userList.find(
+          (user) => String(user._id) === String(currentUserId)
+        );
+        if (currentUser) {
+          setCurrentUserRole(currentUser.role);
+        } else {
+          console.warn("Current user not found in company users list.");
+          setCurrentUserRole(""); // fallback
+        }
+      } else {
+        console.warn("No userId found in sessionStorage.");
+        setCurrentUserRole(""); // fallback
+      }
+    } catch (error) {
+      console.error("Error fetching users:", error);
+      toast.error("Failed to fetch users.");
+      setUsers([]);
+      setCurrentUserRole(""); // fallback
+    }
+  };
 
   const handleSaveForm = async () => {
     try {
       setIsSaving(true);
 
-      // Get form data from formBuilder instance
       const updatedFields = JSON.parse(
         $(fb.current).data("formBuilder").actions.getData("json", true)
       );
@@ -138,25 +141,25 @@ const FormBuilder = () => {
         return;
       }
 
-      // Process each field
       updatedFields.forEach((field) => {
         if (["checkbox-group", "radio-group", "select"].includes(field.type)) {
-          // Ensure options array exists
-          field.options = field.options || [];
-
-          // Standardize the structure of options
-          field.options = field.options.map((option) => ({
-            label: option.label || option, // Ensure label exists
-            value: option.value || option, // Ensure value exists
-            selected: option.selected ?? false, // Default to false if missing
+          field.options = (field.options || []).map((option) => ({
+            label: option.label || option,
+            value: option.value || option,
+            selected: option.selected ?? false,
           }));
         }
       });
 
-      // Send updated form data to the backend
-      await axios.put(`https://formx360.onrender.com/forms/${formId}`, {
+      console.log("Saving form with:", {
         title: formTitle,
         description: formDescription,
+        fields: updatedFields,
+      });
+
+      await axios.patch(`https://formx360.onrender.com/forms/${formId}`, {
+        title: formTitle.trim(),
+        description: formDescription.trim(),
         fields: updatedFields,
       });
 
