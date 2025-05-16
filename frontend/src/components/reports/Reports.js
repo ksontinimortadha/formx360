@@ -48,7 +48,6 @@ function Reports() {
       setReports(response.data);
     } catch (err) {
       console.error("Error fetching reports:", err);
-      setError("Failed to load reports. Please try again later.");
     }
     setLoading(false);
   };

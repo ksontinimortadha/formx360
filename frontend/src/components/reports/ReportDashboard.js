@@ -93,7 +93,7 @@ function ReportDashboard() {
 
     return {
       labels: chartData.labels,
-      values: chartData.datasets[0].data, // ✅ Fixed here
+      values: chartData.datasets[0].data, 
     };
   };
 
