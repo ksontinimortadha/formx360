@@ -385,22 +385,59 @@ function ReportDashboard() {
   }, [formId]);
   // Load charts from backend
  
+  useEffect(() => {
+    async function fetchCharts() {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get(
+          "https://formx360.onrender.com/report-dashboard/get",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
+        if (Array.isArray(response.data.charts)) {
+          setCharts(response.data.charts);
+        } else {
+          console.warn("Unexpected response format:", response.data);
+        }
+      } catch (err) {
+        console.error("Failed to fetch charts", err);
+        setError("Failed to load saved charts.");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchCharts();
+  }, []);
+  
   // Save charts on update
   useEffect(() => {
-    if (charts.length === 0) return; // skip initial empty
+    if (charts.length === 0) return;
 
     async function saveCharts() {
       try {
-        await axios.post("https://formx360.onrender.com/report-dashboard/save", {
-          charts,
-        });
+        const token = localStorage.getItem("token"); // or sessionStorage.getItem(...)
+        await axios.post(
+          "https://formx360.onrender.com/report-dashboard/save",
+          { charts },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
       } catch (err) {
         console.error("Failed to save charts", err);
       }
     }
+
     saveCharts();
   }, [charts]);
+  
 
   const fields = Array.from(
     new Set(responses.flatMap((r) => r.responses.map((f) => f.field_name)))
