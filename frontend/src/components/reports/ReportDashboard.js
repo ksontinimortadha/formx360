@@ -196,8 +196,6 @@ function ChartBuilderModal({
     { label: "Line Chart", value: "Line" },
     { label: "Bar Chart", value: "Bar" },
     { label: "Pie Chart", value: "Pie" },
-    { label: "Radar Chart", value: "Radar" },
-    { label: "Conversion Rate Chart", value: "ConversionRate" },
   ];
 
   const [chartType, setChartType] = useState(
