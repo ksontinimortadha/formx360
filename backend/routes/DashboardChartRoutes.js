@@ -6,7 +6,7 @@ const {
   saveCharts,
   getCharts,
 } = require("../controllers/DashboardChartController");
-const authenticateUser = require("../middleware/authenticateUser");
+const authenticateUser = require("../middlewares/authenticateUser");
 
 // GET saved charts for user
 router.post("/save", authenticateUser, saveCharts);
