@@ -1,0 +1,12 @@
+.selectable-card {
+  transition: all 0.2s ease-in-out;
+  border-radius: 12px;
+}
+
+.selectable-card:hover {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
+  background-color: #f8f9fa;
+  border-color: #56ADDE;
+  cursor: pointer;
+}

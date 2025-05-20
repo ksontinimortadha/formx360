@@ -16,7 +16,7 @@ const {
 const authenticateUser = require("../middlewares/authenticateUser");
 
 // Create a new form for a company
-router.post("/:companyId/forms", authenticateUser, createForm);
+router.patch("/:companyId/forms", authenticateUser, createForm);
 
 // Get all forms for a company
 router.get("/:companyId/forms", getCompanyForms);

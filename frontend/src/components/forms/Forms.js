@@ -15,7 +15,7 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Sidebar from "../Sidebar";
-import AddFormModal from "../../modals/AddFormModal";
+import AddFormModal from "../../modals/addForm/AddFormModal";
 import NavbarComponent from "../NavbarComponent";
 import DeleteFormModal from "../../modals/DeleteFormModal";
 import ChangeVisibilityModal from "../../modals/ChangeVisibilityModal";

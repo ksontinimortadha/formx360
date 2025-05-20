@@ -279,7 +279,6 @@ exports.changePassword = async (req, res) => {
 };
 
 
- 
 exports.getUserNameById = async (req, res) => {
   try {
     const userId = req.params.id;
