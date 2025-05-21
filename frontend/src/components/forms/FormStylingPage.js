@@ -62,7 +62,7 @@ const FormStylingPage = () => {
 
   // Render form fields dynamically
   const renderFormFields = () => {
-    if (formData && formData.fields) {
+    if (Array.isArray(formData?.fields)) {
       return formData.fields.map((field, index) => {
         const fieldStyle = fieldStyles[index] || {};
         const placementClass = fieldStyle.position
@@ -71,12 +71,11 @@ const FormStylingPage = () => {
 
         const fieldContent = (
           <>
-            {/* Render checkbox or radio group */}
             {field.type === "checkbox-group" || field.type === "radio-group" ? (
               <div>
                 {field.label}
                 {field.type === "checkbox-group" &&
-                  field.values.map((option, i) => (
+                  field.values?.map((option, i) => (
                     <label key={i}>
                       <input
                         style={fieldStyle}
@@ -89,7 +88,7 @@ const FormStylingPage = () => {
                     </label>
                   ))}
                 {field.type === "radio-group" &&
-                  field.values.map((option, i) => (
+                  field.values?.map((option, i) => (
                     <label key={i}>
                       <input
                         type="radio"
@@ -116,12 +115,11 @@ const FormStylingPage = () => {
                   style={fieldStyle}
                   onClick={() => handleFieldClick(index)}
                 >
-                  {field.options &&
-                    field.options.map((option, idx) => (
-                      <option key={idx} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
+                  {field.options?.map((option, idx) => (
+                    <option key={idx} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
                 </select>
               </>
             ) : field.type === "textarea" ? (
@@ -199,6 +197,7 @@ const FormStylingPage = () => {
     }
     return null;
   };
+  
 
   const handleBackButtonClick = () => {
     navigate(`/form-builder/${formData._id}`);

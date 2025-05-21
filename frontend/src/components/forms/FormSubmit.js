@@ -113,178 +113,184 @@ const FormSubmit = () => {
 
   // Render fields and prefill them with existing responses
   const renderFormFields = () => {
+    if (!formData || !formData.fields) return null;
+  
     return formData.fields.map((field, index) => {
       const fieldStyle = fieldStyles[index] || {};
       const placementClass = fieldStyle.position
         ? `field-${fieldStyle.position}`
         : "";
-
-      // Check if there's a response for the field
-      const response = responses.find((r) => r.field_id === field._id);
-      const prefilledValue = response ? response.value : "";
-
-      const fieldContent = (
-        <>
-          {/* Render checkbox or radio group */}
-          {field.type === "checkbox-group" || field.type === "radio-group" ? (
-            <div style={{ marginBottom: "15px" }}>
-              {field.label}
-
-              {field.type === "checkbox-group" &&
-                field.values.map((option, i) => (
-                  <label
-                    key={option.value || i}
-                    style={{ marginRight: "10px" }}
-                  >
+  
+      // Defensive: Ensure responses and prefilledValue are safe
+      const response = responses?.find((r) => r.field_id === field._id);
+      const prefilledValue = response?.value ?? (field.type === "checkbox-group" ? [] : "");
+  
+      const fieldContent = (() => {
+        switch (field.type) {
+          case "checkbox-group":
+            return (
+              <div style={{ marginBottom: "15px" }}>
+                {field.label}
+                {field.values?.map((option, i) => (
+                  <label key={option.value || i} style={{ marginRight: "10px" }}>
                     <input
                       style={fieldStyle}
                       type="checkbox"
                       name={field.name}
                       value={option.value}
-                      checked={prefilledValue.includes(option.value)} // Check if the value is in the array
+                      checked={Array.isArray(prefilledValue) && prefilledValue.includes(option.value)}
                       onChange={(e) =>
-                        handleFieldChange(
-                          field._id,
-                          e.target.value,
-                          e.target.checked
-                        )
-                      } // Pass checked state to the handler
+                        handleFieldChange(field._id, e.target.value, e.target.checked)
+                      }
                     />
                     {option.label}
                   </label>
                 ))}
-
-              {field.type === "radio-group" &&
-                field.values.map((option, i) => (
-                  <label
-                    key={option.value || i}
-                    style={{ marginRight: "10px" }}
-                  >
+              </div>
+            );
+  
+          case "radio-group":
+            return (
+              <div style={{ marginBottom: "15px" }}>
+                {field.label}
+                {field.values?.map((option, i) => (
+                  <label key={option.value || i} style={{ marginRight: "10px" }}>
                     <input
                       type="radio"
                       name={field.name}
                       value={option.value}
-                      checked={prefilledValue === option.value} // Single value for radio buttons
-                      onChange={() =>
-                        handleFieldChange(field._id, option.value)
-                      } // Update state for radio button
+                      checked={prefilledValue === option.value}
+                      onChange={() => handleFieldChange(field._id, option.value)}
                     />
                     {option.label}
                   </label>
                 ))}
-            </div>
-          ) : field.type === "button" ? (
-            <button
-              type="button"
-              style={{ ...fieldStyle, marginBottom: "15px" }}
-              key={field.name || index}
-              onClick={handleSubmit}
-            >
-              {field.label}
-            </button>
-          ) : field.type === "select" ? (
-            <div style={{ marginBottom: "15px" }}>
-              {field.label}
-              <select
-                style={{ ...fieldStyle, width: "100%" }}
-                key={field.name || index}
-                value={prefilledValue}
-                onChange={(e) => handleFieldChange(field._id, e.target.value)}
+              </div>
+            );
+  
+          case "button":
+            return (
+              <button
+                type="button"
+                style={{ ...fieldStyle, marginBottom: "15px" }}
+                onClick={handleSubmit}
               >
-                {field.values &&
-                  field.values.map((option, idx) => (
+                {field.label}
+              </button>
+            );
+  
+          case "select":
+            return (
+              <div style={{ marginBottom: "15px" }}>
+                {field.label}
+                <select
+                  style={{ ...fieldStyle, width: "100%" }}
+                  value={prefilledValue}
+                  onChange={(e) => handleFieldChange(field._id, e.target.value)}
+                >
+                  {field.values?.map((option, idx) => (
                     <option key={option.value || idx} value={option.value}>
                       {option.label}
                     </option>
                   ))}
-              </select>
-            </div>
-          ) : field.type === "textarea" ? (
-            <div style={{ marginBottom: "15px" }}>
-              {field.label}
-              <textarea
-                placeholder={field.placeholder || "Enter text"}
-                style={{ ...fieldStyle, width: "100%", height: "100px" }}
-                key={field.name || index}
-                value={prefilledValue}
-                onChange={(e) => handleFieldChange(field._id, e.target.value)}
-              />
-            </div>
-          ) : field.type === "autocomplete" ? (
-            <div style={{ marginBottom: "15px" }}>
-              {field.label}
+                </select>
+              </div>
+            );
+  
+          case "textarea":
+            return (
+              <div style={{ marginBottom: "15px" }}>
+                {field.label}
+                <textarea
+                  placeholder={field.placeholder || "Enter text"}
+                  style={{ ...fieldStyle, width: "100%", height: "100px" }}
+                  value={prefilledValue}
+                  onChange={(e) => handleFieldChange(field._id, e.target.value)}
+                />
+              </div>
+            );
+  
+          case "autocomplete":
+            return (
+              <div style={{ marginBottom: "15px" }}>
+                {field.label}
+                <input
+                  type="text"
+                  placeholder={field.placeholder || "Start typing..."}
+                  list="autocomplete-list"
+                  style={fieldStyle}
+                  value={prefilledValue}
+                  onChange={(e) => handleFieldChange(field._id, e.target.value)}
+                />
+              </div>
+            );
+  
+          case "file":
+            return (
+              <div style={{ marginBottom: "15px" }}>
+                {field.label}
+                <input type="file" style={fieldStyle} />
+              </div>
+            );
+  
+          case "date":
+            return (
+              <div style={{ marginBottom: "15px" }}>
+                {field.label}
+                <input
+                  type="date"
+                  style={fieldStyle}
+                  value={prefilledValue}
+                  onChange={(e) => handleFieldChange(field._id, e.target.value)}
+                />
+              </div>
+            );
+  
+          case "hidden":
+            return (
               <input
-                type="text"
-                placeholder={field.placeholder || "Start typing..."}
-                list="autocomplete-list"
+                type="hidden"
+                value={field.value || ""}
                 style={fieldStyle}
-                key={field.name || index}
-                value={prefilledValue}
-                onChange={(e) => handleFieldChange(field._id, e.target.value)}
               />
-            </div>
-          ) : field.type === "file" ? (
-            <div style={{ marginBottom: "15px" }}>
-              {field.label}
-              <input type="file" style={fieldStyle} key={field.name || index} />
-            </div>
-          ) : field.type === "date" ? (
-            <div style={{ marginBottom: "15px" }}>
-              {field.label}
-              <input
-                type="date"
-                style={fieldStyle}
-                key={field.name || index}
-                value={prefilledValue}
-                onChange={(e) => handleFieldChange(field._id, e.target.value)}
-              />
-            </div>
-          ) : field.type === "hidden" ? (
-            <input
-              type="hidden"
-              value={field.value || ""}
-              style={fieldStyle}
-              key={field.name || index}
-            />
-          ) : field.type === "header" ? (
-            <h2 key={field.name || index}>{field.label}</h2>
-          ) : field.type === "paragraph" ? (
-            <p key={field.name || index}>{field.label}</p>
-          ) : (
-            <div style={{ marginBottom: "15px" }}>
-              {field.label}
-              <input
-                type={field.type}
-                placeholder={field.placeholder || "Enter " + field.type}
-                style={fieldStyle}
-                key={field.name || index}
-                value={prefilledValue}
-                onChange={(e) => handleFieldChange(field._id, e.target.value)}
-              />
-            </div>
-          )}
-        </>
-      );
-
+            );
+  
+          case "header":
+            return <h2>{field.label}</h2>;
+  
+          case "paragraph":
+            return <p>{field.label}</p>;
+  
+          default:
+            return (
+              <div style={{ marginBottom: "15px" }}>
+                {field.label}
+                <input
+                  type={field.type}
+                  placeholder={field.placeholder || `Enter ${field.type}`}
+                  style={fieldStyle}
+                  value={prefilledValue}
+                  onChange={(e) => handleFieldChange(field._id, e.target.value)}
+                />
+              </div>
+            );
+        }
+      })();
+  
       return (
         <div
           className={`${selectedTheme}`}
-          style={{
-            paddingRight: "15px",
-            paddingLeft: "15px",
-          }}
-          key={field.name || index}
+          key={field._id || index}
+          style={{ paddingRight: "15px", paddingLeft: "15px" }}
         >
-          <div
-            className={`form-field ${placementClass}`}
-            style={{ marginBottom: "10px" }}
-          >
+          <div className={`form-field ${placementClass}`} style={{ marginBottom: "10px" }}>
             {fieldContent}
           </div>
         </div>
       );
     });
   };
+  
 
   const styles = {
     container: {

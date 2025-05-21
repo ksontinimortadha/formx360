@@ -33,7 +33,7 @@ const PreviewPage = () => {
   }, [formId]);
 
   const renderFormFields = () => {
-    if (formData && formData.fields) {
+    if (Array.isArray(formData?.fields)) {
       return formData.fields.map((field, index) => {
         const fieldStyle = fieldStyles[index] || {};
         const placementClass = fieldStyle.position
@@ -42,13 +42,12 @@ const PreviewPage = () => {
 
         const fieldContent = (
           <>
-            {/* Render checkbox or radio group */}
             {field.type === "checkbox-group" || field.type === "radio-group" ? (
-              <div style={{ marginBottom: "15px" }}>
+              <div>
                 {field.label}
                 {field.type === "checkbox-group" &&
-                  field.values.map((option, i) => (
-                    <label key={i} style={{ marginRight: "10px" }}>
+                  field.values?.map((option, i) => (
+                    <label key={i}>
                       <input
                         style={fieldStyle}
                         type="checkbox"
@@ -59,8 +58,8 @@ const PreviewPage = () => {
                     </label>
                   ))}
                 {field.type === "radio-group" &&
-                  field.values.map((option, i) => (
-                    <label key={i} style={{ marginRight: "10px" }}>
+                  field.values?.map((option, i) => (
+                    <label key={i}>
                       <input
                         type="radio"
                         name={field.name}
@@ -71,61 +70,47 @@ const PreviewPage = () => {
                   ))}
               </div>
             ) : field.type === "button" ? (
-              <button
-                type="button"
-                style={{ ...fieldStyle, marginBottom: "15px" }}
-              >
+              <button type="button" style={fieldStyle}>
                 {field.label}
               </button>
             ) : field.type === "select" ? (
               <>
-                <div style={{ marginBottom: "15px" }}>
-                  {field.label}
-                  <select style={{ ...fieldStyle, width: "100%" }}>
-                    {field.options &&
-                      field.options.map((option, idx) => (
-                        <option key={idx} value={option.value}>
-                          {option.label}
-                        </option>
-                      ))}
-                  </select>
-                </div>
+                {field.label}
+                <select style={fieldStyle}>
+                  {field.options?.map((option, idx) => (
+                    <option key={idx} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
               </>
             ) : field.type === "textarea" ? (
               <>
-                <div style={{ marginBottom: "15px" }}>
-                  {field.label}
-                  <textarea
-                    placeholder={field.placeholder || "Enter text"}
-                    style={{ ...fieldStyle, width: "100%", height: "100px" }}
-                  />
-                </div>
+                {field.label}
+                <textarea
+                  placeholder={field.placeholder || "Enter text"}
+                  style={fieldStyle}
+                />
               </>
             ) : field.type === "autocomplete" ? (
               <>
-                <div style={{ marginBottom: "15px" }}>
-                  {field.label}
-                  <input
-                    type="text"
-                    placeholder={field.placeholder || "Start typing..."}
-                    list="autocomplete-list"
-                    style={fieldStyle}
-                  />
-                </div>
+                {field.label}
+                <input
+                  type="text"
+                  placeholder={field.placeholder || "Start typing..."}
+                  list="autocomplete-list"
+                  style={fieldStyle}
+                />
               </>
             ) : field.type === "file" ? (
               <>
-                <div style={{ marginBottom: "15px" }}>
-                  {field.label}
-                  <input type="file" style={fieldStyle} />
-                </div>
+                {field.label}
+                <input type="file" style={fieldStyle} />
               </>
             ) : field.type === "date" ? (
               <>
-                <div style={{ marginBottom: "15px" }}>
-                  {field.label}
-                  <input type="date" style={fieldStyle} />
-                </div>
+                {field.label}
+                <input type="date" style={fieldStyle} />
               </>
             ) : field.type === "hidden" ? (
               <input
@@ -139,14 +124,12 @@ const PreviewPage = () => {
               <p>{field.label}</p>
             ) : (
               <>
-                <div style={{ marginBottom: "15px" }}>
-                  {field.label}
-                  <input
-                    type={field.type}
-                    placeholder={field.placeholder || "Enter " + field.type}
-                    style={fieldStyle}
-                  />
-                </div>
+                {field.label}
+                <input
+                  type={field.type}
+                  placeholder={field.placeholder || "Enter " + field.type}
+                  style={fieldStyle}
+                />
               </>
             )}
           </>
@@ -154,19 +137,11 @@ const PreviewPage = () => {
 
         return (
           <div
-            className={`${selectedTheme}`}
-            style={{
-              paddingRight: "15px",
-              paddingLeft: "15px",
-            }}
+            key={index}
+            className={`form-field ${placementClass}`}
+            style={fieldStyle}
           >
-            <div
-              key={index}
-              className={`form-field ${placementClass}`}
-              style={{ marginBottom: "10px" }} 
-            >
-              {fieldContent}
-            </div>
+            {fieldContent}
           </div>
         );
       });

@@ -7,16 +7,21 @@ function TemplatePreview({ show, onClose, template, onSubmit }) {
   const renderField = (field, idx) => {
     switch (field.type) {
       case "text":
+      case "email":
+      case "url":
+      case "tel":
+      case "number":
         return (
           <Form.Group key={idx} className="mb-3">
             <Form.Label>{field.label}</Form.Label>
             <Form.Control
-              type="text"
+              type={field.type}
               placeholder={`Enter ${field.label}`}
               disabled
             />
           </Form.Group>
         );
+
       case "textarea":
         return (
           <Form.Group key={idx} className="mb-3">
@@ -29,13 +34,14 @@ function TemplatePreview({ show, onClose, template, onSubmit }) {
             />
           </Form.Group>
         );
+
       case "select":
         return (
           <Form.Group key={idx} className="mb-3">
             <Form.Label>{field.label}</Form.Label>
             <Form.Select disabled>
               <option value="">{`Select ${field.label}`}</option>
-              {field.options?.map((opt, i) => (
+              {(field.options || field.values || []).map((opt, i) => (
                 <option key={i} value={opt.value}>
                   {opt.label}
                 </option>
@@ -44,11 +50,94 @@ function TemplatePreview({ show, onClose, template, onSubmit }) {
           </Form.Group>
         );
 
-      // Add other types if needed (checkbox, radio, etc.)
+      case "checkbox-group":
+        return (
+          <Form.Group key={idx} className="mb-3">
+            <Form.Label>{field.label}</Form.Label>
+            <div>
+              {(field.options || field.values || []).map((opt, i) => (
+                <Form.Check
+                  key={i}
+                  type="checkbox"
+                  label={opt.label}
+                  disabled
+                  style={{ marginRight: "10px" }}
+                />
+              ))}
+            </div>
+          </Form.Group>
+        );
+
+      case "radio-group":
+        return (
+          <Form.Group key={idx} className="mb-3">
+            <Form.Label>{field.label}</Form.Label>
+            <div>
+              {(field.options || field.values || []).map((opt, i) => (
+                <Form.Check
+                  key={i}
+                  type="radio"
+                  name={`radio-${idx}`}
+                  label={opt.label}
+                  disabled
+                  style={{ marginRight: "10px" }}
+                />
+              ))}
+            </div>
+          </Form.Group>
+        );
+
+      case "date":
+        return (
+          <Form.Group key={idx} className="mb-3">
+            <Form.Label>{field.label}</Form.Label>
+            <Form.Control type="date" disabled />
+          </Form.Group>
+        );
+
+      case "file":
+        return (
+          <Form.Group key={idx} className="mb-3">
+            <Form.Label>{field.label}</Form.Label>
+            <Form.Control type="file" disabled />
+          </Form.Group>
+        );
+
+      case "hidden":
+        return <Form.Control key={idx} type="hidden" disabled />;
+
+      case "header":
+        return (
+          <h3 key={idx} className="mt-4 mb-2">
+            {field.label}
+          </h3>
+        );
+
+      case "paragraph":
+        return (
+          <p key={idx} className="text-muted">
+            {field.label}
+          </p>
+        );
+
+      case "button":
+        return (
+          <Form.Group key={idx} className="mb-3">
+            <Form.Label visuallyHidden>{field.label}</Form.Label>
+            <Form.Control
+              type="button"
+              value={field.label}
+              disabled
+              className="btn btn-secondary"
+            />
+          </Form.Group>
+        );
+
       default:
         return null;
     }
   };
+  
 
   return (
     <Modal show={show} onHide={onClose} centered size="lg">
