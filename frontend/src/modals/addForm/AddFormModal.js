@@ -7,9 +7,7 @@ import CustomForm from "./CustomForm";
 import TemplateSelector from "./TemplateSelector";
 import TemplatePreview from "./TemplatePreview";
 import "./AddFormModal.css";
-import predefinedForms from "./formTemplates";
-
-
+import predefinedForms from "./predefinedForms";
 
 function AddFormModal({ show, handleClose, fetchForms, companyId }) {
   const [mode, setMode] = useState(null); // null | "custom" | "template"

@@ -1,5 +1,6 @@
-import React from "react";
-import { Button, Card, Col, Row } from "react-bootstrap";
+import React, { useState } from "react";
+import { Button, Card, Col, Row, Form } from "react-bootstrap";
+import TemplateNavBar from "./TemplateNavBar";
 
 function TemplateSelector({
   templates,
@@ -8,11 +9,28 @@ function TemplateSelector({
   onSubmit,
   onBack,
 }) {
+  const [selectedCategory, setSelectedCategory] = useState("All");
+
+  const categories = ["All", ...new Set(templates.map((t) => t.category))];
+
+  const filteredTemplates =
+    selectedCategory === "All"
+      ? templates
+      : templates.filter((t) => t.category === selectedCategory);
+
   return (
     <div className="p-3">
-      <h5 className="fw-bold mb-3">Choose a Template</h5>
+      <TemplateNavBar
+        categories={categories}
+        selectedCategory={selectedCategory}
+        onChange={setSelectedCategory}
+      />
+      <h5 className="fw-bold mb-3" style={{ marginTop: "10px" }}>
+        Choose a Template
+      </h5>
+
       <Row className="g-3">
-        {templates.map((template, idx) => (
+        {filteredTemplates.map((template, idx) => (
           <Col md={6} key={idx}>
             <Card className="shadow-sm h-100">
               <Card.Body>
@@ -44,6 +62,7 @@ function TemplateSelector({
           </Col>
         ))}
       </Row>
+
       <div className="text-end mt-4">
         <Button variant="secondary" onClick={onBack}>
           Back

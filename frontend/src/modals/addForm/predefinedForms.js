@@ -3,6 +3,8 @@ const predefinedForms = [
     title: "Employee Feedback",
     description:
       "Gather insights from your employees regarding workplace satisfaction.",
+    category: "HR",
+
     fields: [
       {
         id: "q1",
@@ -74,6 +76,8 @@ const predefinedForms = [
     title: "Customer Satisfaction",
     description:
       "Understand your customers' experience with your products or services.",
+    category: "Marketing",
+
     fields: [
       {
         id: "q1",
@@ -143,6 +147,8 @@ const predefinedForms = [
     title: "IT Support Request",
     description:
       "Streamline technical issue reporting with this structured form.",
+    category: "IT",
+
     fields: [
       {
         id: "q1",
@@ -304,6 +310,295 @@ const predefinedForms = [
         inline: false,
         _id: "submit-project-evaluation",
         options: [],
+      },
+    ],
+  },
+  // Healthcare Feedback Form
+  {
+    title: "Healthcare Patient Feedback",
+    description: "Collect patient feedback to improve healthcare services.",
+    fields: [
+      {
+        id: "q1",
+        name: "q1",
+        label: "How would you rate the quality of care you received?",
+        type: "radio-group",
+        className: "form-control",
+        required: true,
+        options: [
+          { label: "Excellent", value: "Excellent", selected: false },
+          { label: "Good", value: "Good", selected: false },
+          { label: "Average", value: "Average", selected: false },
+          { label: "Poor", value: "Poor", selected: false },
+        ],
+      },
+      {
+        id: "q2",
+        name: "q2",
+        label: "Were the staff courteous and helpful?",
+        type: "radio-group",
+        className: "form-control",
+        required: true,
+        options: [
+          { label: "Yes", value: "Yes", selected: false },
+          { label: "No", value: "No", selected: false },
+        ],
+      },
+      {
+        id: "q3",
+        name: "q3",
+        label: "Any suggestions to improve our service?",
+        type: "textarea",
+        className: "form-control",
+        required: false,
+        options: [],
+      },
+      {
+        id: "submit",
+        name: "submit",
+        label: "Submit",
+        type: "button",
+        subtype: "button",
+        className: "btn-primary btn",
+        style: "primary",
+        required: false,
+        options: [],
+        access: [],
+      },
+    ],
+  },
+
+  // Education Course Evaluation Form
+  {
+    title: "Education Course Evaluation",
+    description: "Evaluate the effectiveness of a course or instructor.",
+    fields: [
+      {
+        id: "q1",
+        name: "q1",
+        label: "How would you rate the course content?",
+        type: "radio-group",
+        className: "form-control",
+        required: true,
+        options: [
+          { label: "Excellent", value: "Excellent", selected: false },
+          { label: "Good", value: "Good", selected: false },
+          { label: "Fair", value: "Fair", selected: false },
+          { label: "Poor", value: "Poor", selected: false },
+        ],
+      },
+      {
+        id: "q2",
+        name: "q2",
+        label: "Was the instructor clear and engaging?",
+        type: "radio-group",
+        className: "form-control",
+        required: true,
+        options: [
+          { label: "Yes", value: "Yes", selected: false },
+          { label: "No", value: "No", selected: false },
+        ],
+      },
+      {
+        id: "q3",
+        name: "q3",
+        label: "Suggestions for improving the course?",
+        type: "textarea",
+        className: "form-control",
+        required: false,
+        options: [],
+      },
+      {
+        id: "submit",
+        name: "submit",
+        label: "Submit",
+        type: "button",
+        subtype: "button",
+        className: "btn-primary btn",
+        style: "primary",
+        required: false,
+        options: [],
+        access: [],
+      },
+    ],
+  },
+
+  // Retail Product Feedback Form
+  {
+    title: "Retail Product Feedback",
+    description:
+      "Gather customer opinions about products and shopping experience.",
+    fields: [
+      {
+        id: "q1",
+        name: "q1",
+        label: "How satisfied are you with the product quality?",
+        type: "radio-group",
+        className: "form-control",
+        required: true,
+        options: [
+          { label: "Very Satisfied", value: "Very Satisfied", selected: false },
+          { label: "Satisfied", value: "Satisfied", selected: false },
+          { label: "Neutral", value: "Neutral", selected: false },
+          { label: "Dissatisfied", value: "Dissatisfied", selected: false },
+          {
+            label: "Very Dissatisfied",
+            value: "Very Dissatisfied",
+            selected: false,
+          },
+        ],
+      },
+      {
+        id: "q2",
+        name: "q2",
+        label: "Was the staff helpful during your visit?",
+        type: "radio-group",
+        className: "form-control",
+        required: true,
+        options: [
+          { label: "Yes", value: "Yes", selected: false },
+          { label: "No", value: "No", selected: false },
+        ],
+      },
+      {
+        id: "q3",
+        name: "q3",
+        label: "Additional comments or suggestions",
+        type: "textarea",
+        className: "form-control",
+        required: false,
+        options: [],
+      },
+      {
+        id: "submit",
+        name: "submit",
+        label: "Submit",
+        type: "button",
+        subtype: "button",
+        className: "btn-primary btn",
+        style: "primary",
+        required: false,
+        options: [],
+        access: [],
+      },
+    ],
+  },
+
+  // Hospitality Guest Feedback Form
+  {
+    title: "Hospitality Guest Feedback",
+    description:
+      "Capture guest feedback to enhance hotel or restaurant services.",
+    fields: [
+      {
+        id: "q1",
+        name: "q1",
+        label: "Rate your overall experience with us.",
+        type: "radio-group",
+        className: "form-control",
+        required: true,
+        options: [
+          { label: "Excellent", value: "Excellent", selected: false },
+          { label: "Good", value: "Good", selected: false },
+          { label: "Average", value: "Average", selected: false },
+          { label: "Poor", value: "Poor", selected: false },
+        ],
+      },
+      {
+        id: "q2",
+        name: "q2",
+        label: "How likely are you to visit us again?",
+        type: "select",
+        className: "form-control",
+        required: true,
+        options: [
+          { label: "Very Likely", value: "Very Likely", selected: false },
+          { label: "Likely", value: "Likely", selected: false },
+          { label: "Unlikely", value: "Unlikely", selected: false },
+          { label: "Very Unlikely", value: "Very Unlikely", selected: false },
+        ],
+      },
+      {
+        id: "q3",
+        name: "q3",
+        label: "What did you like most about your stay?",
+        type: "textarea",
+        className: "form-control",
+        required: false,
+        options: [],
+      },
+      {
+        id: "submit",
+        name: "submit",
+        label: "Submit",
+        type: "button",
+        subtype: "button",
+        className: "btn-primary btn",
+        style: "primary",
+        required: false,
+        options: [],
+        access: [],
+      },
+    ],
+  },
+
+  // Manufacturing Quality Control Form
+  {
+    title: "Manufacturing Quality Control",
+    description: "Report and track quality issues on the production line.",
+    fields: [
+      {
+        id: "q1",
+        name: "q1",
+        label: "Date of inspection",
+        type: "date",
+        className: "form-control",
+        required: true,
+        options: [],
+      },
+      {
+        id: "q2",
+        name: "q2",
+        label: "Product batch number",
+        type: "text",
+        className: "form-control",
+        required: true,
+        options: [],
+      },
+      {
+        id: "q3",
+        name: "q3",
+        label: "Describe the quality issue found",
+        type: "textarea",
+        className: "form-control",
+        required: true,
+        options: [],
+      },
+      {
+        id: "q4",
+        name: "q4",
+        label: "Severity of issue",
+        type: "select",
+        className: "form-control",
+        required: true,
+        options: [
+          { label: "Low", value: "Low", selected: false },
+          { label: "Medium", value: "Medium", selected: false },
+          { label: "High", value: "High", selected: false },
+          { label: "Critical", value: "Critical", selected: false },
+        ],
+      },
+      {
+        id: "submit",
+        name: "submit",
+        label: "Submit",
+        type: "button",
+        subtype: "button",
+        className: "btn-primary btn",
+        style: "primary",
+        required: false,
+        options: [],
+        access: [],
       },
     ],
   },
