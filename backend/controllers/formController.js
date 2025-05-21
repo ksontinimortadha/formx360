@@ -33,7 +33,7 @@ exports.createForm = async (req, res) => {
       user_id: userId,
       title,
       description,
-      fields: fields,
+      fields,
       field_order: [],
     });
 
