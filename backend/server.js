@@ -43,6 +43,7 @@ app.use("/reports", require("./routes/reportRoutes"));
 app.use("/notifications", require("./routes/notificationRoutes"));
 app.use("/permissions", require("./routes/permissionRoutes"));
 app.use("/report-dashboard", require("./routes/DashboardChartRoutes"));
+app.use("/form-templates", require("./routes/formTemplatesRoutes"));
 
 // Socket connection handler
 io.on("connection", (socket) => {
