@@ -1,1 +1,196 @@
-[]
+[
+  {
+    "category": "IT Support",
+    "title": "IT Support Request",
+    "description": "Submit your IT issues or requests.",
+    "fields": [
+      {
+        "id": "employee_id",
+        "name": "employee_id",
+        "label": "Employee ID",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "issue_type",
+        "name": "issue_type",
+        "label": "Type of Issue",
+        "type": "select",
+        "required": true,
+        "options": [
+          { "label": "Hardware", "value": "hardware" },
+          { "label": "Software", "value": "software" },
+          { "label": "Network", "value": "network" },
+          { "label": "Access Request", "value": "access" }
+        ]
+      },
+      {
+        "id": "description",
+        "name": "description",
+        "label": "Describe the issue",
+        "type": "textarea",
+        "required": true
+      },
+      {
+        "id": "urgent",
+        "name": "urgent",
+        "label": "Is this urgent?",
+        "type": "checkbox",
+        "required": false
+      },
+      {
+        "type": "button",
+        "subtype": "submit",
+        "label": "Send Request",
+        "className": "btn-primary"
+      }
+    ]
+  },
+  {
+    "category": "Events",
+    "title": "Event Registration",
+    "description": "Register attendees for upcoming company events.",
+    "fields": [
+      {
+        "id": "full_name",
+        "name": "full_name",
+        "label": "Full Name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "email",
+        "name": "email",
+        "label": "Email Address",
+        "type": "email",
+        "required": true
+      },
+      {
+        "id": "event_selection",
+        "name": "event_selection",
+        "label": "Select Event",
+        "type": "select",
+        "required": true,
+        "options": [
+          { "label": "Annual Meetup", "value": "annual_meetup" },
+          { "label": "Team Building", "value": "team_building" },
+          { "label": "Charity Run", "value": "charity_run" }
+        ]
+      },
+      {
+        "id": "guest_count",
+        "name": "guest_count",
+        "label": "Number of Guests",
+        "type": "number",
+        "required": false
+      },
+      {
+        "type": "button",
+        "subtype": "submit",
+        "label": "Register",
+        "className": "btn-primary"
+      }
+    ]
+  },
+  {
+    "category": "HR",
+    "title": "Leave Request",
+    "description": "Request leave days for vacation or personal reasons.",
+    "fields": [
+      {
+        "id": "employee_name",
+        "name": "employee_name",
+        "label": "Employee Name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "leave_type",
+        "name": "leave_type",
+        "label": "Leave Type",
+        "type": "select",
+        "required": true,
+        "options": [
+          { "label": "Vacation", "value": "vacation" },
+          { "label": "Sick Leave", "value": "sick" },
+          { "label": "Maternity/Paternity", "value": "maternity_paternity" },
+          { "label": "Other", "value": "other" }
+        ]
+      },
+      {
+        "id": "start_date",
+        "name": "start_date",
+        "label": "Start Date",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "end_date",
+        "name": "end_date",
+        "label": "End Date",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "reason",
+        "name": "reason",
+        "label": "Reason (optional)",
+        "type": "textarea",
+        "required": false
+      },
+      {
+        "type": "button",
+        "subtype": "submit",
+        "label": "Submit Request",
+        "className": "btn-primary"
+      }
+    ]
+  },
+  {
+    "category": "Sales",
+    "title": "Order Form",
+    "description": "Place an order for our products.",
+    "fields": [
+      {
+        "id": "customer_name",
+        "name": "customer_name",
+        "label": "Customer Name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "product_id",
+        "name": "product_id",
+        "label": "Product",
+        "type": "select",
+        "required": true,
+        "options": [
+          { "label": "Product A", "value": "product_a" },
+          { "label": "Product B", "value": "product_b" },
+          { "label": "Product C", "value": "product_c" }
+        ]
+      },
+      {
+        "id": "quantity",
+        "name": "quantity",
+        "label": "Quantity",
+        "type": "number",
+        "required": true,
+        "min": 1
+      },
+      {
+        "id": "delivery_address",
+        "name": "delivery_address",
+        "label": "Delivery Address",
+        "type": "textarea",
+        "required": true
+      },
+      {
+        "type": "button",
+        "subtype": "submit",
+        "label": "Place Order",
+        "className": "btn-primary"
+      }
+    ]
+  }
+]
