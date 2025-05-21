@@ -21,7 +21,7 @@ function TemplateSelector({ onPreview, openPreview, onSubmit, onBack }) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        console.log("first", data);
+        console.log("data", data);
         setTemplates(data);
       } catch (err) {
         setError("Failed to load templates");

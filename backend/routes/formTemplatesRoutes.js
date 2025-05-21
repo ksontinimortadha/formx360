@@ -22,9 +22,19 @@ function writeTemplates(data) {
 
 // GET all form templates
 router.get("/get", (req, res) => {
-  const templates = readTemplates();
-  res.json(templates);
+  const templates = readTemplates(); // array of categories with forms
+
+  // Flatten all forms and include their category
+  const allForms = templates.flatMap((categoryGroup) =>
+    categoryGroup.forms.map((form) => ({
+      ...form,
+      category: categoryGroup.category,
+    }))
+  );
+
+  res.json(allForms);
 });
+  
 
 // POST add or update templates
 router.post("/save", (req, res) => {
