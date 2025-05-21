@@ -7,7 +7,7 @@ const User = require("../models/User");
 // Create a new form for a specific company
 exports.createForm = async (req, res) => {
   const { companyId } = req.params;
-  const { title, description } = req.body;
+  const { title, description , fields } = req.body;
   const userId = req.user.id;
   try {
     // Check if the company exists
