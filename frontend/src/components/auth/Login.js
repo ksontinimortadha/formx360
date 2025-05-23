@@ -43,7 +43,7 @@ function Login() {
 
         if (role === "User") {
           redirectTarget = `/user-dashboard`; // Redirect to the user dashboard
-        } else if (role === "admin") {
+        } else if (role === "Super Admin") {
           // Admin can be redirected to the company's dashboard or another page
           redirectTarget = companyId
             ? `/dashboard?companyId=${companyId}`
