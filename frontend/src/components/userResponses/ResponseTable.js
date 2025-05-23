@@ -17,6 +17,7 @@ const ResponseTable = ({
   requestSort,
   handleEdit,
   handleDelete,
+  hasPermission = () => true, // fallback if not provided
 }) => {
   const [showModal, setShowModal] = useState(false);
   const [editRow, setEditRow] = useState(null);
@@ -80,7 +81,6 @@ const ResponseTable = ({
               const field = responses[0]?.responses?.find(
                 (res) => res.field_id === fieldId
               );
-
               return (
                 <th
                   key={fieldId}
@@ -143,21 +143,24 @@ const ResponseTable = ({
                 {new Date(response.submitted_at).toLocaleString()}
               </td>
               <td className="border p-3 text-gray-700 flex gap-2 items-center">
-                <Button
-                  style={{ marginRight: "10px" }}
-                  variant="secondary"
-                  size="sm"
-                  onClick={() => openEditModal(response)}
-                >
-                  <FaPencilAlt size={13} />
-                </Button>
-                <Button
-                  variant="danger"
-                  size="sm"
-                  onClick={() => openDeleteModal(response._id)}
-                >
-                  <FaTrash size={13} />
-                </Button>
+                {hasPermission(response.form_id, "edit") && (
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    onClick={() => openEditModal(response)}
+                  >
+                    <FaPencilAlt size={13} />
+                  </Button>
+                )}
+                {hasPermission(response.form_id, "delete") && (
+                  <Button
+                    variant="danger"
+                    size="sm"
+                    onClick={() => openDeleteModal(response._id)}
+                  >
+                    <FaTrash size={13} />
+                  </Button>
+                )}
               </td>
             </tr>
           ))}
@@ -179,7 +182,7 @@ const ResponseTable = ({
       <ConfirmDeleteModal
         show={showDeleteModal}
         onClose={closeDeleteModal}
-        onConfirm={confirmDelete}
+        onConfirm={() => confirmDelete(deleteRowId)}
         responseId={deleteRowId}
       />
     </>

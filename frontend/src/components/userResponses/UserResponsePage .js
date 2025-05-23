@@ -19,6 +19,11 @@ const UserResponsePage = () => {
   const [itemsPerPage] = useState(5);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
   const [showExportModal, setShowExportModal] = useState(false);
+  const [existingPermissions, setExistingPermissions] = useState([]);
+  const [currentUserRole, setCurrentUserRole] = useState("");
+  const [forms, setForms] = useState([]);
+  const [filteredForms, setFilteredForms] = useState([]);
+
   const navigate = useNavigate();
   const userId = sessionStorage.getItem("userId");
 
@@ -42,7 +47,6 @@ const UserResponsePage = () => {
   const fetchResponses = async () => {
     if (!userId) return;
 
-    console.log("Fetching responses submitted by userId:", userId);
     setLoading(true);
 
     try {
@@ -74,13 +78,14 @@ const UserResponsePage = () => {
       setLoading(false);
     }
   };
-  
-  
 
   useEffect(() => {
     if (userId) {
       fetchResponses();
     }
+    const storedCompanyId = sessionStorage.getItem("companyId");
+
+    fetchForms(storedCompanyId);
   }, [userId]);
 
   const requestSort = (key) => {
@@ -125,7 +130,7 @@ const UserResponsePage = () => {
   }, [sortedResponses, currentPage, itemsPerPage]);
 
   const handleBackClick = () => {
-    navigate(`/forms`);
+    navigate(`/user-dashboard`);
   };
 
   const handleEdit = async (updatedResponse) => {
@@ -163,7 +168,69 @@ const UserResponsePage = () => {
       toast.error("Failed to delete response");
     }
   };
+  const fetchForms = async (companyId) => {
+    if (!companyId) return;
 
+    try {
+      const response = await axios.get(
+        `https://formx360.onrender.com/forms/${companyId}/forms`
+      );
+      const formsData = response.data;
+
+      const currentUserId = sessionStorage.getItem("userId");
+
+      const permissionsResponses = await Promise.all(
+        formsData.map((form) =>
+          axios.get(`https://formx360.onrender.com/permissions/${form._id}`)
+        )
+      );
+
+      const newPermissions = {};
+
+      formsData.forEach((form, index) => {
+        const permissions = permissionsResponses[index].data.permissions;
+
+        const flatPermissions = permissions.flatMap((perm) =>
+          perm.permissions.map((p) => ({
+            userId: perm.userId._id,
+            permission: p,
+          }))
+        );
+
+        newPermissions[form._id] = flatPermissions;
+      });
+
+      setExistingPermissions(newPermissions);
+
+      const viewableForms =
+        currentUserRole === "Super Admin"
+          ? formsData
+          : formsData.filter((form) => {
+              const perms = newPermissions[form._id] || [];
+              return perms.some(
+                (perm) =>
+                  perm.userId === currentUserId && perm.permission === "view"
+              );
+            });
+
+      setForms(formsData);
+      setFilteredForms(viewableForms);
+    } catch (error) {
+      console.error("Error fetching forms or permissions:", error);
+      toast.error("Failed to fetch forms.");
+    }
+  };
+  const hasPermission = (form, ...requiredPermissions) => {
+    const currentUserId = sessionStorage.getItem("userId");
+    if (!form || !form._id || !currentUserId) return false;
+
+    const perms = existingPermissions[form._id] || [];
+    return perms.some(
+      (perm) =>
+        perm.userId === currentUserId &&
+        requiredPermissions.includes(perm.permission)
+    );
+  };
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -212,6 +279,7 @@ const UserResponsePage = () => {
         requestSort={requestSort}
         handleEdit={handleEdit}
         handleDelete={handleDelete}
+        hasPermission={hasPermission}
       />
 
       <Navbar

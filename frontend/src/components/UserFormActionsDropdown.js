@@ -22,7 +22,7 @@ const UserFormActionsDropdown = ({ form, hasPermission }) => {
 
       <Dropdown.Menu>
         <Dropdown.Item onClick={() => handleResponses(form)}>
-          View Responses
+          My Responses
         </Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
