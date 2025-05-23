@@ -12,31 +12,14 @@ import {
 } from "react-bootstrap";
 import { FaCog, FaShareAlt, FaCheckCircle } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import logo from "../images/logo.png";
+import logo from "./logo.png";
+import formIllustration from "./Forms.gif";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "./home.css";
 
 function Home() {
   return (
     <div>
-      <style>
-        {`
-          /* Enable dropdown on hover for "By Industry" */
-          .industry-dropdown:hover .dropdown-menu {
-            display: block;
-          }
-
-          .industry-dropdown .dropdown-menu {
-            margin-top: 0;
-            transition: all 0.2s ease-in-out;
-            left: 100%; 
-            top: 0;  
-          }
-
-          .industry-dropdown {
-            position: relative;
-          }
-        `}
-      </style>
       {/* Top Navigation Bar */}
       <Navbar bg="light" expand="lg" className="shadow-sm py-2">
         <Container fluid>
@@ -59,9 +42,10 @@ function Home() {
 
               {/* Features Menu */}
               <NavDropdown title="Features" id="navbarScrollingDropdown">
-                <NavDropdown.Item href="#form-builder">
+                <NavDropdown.Item as={Link} to="/form-builder-features">
                   Form Builder
                 </NavDropdown.Item>
+
                 <NavDropdown.Item href="#share-forms">
                   Share Forms
                 </NavDropdown.Item>
@@ -72,7 +56,6 @@ function Home() {
 
               {/* Solutions Menu with Nested Dropdown */}
               <NavDropdown title="Solutions" id="navbarScrollingDropdown">
-                {/* Dropdown for "By Industry" */}
                 <div className="dropdown position-relative industry-dropdown">
                   <NavDropdown.Item
                     as="div"
@@ -100,7 +83,6 @@ function Home() {
                     </li>
                   </ul>
                 </div>
-                {/* Dropdown for "By Size" */}
                 <div className="dropdown position-relative industry-dropdown">
                   <NavDropdown.Item
                     as="div"
@@ -128,7 +110,6 @@ function Home() {
                     </li>
                   </ul>
                 </div>
-                {/* Dropdown for "By Role" */}
                 <div className="dropdown position-relative industry-dropdown">
                   <NavDropdown.Item
                     as="div"
@@ -161,41 +142,53 @@ function Home() {
 
             <Form className="d-flex">
               <Link to="/users/register">
-                <Button variant="primary" className="me-2">
+                <Button variant="primary" className="me-2 register-button">
                   Register
                 </Button>
               </Link>
               <Link to="/users/login">
-                <Button variant="outline-primary">Login</Button>
+                <Button variant="outline-primary" className="login-button">
+                  Login
+                </Button>
               </Link>
             </Form>
           </Navbar.Collapse>
         </Container>
       </Navbar>
 
-      {/* Hero Section */}
-      <section
-        className="d-flex align-items-center justify-content-center text-center"
-        style={{
-          minHeight: "70vh",
-          backgroundColor: "#f8f9fa",
-          padding: "50px 0",
-        }}
-      >
+      {/* Hero Section with Animated Illustration */}
+      <section className="hero-section d-flex align-items-center justify-content-center text-center">
         <Container>
-          <h1 className="display-4 fw-bold">
-            Efficient form creation with a powerful form builder
-          </h1>
-          <p className="lead mt-3">
-            Build powerful forms for free, share them online, receive instant
-            alerts, and efficiently manage your data with our integrated apps.
-            Focus on your business while FormX360 Forms handles the data
-            collection process for you!
-          </p>
-          <Button variant="primary" size="lg" className="mt-4">
-            Get Started
-          </Button>
+          <div className="hero-content">
+            <h1 className="display-4 fw-bold">
+              Efficient form creation with a powerful form builder
+            </h1>
+            <p className="lead mt-3">
+              Build powerful forms for free, share them online, receive instant
+              alerts, and efficiently manage your data with our integrated apps.
+              Focus on your business while FormX360 Forms handles the data
+              collection process for you!
+            </p>
+            <div className="d-flex justify-content-center">
+              <Link to="/users/register">
+                <Button
+                  variant="primary"
+                  size="lg"
+                  className="mt-4 hero-button"
+                  style={{ width: "200px" }}
+                >
+                  Get Started
+                </Button>
+              </Link>
+            </div>
+          </div>
         </Container>
+
+        <img
+          src={formIllustration}
+          className="hero-illustration"
+          alt="Form Illustration"
+        />
       </section>
 
       {/* Features Section */}
@@ -203,11 +196,14 @@ function Home() {
         <Container>
           <h2 className="mb-5">Features</h2>
           <Row className="gy-4">
-            {/* Card 1 */}
             <Col md={6} lg={4}>
-              <Card className="shadow-sm border-0 h-100">
+              <Card className="shadow-sm border-0 h-100 feature-card">
                 <Card.Body>
-                  <FaCog size={60} color="#007bff" className="mb-3" />
+                  <FaCog
+                    size={60}
+                    color="#007bff"
+                    className="mb-3 feature-icon"
+                  />
                   <Card.Title>Custom Forms</Card.Title>
                   <Card.Text>
                     Design your forms with drag-and-drop ease. No coding skills
@@ -220,12 +216,14 @@ function Home() {
                 </Card.Body>
               </Card>
             </Col>
-
-            {/* Card 2 */}
             <Col md={6} lg={4}>
-              <Card className="shadow-sm border-0 h-100">
+              <Card className="shadow-sm border-0 h-100 feature-card">
                 <Card.Body>
-                  <FaShareAlt size={60} color="#007bff" className="mb-3" />
+                  <FaShareAlt
+                    size={60}
+                    color="#007bff"
+                    className="mb-3 feature-icon"
+                  />
                   <Card.Title>Share & Embed</Card.Title>
                   <Card.Text>
                     Easily share your forms via links or embed them directly
@@ -238,12 +236,14 @@ function Home() {
                 </Card.Body>
               </Card>
             </Col>
-
-            {/* Card 3 */}
             <Col md={6} lg={4}>
-              <Card className="shadow-sm border-0 h-100">
+              <Card className="shadow-sm border-0 h-100 feature-card">
                 <Card.Body>
-                  <FaCheckCircle size={60} color="#007bff" className="mb-3" />
+                  <FaCheckCircle
+                    size={60}
+                    color="#007bff"
+                    className="mb-3 feature-icon"
+                  />
                   <Card.Title>Real-time Analytics</Card.Title>
                   <Card.Text>
                     Monitor responses and gain insights instantly with our
@@ -265,10 +265,10 @@ function Home() {
         <Container>
           <Row className="align-items-center">
             <Col md={6}>
-              <p className="mb-0">&copy; 2025 FormX360 | All Rights Reserved</p>
+              <p className="mb-0">© 2025 FormX360 | All Rights Reserved</p>
             </Col>
             <Col md={6} className="text-md-end">
-              <Nav className="justify-content-center justify-content-md-end">
+              <Nav className="justify-content-center justify-content-md-end footer-nav">
                 <Nav.Link as={Link} to="/privacy-policy" className="text-white">
                   Privacy Policy
                 </Nav.Link>

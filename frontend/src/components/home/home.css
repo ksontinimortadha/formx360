@@ -1,0 +1,102 @@
+/* Dropdown Animations */
+.industry-dropdown:hover .dropdown-menu {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+.industry-dropdown .dropdown-menu {
+  margin-top: 0;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  left: 100%;
+  top: 0;
+}
+.industry-dropdown {
+  position: relative;
+}
+.dropdown-item {
+  transition: background-color 0.2s ease, padding-left 0.2s ease;
+}
+.dropdown-item:hover {
+  background-color: #f8f9fa;
+  padding-left: 1.5rem;
+}
+
+/* Hero Section Animated Illustration Background */
+.hero-section {
+  position: relative;
+  overflow: hidden;
+  min-height: 70vh;
+  padding: 50px 0;
+  background-size: cover;
+  background-position: center;
+}
+
+.hero-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 123, 255, 0.2),
+    rgba(255, 255, 255, 0.1)
+  );
+  animation: overlayPulse 10s ease-in-out infinite;
+  z-index: 1;
+}
+.hero-content {
+  position: relative;
+  z-index: 2;
+  color: #000;
+  text-align: left;
+}
+
+/* Navbar Link Hover */
+.navbar-nav .nav-link {
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+.navbar-nav .nav-link:hover {
+  color: #007bff !important;
+  transform: translateY(-2px);
+}
+
+/* Button Hover Effects */
+.hero-button,
+.register-button,
+.login-button {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.hero-button:hover,
+.register-button:hover,
+.login-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
+}
+
+/* Feature Card Hover */
+.feature-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+.feature-icon {
+  transition: transform 0.3s ease;
+}
+.feature-card:hover .feature-icon {
+  transform: scale(1.1);
+}
+
+/* Footer Link Hover */
+.footer-nav .nav-link {
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+.footer-nav .nav-link:hover {
+  color: #007bff !important;
+  transform: translateY(-2px);
+}

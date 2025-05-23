@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./components/Home";
+import Home from "./components/home/Home";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import ResetPassword from "./components/auth/ResetPassword";
@@ -26,6 +26,7 @@ import socket from "./socket";
 import ViewResponse from "./components/responses/ViewResponse";
 import EditResponse from "./components/responses/EditResponse";
 import UserDashboard from "./components/UserDashboard";
+import FormBuilderFeatures from "./components/home/FormBuilderFeatures";
 
 function App() {
   useEffect(() => {
@@ -47,6 +48,10 @@ function App() {
       <Routes>
         {/* Auth Routes */}
         <Route path="/" element={<Home />} />
+        <Route
+          path="/form-builder-features"
+          element={<FormBuilderFeatures />}
+        />
         <Route path="/users/register" element={<Register />} />
         <Route path="/users/login" element={<Login />} />
         <Route path="/reset-password-request" element={<RequestReset />} />
