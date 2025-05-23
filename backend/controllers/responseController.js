@@ -239,24 +239,27 @@ exports.getFormResponses = async (req, res) => {
 };
 
 // Get Responses Submitted by a User
-exports.getResponseById = async (req, res) => {
-  const { responseId } = req.params;
+exports.getResponsesByUser = async (req, res) => {
+  const { userId } = req.params;
 
   try {
-    const response = await Response.findById(responseId).populate(
+    const responses = await Response.find({ user_id: userId }).populate(
       "form_id",
       "title"
     );
 
-    if (!response) {
-      return res.status(404).json({ message: "Response not found" });
+    if (!responses || responses.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No responses found for this user" });
     }
 
-    res.status(200).json(response);
+    res.status(200).json(responses);
   } catch (err) {
     res.status(500).json({ message: "Server error", error: err.message });
   }
 };
+
 
 
 // Edit a Response

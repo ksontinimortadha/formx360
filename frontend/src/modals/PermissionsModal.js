@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { Modal, Button, Form, Badge, ListGroup } from "react-bootstrap";
-import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
+import { FaEye, FaEdit, FaTrash, FaWpforms, FaPenAlt } from "react-icons/fa";
 import axios from "axios";
 import { toast } from "react-toastify";
 
@@ -136,7 +136,7 @@ const PermissionsModal = ({
               </div>
               <div className="d-flex gap-3 flex-wrap">
                 <Form.Check
-                  label={<FaEye title="Can View" />}
+                  label={<FaWpforms title="Can Submit Form" style={{marginTop:"5px"}} />}
                   checked={isChecked(user._id, "view")}
                   onChange={() => handleCheckboxChange(user._id, "view")}
                   disabled={user.role === "Super Admin" || !canEditPermissions}

@@ -20,7 +20,7 @@ import NavbarComponent from "../NavbarComponent";
 import DeleteFormModal from "../../modals/DeleteFormModal";
 import ChangeVisibilityModal from "../../modals/ChangeVisibilityModal";
 import PermissionsModal from "../../modals/PermissionsModal";
-import FormActionsDropdown from "./FormActionsDropdown ";
+import FormActionsDropdown from "./FormActionsDropdown";
 
 function Forms() {
   const [forms, setForms] = useState([]);
@@ -247,33 +247,32 @@ function Forms() {
     }
   };
 
- const handleDuplicateForm = async (form) => {
-   try {
-     // Call API to duplicate the form
-     const response = await axios.post(
-       `https://formx360.onrender.com/forms/duplicate/${form._id}`
-     );
+  const handleDuplicateForm = async (form) => {
+    try {
+      // Call API to duplicate the form
+      const response = await axios.post(
+        `https://formx360.onrender.com/forms/duplicate/${form._id}`
+      );
 
-     toast.success("Form duplicated successfully!");
+      toast.success("Form duplicated successfully!");
 
-     const newForm = response.data; // This is the duplicated form
+      const newForm = response.data; // This is the duplicated form
 
-     // Optimistically update the state for immediate UI feedback
-     setForms((prev) => [newForm, ...prev]);
-     setFilteredForms((prev) => [newForm, ...prev]); // <- update filtered forms too
+      // Optimistically update the state for immediate UI feedback
+      setForms((prev) => [newForm, ...prev]);
+      setFilteredForms((prev) => [newForm, ...prev]); // <- update filtered forms too
 
-     // Highlight the newly duplicated form
-     setHighlightedFormId(newForm._id);
-     setTimeout(() => setHighlightedFormId(null), 3000); // Highlight disappears after 3 seconds
+      // Highlight the newly duplicated form
+      setHighlightedFormId(newForm._id);
+      setTimeout(() => setHighlightedFormId(null), 3000); // Highlight disappears after 3 seconds
 
-     // Optional: Fetch fresh list of forms from the backend to ensure data consistency
-     await fetchForms(companyId);
-   } catch (error) {
-     console.error("Error duplicating form:", error);
-     toast.error("Failed to duplicate the form.");
-   }
- };
-
+      // Optional: Fetch fresh list of forms from the backend to ensure data consistency
+      await fetchForms(companyId);
+    } catch (error) {
+      console.error("Error duplicating form:", error);
+      toast.error("Failed to duplicate the form.");
+    }
+  };
 
   return (
     <div>

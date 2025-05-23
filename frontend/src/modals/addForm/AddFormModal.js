@@ -8,6 +8,7 @@ import TemplateSelector from "./TemplateSelector";
 import TemplatePreview from "./TemplatePreview";
 import "./AddFormModal.css";
 import predefinedForms from "./predefinedForms";
+import { useNavigate } from "react-router-dom";
 
 function AddFormModal({ show, handleClose, fetchForms, companyId }) {
   const [mode, setMode] = useState(null); // null | "custom" | "template"
@@ -25,15 +26,18 @@ function AddFormModal({ show, handleClose, fetchForms, companyId }) {
     setMode(null);
   };
 
+
+
+  // Inside your component:
+  const navigate = useNavigate();
+
   const handleSubmit = async (e, template = null) => {
     e.preventDefault();
 
     const title = template ? template.title : formTitle;
     const description = template ? template.description : formDescription;
-    // Fix here: If template, get its fields; else get fields from form state (e.g. formFields)
     const fields = template ? template.fields || [] : formFields || [];
 
-    console.log("fields", fields);
     if (!title || !description) {
       toast.error("Please provide both title and description.");
       return;
@@ -45,21 +49,28 @@ function AddFormModal({ show, handleClose, fetchForms, companyId }) {
     }
 
     try {
-      await axios.post(
+      const response = await axios.post(
         `https://formx360.onrender.com/forms/${companyId}/forms`,
-        { title, description, fields }, // Send fields here too
+        { title, description, fields },
         { headers: { Authorization: `Bearer ${token}` } }
       );
+
+      const createdForm = response.data;
       setFormFields(fields);
       toast.success("Form added successfully!");
       resetForm();
       handleClose();
+
       if (fetchForms) fetchForms();
+
+      // ✅ Redirect to form builder using form ID
+      navigate(`/form-builder/${createdForm._id}`);
     } catch (error) {
       console.error("Error:", error.response?.data || error.message);
       toast.error(error.response?.data?.error || "Failed to add form.");
     }
   };
+  
 
   return (
     <>

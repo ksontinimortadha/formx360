@@ -10,12 +10,13 @@ import {
   Badge,
 } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { FaPencilAlt } from "react-icons/fa";
+import { FaExternalLinkAlt, FaPencilAlt } from "react-icons/fa";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import NavbarComponent from "./NavbarComponent";
 import UserSidebar from "./UserSideBar";
+import UserFormActionsDropdown from "./UserFormActionsDropdown";
 
 function UserDashboard() {
   const [forms, setForms] = useState([]);
@@ -33,14 +34,13 @@ function UserDashboard() {
     const loadData = async () => {
       if (!storedCompanyId) return;
 
-      await fetchUsers(storedCompanyId); // Ensures role is set before fetching forms
-      fetchForms(storedCompanyId); // Now this uses the correct role
+      await fetchUsers(storedCompanyId);
+      fetchForms(storedCompanyId);
     };
 
     loadData();
   }, []);
 
-  // Fetch existing permissions for a form
   const fetchFormPermissions = async (formId) => {
     try {
       const response = await axios.get(
@@ -76,7 +76,6 @@ function UserDashboard() {
 
       const currentUserId = sessionStorage.getItem("userId");
 
-      // Fetch all permissions for all forms first
       const permissionsResponses = await Promise.all(
         formsData.map((form) =>
           axios.get(`https://formx360.onrender.com/permissions/${form._id}`)
@@ -98,10 +97,8 @@ function UserDashboard() {
         newPermissions[form._id] = flatPermissions;
       });
 
-      // Save permissions in state
       setExistingPermissions(newPermissions);
 
-      // Filter forms where current user has "view" permission
       const viewableForms =
         currentUserRole === "Super Admin"
           ? formsData
@@ -112,10 +109,6 @@ function UserDashboard() {
                   perm.userId === currentUserId && perm.permission === "view"
               );
             });
-      formsData.forEach((form) => {
-        console.log(" public", form.publicUrl);
-        console.log("prv", form.privateUrl);
-      });
 
       setForms(formsData);
       setFilteredForms(viewableForms);
@@ -139,7 +132,6 @@ function UserDashboard() {
       const userList = response.data.users || [];
       setUsers(userList);
 
-      // Get current user ID from sessionStorage
       const currentUserId = sessionStorage.getItem("userId");
 
       if (currentUserId) {
@@ -154,16 +146,15 @@ function UserDashboard() {
       setUsers([]);
     }
   };
+
   const handleEditForm = (form) => {
     navigate(`/form-builder/${form._id}`);
   };
 
-  // Handle the search input change
   const handleSearchChange = (e) => {
     const searchTerm = e.target.value;
     setSearchTerm(searchTerm);
 
-    // Filter forms based on the search term
     const filtered = forms.filter((form) =>
       form.title.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -187,21 +178,21 @@ function UserDashboard() {
       <NavbarComponent />
       <div style={{ height: "100vh", display: "flex" }}>
         <UserSidebar />
-        <main className="flex-grow-1 p-4">
+        <main className="flex-grow-1 p-4 bg-light">
           <Container>
             <Row className="mb-4">
               <Card className="shadow-sm border-0 rounded-4 w-100">
                 <Card.Body>
                   <div className="d-flex justify-content-between align-items-center">
-                    <h4>My Forms</h4>
-
+                    <h4 className="mb-0">My Forms</h4>
                     <Form.Control
-                      style={{ width: "auto", marginLeft: "350px" }}
+                      style={{ width: "300px" }}
                       type="search"
                       placeholder="Search Form"
                       aria-label="Search"
                       value={searchTerm}
                       onChange={handleSearchChange}
+                      className="shadow-sm rounded-pill"
                     />
                   </div>
                 </Card.Body>
@@ -210,7 +201,9 @@ function UserDashboard() {
 
             <Row>
               {filteredForms.length === 0 ? (
-                <Col className="text-center">No forms found.</Col>
+                <Col className="text-center py-5 text-muted">
+                  No forms found.
+                </Col>
               ) : (
                 filteredForms.map((form) => (
                   <Col key={form._id} md={12} className="mb-3">
@@ -220,21 +213,16 @@ function UserDashboard() {
                           ? "border border-success border-2"
                           : ""
                       }`}
+                      onMouseEnter={() => setHighlightedFormId(form._id)}
+                      onMouseLeave={() => setHighlightedFormId(null)}
+                      style={{
+                        cursor: "default",
+                        transition: "box-shadow 0.2s",
+                      }}
                     >
-                      <Card.Body
-                        className="d-flex justify-content-between align-items-center"
-                        style={{ cursor: "pointer" }}
-                        onClick={() => {
-                          const formUrl = form.privateUrl || form.publicUrl;
-                          if (formUrl) {
-                            window.open(formUrl, "_blank"); // Open in a new tab
-                          } else {
-                            toast.error("No URL available for this form.");
-                          }
-                        }}
-                      >
+                      <Card.Body className="d-flex justify-content-between align-items-center">
                         <div>
-                          <Card.Title>
+                          <Card.Title className="mb-1">
                             {form.title}{" "}
                             {form.locked && (
                               <Badge bg="secondary" className="ms-2">
@@ -242,36 +230,58 @@ function UserDashboard() {
                               </Badge>
                             )}
                           </Card.Title>
-                          <Card.Text>{form.description}</Card.Text>
+                          <Card.Text
+                            className="mb-0 text-secondary"
+                            style={{ maxWidth: "400px" }}
+                          >
+                            {form.description}
+                          </Card.Text>
                         </div>
 
                         <div
-                          className="d-flex align-items-center"
-                          onClick={(e) => e.stopPropagation()} // 👈 Prevent edit click from bubbling to card click
+                          className="d-flex align-items-center gap-2"
+                          onClick={(e) => e.stopPropagation()}
                         >
-                          {/* Edit Button */}
-                          {hasPermission(form, "edit") && !form.locked ? (
+                          {/* Fill Form Button */}
+                          {hasPermission(form, "view") && (
                             <Button
-                              variant="secondary"
+                              variant="primary"
+                              onClick={() => {
+                                const formUrl =
+                                  form.privateUrl || form.publicUrl;
+                                if (formUrl) {
+                                  window.open(formUrl, "_blank");
+                                } else {
+                                  toast.error(
+                                    "No URL available for this form."
+                                  );
+                                }
+                              }}
+                              title="Fill this Form"
+                              className="d-flex align-items-center gap-2"
+                            >
+                              <FaExternalLinkAlt />
+                              Fill Form
+                            </Button>
+                          )}
+
+                          {/* Edit Button */}
+                          {hasPermission(form, "edit") && !form.locked && (
+                            <Button
+                              variant="outline-secondary"
                               onClick={() => handleEditForm(form)}
                               title="Edit Form"
                             >
                               <FaPencilAlt size={16} />
                             </Button>
-                          ) : (
-                            <Button
-                              variant="secondary"
-                              disabled
-                              title={
-                                form.locked
-                                  ? "Form is locked"
-                                  : "You don't have edit permission"
-                              }
-                            >
-                              <FaPencilAlt size={16} />
-                            </Button>
                           )}
+                        {/* Dropdown for Form Actions */}
+                        <UserFormActionsDropdown
+                          form={form}
+                          hasPermission={hasPermission}
+                        />
                         </div>
+
                       </Card.Body>
                     </Card>
                   </Col>

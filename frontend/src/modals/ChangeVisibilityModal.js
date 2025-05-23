@@ -8,7 +8,7 @@ import {
   Toast,
   ToastContainer,
 } from "react-bootstrap";
-import { FaCheck, FaTimes, FaCopy, FaLink } from "react-icons/fa";
+import { FaCopy, FaLink, FaExchangeAlt, FaTimes } from "react-icons/fa";
 
 function ChangeVisibilityModal({
   show,
@@ -18,16 +18,14 @@ function ChangeVisibilityModal({
 }) {
   const [showToast, setShowToast] = useState(false);
 
-  // ✅ Prevent access before checking `form`
   if (!form) return null;
 
   const newVisibility = form.visibility === "public" ? "private" : "public";
   const publicUrl = `https://formx360.vercel.app/responses/public/${form._id}`;
   const privateUrl = `https://formx360.vercel.app/responses/private/${form._id}`;
   const currentUrl = form.visibility === "public" ? publicUrl : privateUrl;
-  const newUrl = newVisibility === "public" ? publicUrl : privateUrl;
 
-  const handleConfirmChange = async () => {
+  const handleToggleVisibility = async () => {
     await handleVisibilityChange(form);
     handleClose();
   };
@@ -79,30 +77,23 @@ function ChangeVisibilityModal({
 
           <div className="mb-3">
             <p>
-              Are you sure you want to change the visibility of{" "}
-              <strong>{form.title}</strong> to{" "}
-              <strong
-                className={newVisibility === "public" ? "public" : "private"}
-              >
-                {newVisibility}
-              </strong>
-              ?
+              Click the button below to change visibility to{" "}
+              <strong className={newVisibility}>{newVisibility}</strong>.
             </p>
           </div>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="outline-secondary" onClick={handleClose}>
             <FaTimes className="me-2" />
-            Cancel
+            Close
           </Button>
-          <Button variant="primary" onClick={handleConfirmChange}>
-            <FaCheck className="me-2" />
-            Confirm Change
+          <Button variant="primary" onClick={handleToggleVisibility}>
+            <FaExchangeAlt className="me-2" />
+            Make {newVisibility}
           </Button>
         </Modal.Footer>
       </Modal>
 
-      {/* ✅ Toast Confirmation */}
       <ToastContainer position="bottom-end" className="p-3">
         <Toast
           show={showToast}
