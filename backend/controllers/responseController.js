@@ -179,7 +179,6 @@ exports.submitResponse = async (req, res) => {
   }
 };
 
-
 // Get Responses for a Form
 exports.getFormResponses = async (req, res) => {
   const { form_id } = req.params;
@@ -215,10 +214,10 @@ exports.getResponsesBySubmittedBy = async (req, res) => {
   const { userId } = req.params;
 
   try {
-    const responses = await Response.find({ submitted_by: userId })
-      .populate("form_id", "title")
-      .populate("submitted_by", "name email") // Optional: include submitter info
-      .populate("responses.field_id", "label"); // Optional: include field label
+    const responses = await Response.find({ submitted_by: userId }).populate(
+      "form_id",
+      "title"
+    );
 
     res.status(200).json(responses);
   } catch (err) {
@@ -226,8 +225,6 @@ exports.getResponsesBySubmittedBy = async (req, res) => {
     res.status(500).json({ message: "Server error", error: err.message });
   }
 };
-
-
 
 // Edit a Response
 exports.editResponse = async (req, res) => {
@@ -357,12 +354,20 @@ exports.editResponse = async (req, res) => {
 
           case "file":
             const file = value[0];
-            if (file && field.min_length && file.size < field.min_length * 1024) {
+            if (
+              file &&
+              field.min_length &&
+              file.size < field.min_length * 1024
+            ) {
               validationErrors.push(
                 `Field '${field.label}' file size must be at least ${field.min_length} KB.`
               );
             }
-            if (file && field.max_length && file.size > field.max_length * 1024) {
+            if (
+              file &&
+              field.max_length &&
+              file.size > field.max_length * 1024
+            ) {
               validationErrors.push(
                 `Field '${field.label}' file size must not exceed ${field.max_length} KB.`
               );
