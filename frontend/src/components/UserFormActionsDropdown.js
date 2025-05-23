@@ -7,7 +7,7 @@ const UserFormActionsDropdown = ({ form, hasPermission }) => {
   const navigate = useNavigate();
 
   const handleResponses = (form) => {
-    navigate(`/responses/form/${form._id}`);
+    navigate(`/user-responses/${form._id}`);
   };
 
   return (

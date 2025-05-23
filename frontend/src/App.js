@@ -27,6 +27,7 @@ import ViewResponse from "./components/responses/ViewResponse";
 import EditResponse from "./components/responses/EditResponse";
 import UserDashboard from "./components/UserDashboard";
 import FormBuilderFeatures from "./components/home/FormBuilderFeatures";
+import UserResponsePage from "./components/userResponses/UserResponsePage ";
 
 function App() {
   useEffect(() => {
@@ -75,6 +76,14 @@ function App() {
           element={
             <ProtectedRoute>
               <UserDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/user-responses/:userId"
+          element={
+            <ProtectedRoute>
+              <UserResponsePage/>
             </ProtectedRoute>
           }
         />

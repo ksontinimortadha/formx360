@@ -239,6 +239,8 @@ exports.getFormResponses = async (req, res) => {
 };
 
 // Get Responses Submitted by a User
+// controllers/responseController.js
+
 exports.getResponsesByUser = async (req, res) => {
   const { userId } = req.params;
 
@@ -248,17 +250,14 @@ exports.getResponsesByUser = async (req, res) => {
       "title"
     );
 
-    if (!responses || responses.length === 0) {
-      return res
-        .status(404)
-        .json({ message: "No responses found for this user" });
-    }
-
+    // No need to return 404 if user has no responses
     res.status(200).json(responses);
   } catch (err) {
+    console.error("Error in getResponsesByUser:", err.message);
     res.status(500).json({ message: "Server error", error: err.message });
   }
 };
+
 
 
 
