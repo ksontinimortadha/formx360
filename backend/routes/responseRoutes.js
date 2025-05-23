@@ -7,6 +7,7 @@ const {
   editResponse,
   deleteResponse,
   getResponseById,
+  getResponsesByUser,
 } = require("../controllers/responseController");
 
 // Submit a response
@@ -16,7 +17,7 @@ router.post("/:form_id", submitResponse);
 router.get("/form/:form_id", getFormResponses);
 
 // Get all responses submitted by a user
-router.get("/user/:userId", getResponseById);
+router.get("/user/:userId", getResponsesByUser);
 
 // Edit a response
 router.put("/:response_id", editResponse);
