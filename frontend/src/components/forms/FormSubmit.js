@@ -63,6 +63,7 @@ const FormSubmit = () => {
     }
     return true;
   };
+  const userId = sessionStorage.getItem("userId");
 
   // Handle form submission
   const handleSubmit = async (event) => {
@@ -70,7 +71,6 @@ const FormSubmit = () => {
 
     if (!validateForm()) return;
 
-    // Check if there are any responses
     if (responses.length === 0) {
       toast.error("Please fill out the form before submitting.");
       return;
@@ -79,9 +79,13 @@ const FormSubmit = () => {
     try {
       const response = await axios.post(
         `https://formx360.onrender.com/responses/${formId}`,
-        { responses }
+        {
+          submitted_by: userId, // ✅ use submitted_by
+          responses,
+        }
       );
       const responseId = response.data.response._id;
+
       if (response.status === 201) {
         toast.success("Response submitted successfully!");
         navigate(`/responses/submission-success/${responseId}`);
@@ -92,9 +96,7 @@ const FormSubmit = () => {
         "Submit Error:",
         err.response ? err.response.data : err.message
       );
-
-      // Display more specific errors if available
-      if (err.response && err.response.data && err.response.data.errors) {
+      if (err.response?.data?.errors) {
         toast.error(
           `Error submitting the form: ${err.response.data.errors.join(", ")}`
         );
@@ -103,6 +105,7 @@ const FormSubmit = () => {
       }
     }
   };
+  
 
   if (loading) return <div>Loading form...</div>;
 
@@ -114,17 +117,18 @@ const FormSubmit = () => {
   // Render fields and prefill them with existing responses
   const renderFormFields = () => {
     if (!formData || !formData.fields) return null;
-  
+
     return formData.fields.map((field, index) => {
       const fieldStyle = fieldStyles[index] || {};
       const placementClass = fieldStyle.position
         ? `field-${fieldStyle.position}`
         : "";
-  
+
       // Defensive: Ensure responses and prefilledValue are safe
       const response = responses?.find((r) => r.field_id === field._id);
-      const prefilledValue = response?.value ?? (field.type === "checkbox-group" ? [] : "");
-  
+      const prefilledValue =
+        response?.value ?? (field.type === "checkbox-group" ? [] : "");
+
       const fieldContent = (() => {
         switch (field.type) {
           case "checkbox-group":
@@ -132,15 +136,25 @@ const FormSubmit = () => {
               <div style={{ marginBottom: "15px" }}>
                 {field.label}
                 {field.values?.map((option, i) => (
-                  <label key={option.value || i} style={{ marginRight: "10px" }}>
+                  <label
+                    key={option.value || i}
+                    style={{ marginRight: "10px" }}
+                  >
                     <input
                       style={fieldStyle}
                       type="checkbox"
                       name={field.name}
                       value={option.value}
-                      checked={Array.isArray(prefilledValue) && prefilledValue.includes(option.value)}
+                      checked={
+                        Array.isArray(prefilledValue) &&
+                        prefilledValue.includes(option.value)
+                      }
                       onChange={(e) =>
-                        handleFieldChange(field._id, e.target.value, e.target.checked)
+                        handleFieldChange(
+                          field._id,
+                          e.target.value,
+                          e.target.checked
+                        )
                       }
                     />
                     {option.label}
@@ -148,26 +162,31 @@ const FormSubmit = () => {
                 ))}
               </div>
             );
-  
+
           case "radio-group":
             return (
               <div style={{ marginBottom: "15px" }}>
                 {field.label}
                 {field.values?.map((option, i) => (
-                  <label key={option.value || i} style={{ marginRight: "10px" }}>
+                  <label
+                    key={option.value || i}
+                    style={{ marginRight: "10px" }}
+                  >
                     <input
                       type="radio"
                       name={field.name}
                       value={option.value}
                       checked={prefilledValue === option.value}
-                      onChange={() => handleFieldChange(field._id, option.value)}
+                      onChange={() =>
+                        handleFieldChange(field._id, option.value)
+                      }
                     />
                     {option.label}
                   </label>
                 ))}
               </div>
             );
-  
+
           case "button":
             return (
               <button
@@ -178,7 +197,7 @@ const FormSubmit = () => {
                 {field.label}
               </button>
             );
-  
+
           case "select":
             return (
               <div style={{ marginBottom: "15px" }}>
@@ -196,7 +215,7 @@ const FormSubmit = () => {
                 </select>
               </div>
             );
-  
+
           case "textarea":
             return (
               <div style={{ marginBottom: "15px" }}>
@@ -209,7 +228,7 @@ const FormSubmit = () => {
                 />
               </div>
             );
-  
+
           case "autocomplete":
             return (
               <div style={{ marginBottom: "15px" }}>
@@ -224,7 +243,7 @@ const FormSubmit = () => {
                 />
               </div>
             );
-  
+
           case "file":
             return (
               <div style={{ marginBottom: "15px" }}>
@@ -232,7 +251,7 @@ const FormSubmit = () => {
                 <input type="file" style={fieldStyle} />
               </div>
             );
-  
+
           case "date":
             return (
               <div style={{ marginBottom: "15px" }}>
@@ -245,7 +264,7 @@ const FormSubmit = () => {
                 />
               </div>
             );
-  
+
           case "hidden":
             return (
               <input
@@ -254,13 +273,13 @@ const FormSubmit = () => {
                 style={fieldStyle}
               />
             );
-  
+
           case "header":
             return <h2>{field.label}</h2>;
-  
+
           case "paragraph":
             return <p>{field.label}</p>;
-  
+
           default:
             return (
               <div style={{ marginBottom: "15px" }}>
@@ -276,21 +295,23 @@ const FormSubmit = () => {
             );
         }
       })();
-  
+
       return (
         <div
           className={`${selectedTheme}`}
           key={field._id || index}
           style={{ paddingRight: "15px", paddingLeft: "15px" }}
         >
-          <div className={`form-field ${placementClass}`} style={{ marginBottom: "10px" }}>
+          <div
+            className={`form-field ${placementClass}`}
+            style={{ marginBottom: "10px" }}
+          >
             {fieldContent}
           </div>
         </div>
       );
     });
   };
-  
 
   const styles = {
     container: {
@@ -310,7 +331,7 @@ const FormSubmit = () => {
     },
   };
   const handleBackToDashboard = () => {
-    navigate("/user-dashboard"); 
+    navigate("/user-dashboard");
   };
   return (
     <>

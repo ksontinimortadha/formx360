@@ -3,18 +3,15 @@ const Form = require("../models/Form");
 
 // Submit a New Response
 exports.submitResponse = async (req, res) => {
-  const { user_id, responses } = req.body;
+  const { submitted_by, responses } = req.body;
   const { form_id } = req.params;
 
   try {
-    // Validate the form exists
     const form = await Form.findById(form_id);
     if (!form) {
-      console.log("Error: Form not found");
       return res.status(404).json({ message: "Form not found" });
     }
 
-    // Validate responses
     const validationErrors = [];
     const processedResponses = [];
 
@@ -23,16 +20,14 @@ exports.submitResponse = async (req, res) => {
         (r) => r.field_id === field._id.toString()
       );
 
-      // Check required fields
       if (field.required && (!userResponse || !userResponse.value)) {
         validationErrors.push(`Field '${field.label}' is required.`);
-        return; // Skip further validation for this field
+        return;
       }
 
       if (userResponse) {
         let value = userResponse.value;
 
-        // Normalize checkbox-group and radio-group to array
         if (Array.isArray(value)) {
           value = value.filter((val) =>
             field.values.some((option) => option.value === val)
@@ -41,7 +36,6 @@ exports.submitResponse = async (req, res) => {
           value = [value];
         }
 
-        // Validate based on field type
         switch (field.type) {
           case "text":
           case "textarea":
@@ -77,20 +71,14 @@ exports.submitResponse = async (req, res) => {
 
           case "checkbox-group":
           case "radio-group":
-            if (!Array.isArray(value)) value = [value]; // Normalize single option to an array
+            if (!Array.isArray(value)) value = [value];
             value.forEach((val) => {
-              console.log("Checking value:", val);
-              console.log(
-                "Available options:",
-                field.values.map((val) => val.value)
-              );
               if (!field.values.some((option) => option.value === val)) {
                 validationErrors.push(
                   `Field '${field.label}' contains invalid options.`
                 );
               }
             });
-
             if (field.min && value.length < field.min) {
               validationErrors.push(
                 `Field '${field.label}' must have at least ${field.min} selected.`
@@ -151,49 +139,32 @@ exports.submitResponse = async (req, res) => {
               );
             }
             break;
-
-          case "autocomplete":
-          case "hidden":
-          case "button":
-          case "header":
-          case "paragraph":
-          case "starRating":
-            break;
-
-          default:
-            validationErrors.push(
-              `Field '${field.label}' has an unsupported field type: ${field.type}.`
-            );
         }
 
-        // Custom validation based on field subtype (e.g., password)
         if (field.subtype === "password" && value[0].length < 8) {
           validationErrors.push(
             `Field '${field.label}' (password) must have at least 8 characters.`
           );
         }
 
-        // Add validated response with field name
         processedResponses.push({
           field_id: field._id,
-          field_name: field.label, // Adding field_name
+          field_name: field.label,
           value: userResponse.value,
         });
       }
     });
 
     if (validationErrors.length > 0) {
-      console.log("Validation Errors:", validationErrors);
       return res
         .status(400)
         .json({ message: "Validation errors", errors: validationErrors });
     }
 
-    // Save the response
     const newResponse = new Response({
       form_id,
-      user_id,
-      responses: processedResponses, // Use processed responses with field names
+      submitted_by,
+      responses: processedResponses,
     });
 
     await newResponse.save();
@@ -207,6 +178,7 @@ exports.submitResponse = async (req, res) => {
     res.status(500).json({ message: "Server error", error: err.message });
   }
 };
+
 
 // Get Responses for a Form
 exports.getFormResponses = async (req, res) => {
@@ -239,8 +211,6 @@ exports.getFormResponses = async (req, res) => {
 };
 
 // Get Responses Submitted by a User
-// controllers/responseController.js
-
 exports.getResponsesByUser = async (req, res) => {
   const { userId } = req.params;
 
