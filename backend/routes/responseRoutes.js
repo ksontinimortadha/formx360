@@ -16,7 +16,7 @@ router.post("/:form_id", submitResponse);
 router.get("/form/:form_id", getFormResponses);
 
 // Get all responses submitted by a user
-router.get("/:responseId", getResponseById);
+router.get("/user/:userId", getResponseById);
 
 // Edit a response
 router.put("/:response_id", editResponse);
