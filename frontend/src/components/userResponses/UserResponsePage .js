@@ -41,19 +41,24 @@ const UserResponsePage = () => {
 
   const fetchResponses = async () => {
     if (!userId) return;
-    console.log("Fetching responses for userId:", userId);
 
+    console.log("Fetching responses submitted by userId:", userId);
     setLoading(true);
+
     try {
-      const response = await axios.get(
-        `https://formx360.onrender.com/responses/user/${userId}`
+      const res = await axios.get(
+        `https://formx360.onrender.com/responses/submitted-by/${userId}`
       );
-      const data = response.data ;
-console.log('data',data)
-      if (data.length > 0) {
+      const data = res.data;
+
+      if (Array.isArray(data) && data.length > 0) {
         const uniqueFields = [
           ...new Set(
-            data.flatMap((res) => (res.responses || []).map((r) => r.field_id))
+            data.flatMap((res) =>
+              Array.isArray(res.responses)
+                ? res.responses.map((r) => r.field_id)
+                : []
+            )
           ),
         ];
         setHeaders(uniqueFields);
@@ -69,6 +74,7 @@ console.log('data',data)
       setLoading(false);
     }
   };
+  
   
 
   useEffect(() => {

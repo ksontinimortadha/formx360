@@ -3,11 +3,9 @@ const router = express.Router();
 const {
   submitResponse,
   getFormResponses,
-  getUserResponses,
   editResponse,
   deleteResponse,
-  getResponseById,
-  getResponsesByUser,
+  getResponsesBySubmittedBy,
 } = require("../controllers/responseController");
 
 // Submit a response
@@ -17,7 +15,7 @@ router.post("/:form_id", submitResponse);
 router.get("/form/:form_id", getFormResponses);
 
 // Get all responses submitted by a user
-router.get("/user/:userId", getResponsesByUser);
+router.get("/submitted-by/:userId", getResponsesBySubmittedBy);
 
 // Edit a response
 router.put("/:response_id", editResponse);

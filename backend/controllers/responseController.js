@@ -211,23 +211,21 @@ exports.getFormResponses = async (req, res) => {
 };
 
 // Get Responses Submitted by a User
-exports.getResponsesByUser = async (req, res) => {
+exports.getResponsesBySubmittedBy = async (req, res) => {
   const { userId } = req.params;
 
   try {
-    const responses = await Response.find({ user_id: userId }).populate(
-      "form_id",
-      "title"
-    );
+    const responses = await Response.find({ submitted_by: userId })
+      .populate("form_id", "title")
+      .populate("submitted_by", "name email") // Optional: include submitter info
+      .populate("responses.field_id", "label"); // Optional: include field label
 
-    // No need to return 404 if user has no responses
     res.status(200).json(responses);
   } catch (err) {
-    console.error("Error in getResponsesByUser:", err.message);
+    console.error("Error in getResponsesBySubmittedBy:", err.message);
     res.status(500).json({ message: "Server error", error: err.message });
   }
 };
-
 
 
 
