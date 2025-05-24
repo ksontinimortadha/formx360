@@ -18,7 +18,7 @@ const responseSchema = new mongoose.Schema({
   submitted_by: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User", 
-    required: true,
+    required: false,
   },
   responses: [
     {

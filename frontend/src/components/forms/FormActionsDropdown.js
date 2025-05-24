@@ -71,7 +71,7 @@ const FormActionsDropdown = ({
         {/* Responses */}
         {hasPermission(form, "view") ? (
           <Dropdown.Item onClick={() => handleResponses(form)}>
-            View Responses
+            Responses
           </Dropdown.Item>
         ) : (
           <Dropdown.Item
@@ -85,7 +85,7 @@ const FormActionsDropdown = ({
         {/* Statistics Dashboard */}
         {hasPermission(form, "view") ? (
           <Dropdown.Item onClick={() => handleStats(form)}>
-            View Statistics Dashboard
+            Statistics Dashboard
           </Dropdown.Item>
         ) : (
           <Dropdown.Item
