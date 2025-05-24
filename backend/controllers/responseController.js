@@ -172,7 +172,7 @@ exports.submitResponse = async (req, res) => {
     
     // Create and send notification
     const notif = await Notification.create({
-      submitted_by,
+      userId,
       message: `New response in "${form.title}" form has been added.`,
     });
 
