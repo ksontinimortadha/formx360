@@ -26,9 +26,6 @@ function AddFormModal({ show, handleClose, fetchForms, companyId }) {
     setMode(null);
   };
 
-
-
-  // Inside your component:
   const navigate = useNavigate();
 
   const handleSubmit = async (e, template = null) => {
@@ -71,7 +68,6 @@ function AddFormModal({ show, handleClose, fetchForms, companyId }) {
     }
   };
   
-
   return (
     <>
       <Modal
