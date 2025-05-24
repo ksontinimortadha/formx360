@@ -67,7 +67,7 @@ function AddFormModal({ show, handleClose, fetchForms, companyId }) {
 
       if (fetchForms) fetchForms();
 
-      navigate(`/form-builder/${createdForm.id}`);
+      navigate(`/form-builder/${createdForm.formId}`);
     } catch (error) {
       console.error("Error:", error.response?.data || error.message);
       toast.error(error.response?.data?.error || "Failed to add form.");

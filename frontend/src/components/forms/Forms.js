@@ -101,7 +101,7 @@ function Forms() {
       const response = await axios.get(
         `https://formx360.onrender.com/forms/${companyId}/forms`
       );
-      console.log("forms", response.data);
+      console.log("forms:", response.data);
       setForms(response.data);
       setFilteredForms(response.data);
       // Fetch permissions for each form
