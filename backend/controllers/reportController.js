@@ -164,3 +164,27 @@ exports.filterReportData = async (req, res) => {
     res.status(500).json({ message: "Server error", error: err.message });
   }
 };
+
+// Update/save report
+exports.updateReport = async (req, res) => {
+  const { reportId } = req.params;
+  const { title, filters } = req.body;
+
+  try {
+    const report = await Report.findById(reportId);
+    if (!report) {
+      return res.status(404).json({ message: "Report not found" });
+    }
+
+    if (title) report.title = title;
+    if (filters) report.filters = filters;
+    report.updatedAt = new Date();
+
+    await report.save();
+
+    res.status(200).json({ message: "Report updated", report });
+  } catch (err) {
+    console.error("💥 Error updating report:", err);
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+};
