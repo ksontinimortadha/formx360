@@ -9,6 +9,7 @@ exports.createForm = async (req, res) => {
   const { companyId } = req.params;
   const { title, description, fields, visibility } = req.body;
   const userId = req.user.id;
+
   try {
     // Check if the company exists
     const company = await Company.findById(companyId);
@@ -28,7 +29,7 @@ exports.createForm = async (req, res) => {
       });
     }
 
-    // Create the new form with the user_id field
+    // Create the new form object (not saved yet)
     const newForm = new Form({
       user_id: userId,
       title,
@@ -38,12 +39,26 @@ exports.createForm = async (req, res) => {
       visibility,
     });
 
+    // Generate URLs based on visibility
+    const baseUrl = "https://formx360.vercel.app/responses"; // e.g. from env or config
+
+    if (visibility === "public") {
+      // Public forms can have a public URL accessible by anyone
+      newForm.publicUrl = `${baseUrl}/public/${newForm._id}`;
+      newForm.privateUrl = null;
+    } else if (visibility === "private") {
+      // Private forms may have a private URL (or none)
+      newForm.privateUrl = `${baseUrl}/private/${newForm._id}`;
+      newForm.publicUrl = null;
+    }
+
     // Save the new form to the database
     await newForm.save();
 
     // Add the new form to the company's forms array
     company.forms.push(newForm._id);
     await company.save();
+
     // Create and send notification
     const notif = await Notification.create({
       userId,
@@ -52,11 +67,12 @@ exports.createForm = async (req, res) => {
 
     // Send real-time notification via Socket.IO
     req.io.to(userId).emit("new_notification", notif);
-    // Respond with the newly created form ID
+
+    // Respond with the newly created form ID and URLs
     res.status(201).json({
       message: "Form created successfully!",
       formId: newForm._id,
-      form: newForm, // Optionally return the form details
+      form: newForm, // includes URLs
     });
   } catch (error) {
     console.error("Error creating form:", error.message);
@@ -65,6 +81,7 @@ exports.createForm = async (req, res) => {
     });
   }
 };
+
 
 // Get All Forms for a Company
 exports.getCompanyForms = async (req, res) => {

@@ -12,6 +12,8 @@ import { useNavigate } from "react-router-dom";
 
 function AddFormModal({ show, handleClose, fetchForms, companyId }) {
   const [mode, setMode] = useState(null); // null | "custom" | "template"
+  const [visibility, setVisibility] = useState("private"); // default to "private"
+
   const [formTitle, setFormTitle] = useState("");
   const [formDescription, setFormDescription] = useState("");
   const [showPreview, setShowPreview] = useState(false);
@@ -23,8 +25,10 @@ function AddFormModal({ show, handleClose, fetchForms, companyId }) {
   const resetForm = () => {
     setFormTitle("");
     setFormDescription("");
+    setVisibility("private"); 
     setMode(null);
   };
+  
 
   const navigate = useNavigate();
 
@@ -34,6 +38,9 @@ function AddFormModal({ show, handleClose, fetchForms, companyId }) {
     const title = template ? template.title : formTitle;
     const description = template ? template.description : formDescription;
     const fields = template ? template.fields || [] : formFields || [];
+    const formVisibility = template
+      ? template.visibility || visibility
+      : visibility;
 
     if (!title || !description) {
       toast.error("Please provide both title and description.");
@@ -48,7 +55,7 @@ function AddFormModal({ show, handleClose, fetchForms, companyId }) {
     try {
       const response = await axios.post(
         `https://formx360.onrender.com/forms/${companyId}/forms`,
-        { title, description, fields },
+        { title, description, fields, visibility: formVisibility }, // add visibility here
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
@@ -60,14 +67,14 @@ function AddFormModal({ show, handleClose, fetchForms, companyId }) {
 
       if (fetchForms) fetchForms();
 
-      // ✅ Redirect to form builder using form ID
-      navigate(`/form-builder/${createdForm._id}`);
+      navigate(`/form-builder/${createdForm.id}`);
     } catch (error) {
       console.error("Error:", error.response?.data || error.message);
       toast.error(error.response?.data?.error || "Failed to add form.");
     }
   };
   
+
   return (
     <>
       <Modal
@@ -90,6 +97,8 @@ function AddFormModal({ show, handleClose, fetchForms, companyId }) {
               setFormTitle={setFormTitle}
               formDescription={formDescription}
               setFormDescription={setFormDescription}
+              visibility={visibility}
+              setVisibility={setVisibility}
               onBack={resetForm}
               onSubmit={handleSubmit}
             />
