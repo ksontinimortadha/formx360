@@ -82,7 +82,6 @@ exports.createForm = async (req, res) => {
   }
 };
 
-
 // Get All Forms for a Company
 exports.getCompanyForms = async (req, res) => {
   const { companyId } = req.params; // Fix parameter name

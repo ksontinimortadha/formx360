@@ -1,6 +1,7 @@
 const Response = require("../models/Response");
 const Form = require("../models/Form");
 const Notification = require("../models/Notification");
+const User = require("../models/User");
 
 // Submit a New Response
 exports.submitResponse = async (req, res) => {
@@ -169,15 +170,30 @@ exports.submitResponse = async (req, res) => {
     });
 
     await newResponse.save();
-    
-    // Create and send notification
-    const notif = await Notification.create({
-      submitted_by,
-      message: `New response in "${form.title}" form has been added.`,
+
+    // Notify form owner
+    const ownerId = form.user_id; 
+    const notifMessage = `A new response has been submitted to your form "${form.title}".`;
+
+    const ownerNotif = await Notification.create({
+      userId: ownerId,
+      message: notifMessage,
     });
 
-    // Send real-time notification via Socket.IO
-    req.io.to(submitted_by).emit("new_notification", notif);
+    req.io.to(ownerId.toString()).emit("new_notification", ownerNotif);
+
+    // Notify all super admins
+    const superAdmins = await User.find({ role: "Super Admin" });
+
+    for (const admin of superAdmins) {
+      const adminNotif = await Notification.create({
+        userId: admin._id,
+        message: notifMessage,
+      });
+
+      req.io.to(admin._id.toString()).emit("new_notification", adminNotif);
+    }
+
     res.status(201).json({
       message: "Response submitted successfully",
       response: newResponse,
