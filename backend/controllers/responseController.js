@@ -173,7 +173,7 @@ exports.submitResponse = async (req, res) => {
     // Create and send notification
     const notif = await Notification.create({
       submitted_by,
-      message: `New response in "${title}" form has been added.`,
+      message: `New response in "${form.title}" form has been added.`,
     });
 
     // Send real-time notification via Socket.IO
