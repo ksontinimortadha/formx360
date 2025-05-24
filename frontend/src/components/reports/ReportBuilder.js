@@ -1,18 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import { Container, Form, Button, Row, Col, Card } from "react-bootstrap";
-import { toast } from "react-toastify";
+import {
+  Container,
+  Form,
+  Button,
+  Row,
+  Col,
+  Card,
+  Spinner,
+} from "react-bootstrap";
+import { toast, ToastContainer } from "react-toastify";
 import {
   FaPlus,
   FaTrash,
   FaFilter,
   FaChartBar,
   FaArrowLeft,
+  FaSave,
 } from "react-icons/fa";
 import NavbarComponent from "../NavbarComponent";
 import ExportReport from "./ExportReport";
-import exportUtilsReport from "./exportUtilsReport";
 
 function ReportBuilder() {
   const { reportId } = useParams();
@@ -22,21 +30,20 @@ function ReportBuilder() {
   const [reportData, setReportData] = useState([]);
   const [availableFields, setAvailableFields] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [showModal, setShowModal] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [showExportModal, setShowExportModal] = useState(false);
 
   useEffect(() => {
     fetchReport();
   }, [reportId]);
 
-  // Fetch the report details
   const fetchReport = async () => {
     try {
       const response = await axios.get(
         `https://formx360.onrender.com/reports/report/${reportId}`
       );
       setReport(response.data);
-      // Fetch form details only if formId exists
+      setFilters(response.data.filters || []); // Load saved filters
       if (response.data.formId._id) {
         const formResponse = await axios.get(
           `https://formx360.onrender.com/forms/${response.data.formId._id}`
@@ -71,8 +78,7 @@ function ReportBuilder() {
         { filters }
       );
       setReportData(response.data);
-      setShowModal(true);
-      setShowExportModal(true); // Show the export modal
+      setShowExportModal(true);
       toast.success("Report generated successfully!");
     } catch (error) {
       console.error("Error generating report:", error);
@@ -82,14 +88,28 @@ function ReportBuilder() {
     }
   };
 
-  
+  const saveFiltersToReport = async () => {
+    setSaving(true);
+    try {
+      await axios.put(
+        `https://formx360.onrender.com/reports/report/${reportId}`,
+        { filters }
+      );
+      toast.success("Filters saved to report successfully!");
+    } catch (error) {
+      console.error("Error saving filters to report:", error);
+      toast.error("Failed to save filters.");
+    } finally {
+      setSaving(false);
+    }
+  };
 
   return (
     <>
       <NavbarComponent />
       <Container fluid className="p-4">
         <FaArrowLeft
-          style={{ marginLeft: "20px", marginTop: "20px" }}
+          style={{ marginLeft: "20px", marginTop: "20px", cursor: "pointer" }}
           size={20}
           color="darkgrey"
           onClick={() => navigate("/reports")}
@@ -182,8 +202,8 @@ function ReportBuilder() {
           </Button>
         </Card>
 
-        {/* Generate Report Button */}
-        <div className="text-center mt-4">
+        {/* Action Buttons */}
+        <div className="text-center mt-4 d-flex justify-content-center gap-3 flex-wrap">
           <Button
             variant="success"
             size="lg"
@@ -191,12 +211,25 @@ function ReportBuilder() {
             disabled={loading}
           >
             {loading ? (
-              "Generating..."
+              <Spinner animation="border" size="sm" className="me-2" />
             ) : (
-              <>
-                <FaChartBar className="me-2" /> Generate Report
-              </>
+              <FaChartBar className="me-2" />
             )}
+            {loading ? "Generating..." : "Generate Report"}
+          </Button>
+
+          <Button
+            variant="outline-secondary"
+            size="lg"
+            onClick={saveFiltersToReport}
+            disabled={saving}
+          >
+            {saving ? (
+              <Spinner animation="border" size="sm" className="me-2" />
+            ) : (
+              <FaSave className="me-2" />
+            )}
+            {saving ? "Saving..." : "Save Filters"}
           </Button>
         </div>
 
@@ -208,6 +241,7 @@ function ReportBuilder() {
           availableFields={availableFields}
         />
       </Container>
+      <ToastContainer />
     </>
   );
 }
