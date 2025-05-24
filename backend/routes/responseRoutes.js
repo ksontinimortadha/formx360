@@ -7,9 +7,10 @@ const {
   deleteResponse,
   getResponsesBySubmittedBy,
 } = require("../controllers/responseController");
+const authenticateUser = require("../middlewares/authenticateUser");
 
 // Submit a response
-router.post("/:form_id", submitResponse);
+router.post("/:form_id", authenticateUser,submitResponse);
 
 // Get all responses for a form
 router.get("/form/:form_id", getFormResponses);
