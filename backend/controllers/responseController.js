@@ -5,9 +5,9 @@ const User = require("../models/User");
 
 // Submit a New Response
 exports.submitResponse = async (req, res) => {
-  const { responses } = req.body;
+  const { submitted_by, responses } = req.body;
   const { form_id } = req.params;
-  const submitted_by = req.user.id;
+  
 
   try {
     const form = await Form.findById(form_id);
@@ -173,7 +173,7 @@ exports.submitResponse = async (req, res) => {
     await newResponse.save();
 
     // Notify form owner
-    const ownerId = form.user_id;
+    const ownerId = form.user_id; 
     const notifMessage = `A new response has been submitted to your form "${form.title}".`;
 
     const ownerNotif = await Notification.create({
