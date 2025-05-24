@@ -64,7 +64,7 @@ const VerifyEmail = () => {
                 <p className="text-secondary small mb-4">
                   {isSuccess
                     ? "Congratulations! Your email has been successfully verified."
-                    : "Please wait while we verify your email."}
+                    : "Please verify your email with the link sent to your inbox."}
                 </p>
                 <p className="text-muted">{statusMessage}</p>
               </div>

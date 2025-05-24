@@ -58,6 +58,7 @@ function App() {
         <Route path="/reset-password-request" element={<RequestReset />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/users/verify-email" element={<VerifyEmail />} />
+        <Route path="/users/verify" element={<VerifyEmail />} />
 
         {/* Company Routes */}
         <Route path="/companies/company" element={<Company />} />
@@ -83,7 +84,7 @@ function App() {
           path="/user-responses/:userId"
           element={
             <ProtectedRoute>
-              <UserResponsePage/>
+              <UserResponsePage />
             </ProtectedRoute>
           }
         />

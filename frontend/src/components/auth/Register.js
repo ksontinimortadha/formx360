@@ -78,11 +78,6 @@ function Register() {
           password: formData.password,
         });
 
-        console.log("Registration successful:", response.data);
-        toast.success(
-          "Registration successful! Please check your email for a verification link."
-        );
-
         // Reset form after submission
         setFormData({
           firstName: "",
@@ -92,7 +87,7 @@ function Register() {
           iAgree: false,
         });
         setErrors({});
-        navigate("/users/login"); // Optionally navigate to a verification page
+        navigate("/users/verify"); 
       } catch (error) {
         console.error(
           "Registration failed:",
