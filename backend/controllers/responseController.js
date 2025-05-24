@@ -177,7 +177,7 @@ exports.submitResponse = async (req, res) => {
     });
 
     // Send real-time notification via Socket.IO
-    req.io.to(userId).emit("new_notification", notif);
+    req.io.to(submitted_by).emit("new_notification", notif);
     res.status(201).json({
       message: "Response submitted successfully",
       response: newResponse,
