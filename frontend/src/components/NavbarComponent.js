@@ -13,14 +13,7 @@ function NavbarComponent() {
   const [notifications, setNotifications] = useState([]);
   const navigate = useNavigate();
 
-  const getUserNameById = async (id) => {
-    try {
-      const res = await axios.get(`https://formx360.onrender.com/users/${id}`);
-      return res.data?.name;
-    } catch (err) {
-      return "Someone";
-    }
-  };
+ 
 
   // 📨 Initial fetch for notifications
   useEffect(() => {
@@ -33,14 +26,11 @@ function NavbarComponent() {
         );
         const notifications = await Promise.all(
           res.data.map(async (notif) => {
-            const name =
-              notif.createdByName ||
-              (notif.userId && (await getUserNameById(notif.userId)));
+            
             return {
               id: notif._id,
               message: notif.message,
               read: notif.read,
-              createdBy: name || "Someone",
               createdAt: notif.createdAt,
             };
           })
@@ -62,10 +52,7 @@ function NavbarComponent() {
   // 🔁 Real-time listener for new notifications
   useEffect(() => {
     const handleNewNotification = async (data) => {
-      const name =
-        data.createdByName ||
-        (data.createdBy && (await getUserNameById(data.createdBy)));
-
+      
       setNotifications((prev) => {
         const exists = prev.some((n) => n.id === data._id);
         if (exists) return prev;
@@ -75,7 +62,6 @@ function NavbarComponent() {
             id: data._id,
             message: data.message,
             read: false,
-            createdBy: name || "Someone",
             createdAt: data.createdAt || new Date().toISOString(),
           },
           ...prev,
