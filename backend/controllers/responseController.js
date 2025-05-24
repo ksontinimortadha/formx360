@@ -1,5 +1,6 @@
 const Response = require("../models/Response");
 const Form = require("../models/Form");
+const Notification = require("../models/Notification");
 
 // Submit a New Response
 exports.submitResponse = async (req, res) => {
@@ -168,7 +169,15 @@ exports.submitResponse = async (req, res) => {
     });
 
     await newResponse.save();
+    
+    // Create and send notification
+    const notif = await Notification.create({
+      submitted_by,
+      message: `New response in "${title}" form has been added.`,
+    });
 
+    // Send real-time notification via Socket.IO
+    req.io.to(userId).emit("new_notification", notif);
     res.status(201).json({
       message: "Response submitted successfully",
       response: newResponse,

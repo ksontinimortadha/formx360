@@ -52,9 +52,8 @@ exports.createNotification = async (req, res) => {
       companyId,
       message,
       createdBy,
-      createdByName: `${creator.firstName} ${creator.lastName}`, // Or creator.name if that's your schema
+      createdByName: `${creator.firstName} ${creator.lastName}`, 
     });
-    console.log("notif", notif);
 
  req.io.to(companyId).emit("new_notification", {
    ...notif._doc,

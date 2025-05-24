@@ -4,15 +4,16 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const socketIo = require("socket.io");
+const setupSocket = require("./sockets/socketHandler");
 require("dotenv").config();
 
 const app = express();
 
 // CORS configuration
 const corsOptions = {
-  origin: ["http://localhost:3000", "https://formx360.vercel.app"], // Allow only your frontend
+  origin: ["http://localhost:3000", "https://formx360.vercel.app"], 
   methods: ["GET", "POST", "DELETE", "PUT", "PATCH"],
-  credentials: true, // Allow cookies and other credentials
+  credentials: true, 
 };
 
 app.use(cors(corsOptions));
@@ -22,7 +23,7 @@ app.use(bodyParser.json());
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: ["http://localhost:3000", "https://formx360.vercel.app"], // Allow only your frontend
+    origin: ["http://localhost:3000", "https://formx360.vercel.app"], 
     methods: ["GET", "POST", "DELETE", "PUT", "PATCH"],
     credentials: true,
   },
@@ -46,19 +47,8 @@ app.use("/report-dashboard", require("./routes/DashboardChartRoutes"));
 app.use("/form-templates", require("./routes/formTemplatesRoutes"));
 
 // Socket connection handler
-io.on("connection", (socket) => {
-  console.log("A user connected");
+setupSocket(io);
 
-  // Handle events like notifications
-  socket.on("new_notification", (data) => {
-    console.log("New notification:", data);
-    socket.broadcast.emit("new_notification", data); // Emit to all other clients
-  });
-
-  socket.on("disconnect", () => {
-    console.log("User disconnected");
-  });
-});
 
 // Database connection and server start
 const PORT = process.env.PORT || 5000;
