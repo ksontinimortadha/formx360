@@ -17,7 +17,7 @@ const ResponseTable = ({
   requestSort,
   handleEdit,
   handleDelete,
-  hasPermission = () => true, // fallback if not provided
+  hasPermission = () => true, 
 }) => {
   const [showModal, setShowModal] = useState(false);
   const [editRow, setEditRow] = useState(null);

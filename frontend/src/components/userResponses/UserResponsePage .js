@@ -19,7 +19,7 @@ const UserResponsePage = () => {
   const [itemsPerPage] = useState(5);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
   const [showExportModal, setShowExportModal] = useState(false);
-  const [existingPermissions, setExistingPermissions] = useState([]);
+  const [existingPermissions, setExistingPermissions] = useState({});
   const [currentUserRole, setCurrentUserRole] = useState("");
   const [forms, setForms] = useState([]);
   const [filteredForms, setFilteredForms] = useState([]);
@@ -27,38 +27,104 @@ const UserResponsePage = () => {
   const navigate = useNavigate();
   const userId = sessionStorage.getItem("userId");
 
-  const handleExport = (format) => {
-    setShowExportModal(false);
-    switch (format) {
-      case "csv":
-        exportUtils.exportToCSV(responses, headers);
-        break;
-      case "pdf":
-        exportUtils.exportToPDF(responses, headers);
-        break;
-      case "excel":
-        exportUtils.exportToExcel(responses, headers);
-        break;
-      default:
-        toast.warn("Unsupported export format.");
+  useEffect(() => {
+    const role = sessionStorage.getItem("role");
+    if (role) setCurrentUserRole(role);
+  }, []);
+
+  // Fetch forms and permissions, then filter forms by permission
+  const fetchForms = async (companyId, role) => {
+    if (!companyId) return;
+
+    try {
+      const response = await axios.get(
+        `https://formx360.onrender.com/forms/${companyId}/forms`
+      );
+      const formsData = response.data || [];
+      const currentUserId = sessionStorage.getItem("userId");
+
+      // Fetch permissions for all forms in parallel
+      const permissionsResponses = await Promise.all(
+        formsData.map((form) =>
+          axios.get(`https://formx360.onrender.com/permissions/${form._id}`)
+        )
+      );
+
+      const newPermissions = {};
+      formsData.forEach((form, index) => {
+        const permissions = permissionsResponses[index].data.permissions || [];
+        const flatPermissions = permissions.flatMap((perm) =>
+          perm.permissions.map((p) => ({
+            userId: perm.userId._id,
+            permission: p,
+          }))
+        );
+        newPermissions[form._id] = flatPermissions;
+      });
+
+      setExistingPermissions(newPermissions);
+
+      // Filter forms the current user can view unless Super Admin
+      const viewableForms =
+        role === "Super Admin"
+          ? formsData
+          : formsData.filter((form) => {
+              const perms = newPermissions[form._id] || [];
+              return perms.some(
+                (perm) =>
+                  perm.userId === currentUserId && perm.permission === "view"
+              );
+            });
+
+      setForms(formsData);
+      setFilteredForms(viewableForms);
+    } catch (error) {
+      console.error("Error fetching forms or permissions:", error);
+      toast.error("Failed to fetch forms.");
     }
   };
 
+  // Check if current user has one of required permissions on a form
+  const hasPermission = (form, ...requiredPermissions) => {
+    const currentUserId = sessionStorage.getItem("userId");
+    if (!form || !form._id || !currentUserId) return false;
+
+    const perms = existingPermissions[form._id] || [];
+    return perms.some(
+      (perm) =>
+        perm.userId === currentUserId &&
+        requiredPermissions.includes(perm.permission)
+    );
+  };
+
+  // Fetch responses submitted by user, filtering by forms they have view permission for
   const fetchResponses = async () => {
     if (!userId) return;
 
     setLoading(true);
-
     try {
       const res = await axios.get(
         `https://formx360.onrender.com/responses/submitted-by/${userId}`
       );
-      const data = res.data;
+      const data = res.data || [];
 
       if (Array.isArray(data) && data.length > 0) {
+        const viewableResponses = data.filter((response) => {
+          // Use form_id string or object? Defensive:
+          const formId =
+            typeof response.form_id === "object"
+              ? response.form_id._id
+              : response.form_id;
+          const form = forms.find((f) => f._id === formId);
+          return form && hasPermission(form, "view");
+        });
+
+        setResponses(viewableResponses);
+
+        // Collect unique headers (field_ids) across all viewable responses
         const uniqueFields = [
           ...new Set(
-            data.flatMap((res) =>
+            viewableResponses.flatMap((res) =>
               Array.isArray(res.responses)
                 ? res.responses.map((r) => r.field_id)
                 : []
@@ -68,9 +134,8 @@ const UserResponsePage = () => {
         setHeaders(uniqueFields);
       } else {
         setHeaders([]);
+        setResponses([]);
       }
-
-      setResponses(data);
     } catch (error) {
       console.error("Error fetching responses:", error);
       toast.error("Failed to fetch responses.");
@@ -79,14 +144,24 @@ const UserResponsePage = () => {
     }
   };
 
+  // Load forms first (to get permissions & forms), then responses filtered by those forms
   useEffect(() => {
-    if (userId) {
+    const storedCompanyId = sessionStorage.getItem("companyId");
+    if (userId && storedCompanyId && currentUserRole) {
+      const loadAll = async () => {
+        await fetchForms(storedCompanyId, currentUserRole);
+      };
+
+      loadAll();
+    }
+  }, [userId, currentUserRole]);
+
+  // After forms are fetched & set, fetch responses filtered by permissions
+  useEffect(() => {
+    if (forms.length > 0) {
       fetchResponses();
     }
-    const storedCompanyId = sessionStorage.getItem("companyId");
-
-    fetchForms(storedCompanyId);
-  }, [userId]);
+  }, [forms]);
 
   const requestSort = (key) => {
     let direction = "asc";
@@ -168,69 +243,7 @@ const UserResponsePage = () => {
       toast.error("Failed to delete response");
     }
   };
-  const fetchForms = async (companyId) => {
-    if (!companyId) return;
 
-    try {
-      const response = await axios.get(
-        `https://formx360.onrender.com/forms/${companyId}/forms`
-      );
-      const formsData = response.data;
-
-      const currentUserId = sessionStorage.getItem("userId");
-
-      const permissionsResponses = await Promise.all(
-        formsData.map((form) =>
-          axios.get(`https://formx360.onrender.com/permissions/${form._id}`)
-        )
-      );
-
-      const newPermissions = {};
-
-      formsData.forEach((form, index) => {
-        const permissions = permissionsResponses[index].data.permissions;
-
-        const flatPermissions = permissions.flatMap((perm) =>
-          perm.permissions.map((p) => ({
-            userId: perm.userId._id,
-            permission: p,
-          }))
-        );
-
-        newPermissions[form._id] = flatPermissions;
-      });
-
-      setExistingPermissions(newPermissions);
-
-      const viewableForms =
-        currentUserRole === "Super Admin"
-          ? formsData
-          : formsData.filter((form) => {
-              const perms = newPermissions[form._id] || [];
-              return perms.some(
-                (perm) =>
-                  perm.userId === currentUserId && perm.permission === "view"
-              );
-            });
-
-      setForms(formsData);
-      setFilteredForms(viewableForms);
-    } catch (error) {
-      console.error("Error fetching forms or permissions:", error);
-      toast.error("Failed to fetch forms.");
-    }
-  };
-  const hasPermission = (form, ...requiredPermissions) => {
-    const currentUserId = sessionStorage.getItem("userId");
-    if (!form || !form._id || !currentUserId) return false;
-
-    const perms = existingPermissions[form._id] || [];
-    return perms.some(
-      (perm) =>
-        perm.userId === currentUserId &&
-        requiredPermissions.includes(perm.permission)
-    );
-  };
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -240,7 +253,7 @@ const UserResponsePage = () => {
   }
 
   if (!responses.length) {
-    return <NoResponses />;
+    return <NoResponses handleBackClick={handleBackClick} />;
   }
 
   return (
@@ -255,19 +268,9 @@ const UserResponsePage = () => {
               color="darkgrey"
               onClick={handleBackClick}
             />
-            Form Responses
+            My Responses
           </Navbar.Brand>
           <Navbar.Toggle />
-          <Navbar.Collapse className="justify-content-end">
-            <Navbar.Text>
-              <button
-                className="bg-blue-500 text-white px-4 py-2 rounded-md"
-                onClick={() => setShowExportModal(true)}
-              >
-                Export All
-              </button>
-            </Navbar.Text>
-          </Navbar.Collapse>
         </Container>
       </Navbar>
 
@@ -285,7 +288,11 @@ const UserResponsePage = () => {
       <Navbar
         className="bg-body-tertiary"
         fixed="bottom"
-        style={{ height: "70px", borderTop: "1px solid #dee2e6" }}
+        style={{
+          height: "70px",
+          borderTop: "1px solid #dee2e6",
+          marginLeft: "1000px",
+        }}
       >
         <Container className="d-flex justify-content-between align-items-center">
           <Paginations
@@ -297,12 +304,6 @@ const UserResponsePage = () => {
           />
         </Container>
       </Navbar>
-
-      <ExportModal
-        show={showExportModal}
-        handleClose={() => setShowExportModal(false)}
-        handleExport={handleExport}
-      />
     </>
   );
 };

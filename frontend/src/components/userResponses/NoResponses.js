@@ -4,7 +4,7 @@ import { Container, Navbar } from 'react-bootstrap';
 import { FaArrowLeft } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
-function NoResponses() {
+function NoResponses({ handleBackClick  }) {
   const navigate = useNavigate();
 
   return (
@@ -17,7 +17,7 @@ function NoResponses() {
               style={{ marginRight: "20px" }}
               size={20}
               color="darkgrey"
-              onClick={() => navigate("/forms")}
+              onClick={handleBackClick}
             />
             Form Responses
           </Navbar.Brand>

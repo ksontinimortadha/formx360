@@ -73,7 +73,7 @@ const ViewResponse = () => {
             e.target.style.color = "#1a73e8";
           }}
         >
-          <FaArrowLeft/> 
+          <FaArrowLeft />
         </button>
       </div>
       <h1 className="mb-2 text-center" style={{ marginTop: "20px" }}>

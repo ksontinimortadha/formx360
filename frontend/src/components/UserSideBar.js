@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "react-bootstrap";
 import { useNavigate, useLocation } from "react-router-dom";
-import { FaWpforms, FaChartBar,  } from "react-icons/fa";
+import { FaWpforms, FaChartBar } from "react-icons/fa";
 
 function UserSidebar() {
   const navigate = useNavigate();
@@ -9,7 +9,6 @@ function UserSidebar() {
 
   const menuItems = [
     { path: "/user-dashboard", label: "Forms", icon: <FaWpforms size={20} /> },
-    { path: "/user-reports", label: "Reports", icon: <FaChartBar size={20} /> },
   ];
 
   return (

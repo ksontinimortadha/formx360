@@ -235,6 +235,27 @@ exports.getFormResponses = async (req, res) => {
   }
 };
 
+// Get a Response by ID
+exports.getResponseById = async (req, res) => {
+  const { response_id } = req.params;
+
+  try {
+    const response = await Response.findById(response_id)
+      .populate("form_id", "title fields")
+      .populate("submitted_by", "name email");
+
+    if (!response) {
+      return res.status(404).json({ message: "Response not found" });
+    }
+
+    res.status(200).json(response);
+  } catch (err) {
+    console.error("Server error:", err);
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+};
+
+
 // Get Responses Submitted by a User
 exports.getResponsesBySubmittedBy = async (req, res) => {
   const { userId } = req.params;
