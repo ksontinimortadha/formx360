@@ -14,7 +14,7 @@ const ViewResponse = () => {
     const fetchResponse = async () => {
       try {
         const res = await axios.get(
-          `https://formx360.onrender.com/responses/${responseId}`
+          `https://formx360.onrender.com/responses/get/${responseId}`
         );
         setResponse(res.data);
 
