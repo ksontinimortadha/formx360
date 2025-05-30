@@ -3,6 +3,7 @@ const fs = require("fs");
 const path = require("path");
 const router = express.Router();
 
+
 const TEMPLATES_FILE = path.join(__dirname, "../data/formTemplates.json");
 
 // Helper to read templates
@@ -19,18 +20,22 @@ function readTemplates() {
 function writeTemplates(data) {
   fs.writeFileSync(TEMPLATES_FILE, JSON.stringify(data, null, 2));
 }
-
 // GET all form templates
 router.get("/get", (req, res) => {
-  const templates = readTemplates(); // array of categories with forms
+  const templates = readTemplates();
 
-  // Flatten all forms and include their category
-  const allForms = templates.flatMap((categoryGroup) =>
-    categoryGroup.forms.map((form) => ({
+  if (!Array.isArray(templates)) {
+    return res.status(500).json({ error: "Template data format is invalid" });
+  }
+
+  const allForms = templates.flatMap((categoryGroup) => {
+    if (!categoryGroup.forms || !Array.isArray(categoryGroup.forms)) return [];
+
+    return categoryGroup.forms.map((form) => ({
       ...form,
-      category: categoryGroup.category,
-    }))
-  );
+      category: categoryGroup.category || "Uncategorized",
+    }));
+  });
 
   res.json(allForms);
 });

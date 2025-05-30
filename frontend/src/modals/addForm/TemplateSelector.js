@@ -8,7 +8,6 @@ function TemplateSelector({ onPreview, openPreview, onSubmit, onBack }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetch templates from backend on component mount
   useEffect(() => {
     async function fetchTemplates() {
       setLoading(true);
@@ -21,7 +20,6 @@ function TemplateSelector({ onPreview, openPreview, onSubmit, onBack }) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        console.log("data", data);
         setTemplates(data);
       } catch (err) {
         setError("Failed to load templates");
@@ -34,7 +32,6 @@ function TemplateSelector({ onPreview, openPreview, onSubmit, onBack }) {
   }, []);
 
   const categories = ["All", ...new Set(templates.map((t) => t.category))];
-
   const filteredTemplates =
     selectedCategory === "All"
       ? templates
