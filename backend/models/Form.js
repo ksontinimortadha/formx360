@@ -27,6 +27,7 @@ const formSchema = new mongoose.Schema(
             "text",
             "textarea",
             "number",
+            "tel",
             "checkbox-group",
             "radio-group",
             "button",
