@@ -38,6 +38,8 @@ const formSchema = new mongoose.Schema(
             "autocomplete",
             "hidden",
             "starRating",
+            "password",
+            "email",
           ],
         },
         subtype: { type: String }, // e.g., "password" for text fields
