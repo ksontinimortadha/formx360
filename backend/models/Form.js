@@ -42,7 +42,25 @@ const formSchema = new mongoose.Schema(
         },
         subtype: {
           type: String,
-          enum: ["password", "email", "submit"],
+          enum: [
+            "text", // default text subtype
+            "password", // password input
+            "email", // email input
+            "tel", // telephone number input
+            "url", // website URL input
+            "number", // numeric input
+            "date", // date picker
+            "datetime-local", // date + time picker
+            "month", // month picker
+            "week", // week picker
+            "time", // time picker
+            "color", // color picker
+            "search", // search field
+            "submit", // submit button
+            "reset", // reset button
+            "file", // file uploader
+            "hidden", // hidden input
+          ],
         }, // e.g., "password" for text fields
         label: { type: String, required: true },
         name: { type: String, required: true },
