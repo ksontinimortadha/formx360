@@ -67,7 +67,7 @@
             "id": "phone",
             "name": "phone",
             "label": "Phone Number",
-            "type": "tel",
+            "type": "text",
             "subtype": "tel",
             "required": false
           },
@@ -117,7 +117,7 @@
             "id": "phone",
             "name": "phone",
             "label": "Phone Number",
-            "type": "tel",
+            "type": "text",
             "subtype": "tel",
             "required": false
           },
@@ -358,7 +358,7 @@
             "id": "phone",
             "name": "phone",
             "label": "Phone Number",
-            "type": "tel",
+            "type": "text",
             "subtype": "tel",
             "required": false
           },
@@ -408,7 +408,7 @@
             "id": "phone",
             "name": "phone",
             "label": "Phone Number",
-            "type": "tel",
+            "type": "text",
             "subtype": "tel",
             "required": false
           },
@@ -1346,7 +1346,7 @@
             "id": "phone",
             "name": "phone",
             "label": "Phone Number",
-            "type": "tel",
+            "type": "text",
             "subtype": "tel",
             "required": true
           },
@@ -1447,7 +1447,7 @@
             "id": "emergencyContactPhone",
             "name": "emergencyContactPhone",
             "label": "Emergency Contact Phone",
-            "type": "tel",
+            "type": "text",
             "subtype": "tel",
             "required": true
           },
@@ -1864,7 +1864,7 @@
             "id": "contactNumber",
             "name": "contactNumber",
             "label": "Contact Number",
-            "type": "tel",
+            "type": "text",
             "subtype": "tel",
             "required": true
           },
@@ -1927,7 +1927,7 @@
             "id": "contactNumber",
             "name": "contactNumber",
             "label": "Contact Number",
-            "type": "tel",
+            "type": "text",
             "subtype": "tel",
             "required": false
           },
@@ -2145,7 +2145,7 @@
             "id": "parentContact",
             "name": "parentContact",
             "label": "Parent Contact Number",
-            "type": "tel",
+            "type": "text",
             "subtype": "tel",
             "required": true
           },
@@ -2369,7 +2369,7 @@
             "id": "phone",
             "name": "phone",
             "label": "Phone Number",
-            "type": "tel",
+            "type": "text",
             "subtype": "tel",
             "required": false
           },
@@ -2419,7 +2419,7 @@
             "id": "contactNumber",
             "name": "contactNumber",
             "label": "Contact Number",
-            "type": "tel",
+            "type": "text",
             "subtype": "tel",
             "required": false
           },
@@ -2469,7 +2469,7 @@
             "id": "contactNumber",
             "name": "contactNumber",
             "label": "Contact Number",
-            "type": "tel",
+            "type": "text",
             "subtype": "tel",
             "required": false
           },
