@@ -1,50 +1,53 @@
 [
-    {
-      "category": "Sales",
-      "title": "Order Form",
-      "description": "Place an order for our products.",
-      "fields": [
-        {
-          "id": "customer_name",
-          "name": "customer_name",
-          "label": "Customer Name",
-          "type": "text",
-          "required": true
-        },
-        {
-          "id": "product_id",
-          "name": "product_id",
-          "label": "Product",
-          "type": "select",
-          "required": true,
-          "options": [
-            { "label": "Product A", "value": "product_a" },
-            { "label": "Product B", "value": "product_b" },
-            { "label": "Product C", "value": "product_c" }
-          ]
-        },
-        {
-          "id": "quantity",
-          "name": "quantity",
-          "label": "Quantity",
-          "type": "number",
-          "required": true,
-          "min": 1
-        },
-        {
-          "id": "delivery_address",
-          "name": "delivery_address",
-          "label": "Delivery Address",
-          "type": "textarea",
-          "required": true
-        },
-        {
-          "type": "button",
-          "subtype": "submit",
-          "label": "Place Order",
-          "className": "btn-primary"
-        }
-      ]
-    }
-  
+  {
+    "category": "Sales",
+    "forms": [
+      {
+        "title": "Order Form",
+        "description": "Place an order for our products.",
+        "fields": [
+          {
+            "id": "customer_name",
+            "name": "customer_name",
+            "label": "Customer Name",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "product_id",
+            "name": "product_id",
+            "label": "Product",
+            "type": "select",
+            "required": true,
+            "options": [
+              { "label": "Product A", "value": "product_a" },
+              { "label": "Product B", "value": "product_b" },
+              { "label": "Product C", "value": "product_c" }
+            ]
+          },
+          {
+            "id": "quantity",
+            "name": "quantity",
+            "label": "Quantity",
+            "type": "number",
+            "required": true,
+            "min": 1
+          },
+          {
+            "id": "delivery_address",
+            "name": "delivery_address",
+            "label": "Delivery Address",
+            "type": "textarea",
+            "required": true
+          },
+          {
+            "type": "button",
+            "subtype": "submit",
+            "label": "Place Order",
+            "className": "btn-primary"
+          }
+        ]
+      }
+    ]
+  }
 ]
