@@ -7,23 +7,30 @@
         "description": "This is the sign up template.",
         "fields": [
           {
-            "id": "field1",
-            "name": "field1",
-            "label": "Field 1",
+            "id": "full_name",
+            "name": "full_name",
+            "label": "Full Name",
             "type": "text",
             "required": true
           },
           {
-            "id": "field2",
-            "name": "field2",
-            "label": "Field 2",
-            "type": "text",
-            "required": false
+            "id": "email",
+            "name": "email",
+            "label": "Email Address",
+            "type": "email",
+            "required": true
+          },
+          {
+            "id": "password",
+            "name": "password",
+            "label": "Password",
+            "type": "password",
+            "required": true
           },
           {
             "id": "submit",
             "name": "submit",
-            "label": "Submit",
+            "label": "Sign Up",
             "type": "button",
             "subtype": "submit",
             "className": "btn-primary"
@@ -35,23 +42,44 @@
         "description": "This is the event registration template.",
         "fields": [
           {
-            "id": "field1",
-            "name": "field1",
-            "label": "Field 1",
+            "id": "first_name",
+            "name": "first_name",
+            "label": "First Name",
             "type": "text",
             "required": true
           },
           {
-            "id": "field2",
-            "name": "field2",
-            "label": "Field 2",
+            "id": "last_name",
+            "name": "last_name",
+            "label": "Last Name",
             "type": "text",
+            "required": true
+          },
+          {
+            "id": "email",
+            "name": "email",
+            "label": "Email",
+            "type": "email",
+            "required": true
+          },
+          {
+            "id": "phone",
+            "name": "phone",
+            "label": "Phone Number",
+            "type": "tel",
             "required": false
+          },
+          {
+            "id": "event_date",
+            "name": "event_date",
+            "label": "Event Date",
+            "type": "date",
+            "required": true
           },
           {
             "id": "submit",
             "name": "submit",
-            "label": "Submit",
+            "label": "Register",
             "type": "button",
             "subtype": "submit",
             "className": "btn-primary"
@@ -63,23 +91,49 @@
         "description": "This is the trial request template.",
         "fields": [
           {
-            "id": "field1",
-            "name": "field1",
-            "label": "Field 1",
+            "id": "name",
+            "name": "name",
+            "label": "Full Name",
             "type": "text",
             "required": true
           },
           {
-            "id": "field2",
-            "name": "field2",
-            "label": "Field 2",
+            "id": "company",
+            "name": "company",
+            "label": "Company Name",
             "type": "text",
             "required": false
           },
           {
+            "id": "email",
+            "name": "email",
+            "label": "Email Address",
+            "type": "email",
+            "required": true
+          },
+          {
+            "id": "phone",
+            "name": "phone",
+            "label": "Phone Number",
+            "type": "tel",
+            "required": false
+          },
+          {
+            "id": "product_interest",
+            "name": "product_interest",
+            "label": "Product Interested In",
+            "type": "select",
+            "options": [
+              { "label": "Product A", "value": "product_a" },
+              { "label": "Product B", "value": "product_b" },
+              { "label": "Product C", "value": "product_c" }
+            ],
+            "required": true
+          },
+          {
             "id": "submit",
             "name": "submit",
-            "label": "Submit",
+            "label": "Request Trial",
             "type": "button",
             "subtype": "submit",
             "className": "btn-primary"
@@ -91,23 +145,37 @@
         "description": "This is the free trial request template.",
         "fields": [
           {
-            "id": "field1",
-            "name": "field1",
-            "label": "Field 1",
+            "id": "full_name",
+            "name": "full_name",
+            "label": "Full Name",
             "type": "text",
             "required": true
           },
           {
-            "id": "field2",
-            "name": "field2",
-            "label": "Field 2",
+            "id": "email",
+            "name": "email",
+            "label": "Email",
+            "type": "email",
+            "required": true
+          },
+          {
+            "id": "company",
+            "name": "company",
+            "label": "Company",
             "type": "text",
+            "required": false
+          },
+          {
+            "id": "usage_purpose",
+            "name": "usage_purpose",
+            "label": "Purpose of Trial",
+            "type": "textarea",
             "required": false
           },
           {
             "id": "submit",
             "name": "submit",
-            "label": "Submit",
+            "label": "Submit Request",
             "type": "button",
             "subtype": "submit",
             "className": "btn-primary"
@@ -119,23 +187,42 @@
         "description": "This is the product enquiry template.",
         "fields": [
           {
-            "id": "field1",
-            "name": "field1",
-            "label": "Field 1",
+            "id": "name",
+            "name": "name",
+            "label": "Full Name",
             "type": "text",
             "required": true
           },
           {
-            "id": "field2",
-            "name": "field2",
-            "label": "Field 2",
-            "type": "text",
+            "id": "email",
+            "name": "email",
+            "label": "Email",
+            "type": "email",
+            "required": true
+          },
+          {
+            "id": "product",
+            "name": "product",
+            "label": "Product",
+            "type": "select",
+            "options": [
+              { "label": "Product A", "value": "product_a" },
+              { "label": "Product B", "value": "product_b" },
+              { "label": "Product C", "value": "product_c" }
+            ],
+            "required": true
+          },
+          {
+            "id": "message",
+            "name": "message",
+            "label": "Your Message",
+            "type": "textarea",
             "required": false
           },
           {
             "id": "submit",
             "name": "submit",
-            "label": "Submit",
+            "label": "Send Enquiry",
             "type": "button",
             "subtype": "submit",
             "className": "btn-primary"
@@ -147,23 +234,51 @@
         "description": "This is the product feedback template.",
         "fields": [
           {
-            "id": "field1",
-            "name": "field1",
-            "label": "Field 1",
+            "id": "name",
+            "name": "name",
+            "label": "Full Name",
             "type": "text",
+            "required": false
+          },
+          {
+            "id": "email",
+            "name": "email",
+            "label": "Email",
+            "type": "email",
+            "required": false
+          },
+          {
+            "id": "product",
+            "name": "product",
+            "label": "Product",
+            "type": "select",
+            "options": [
+              { "label": "Product A", "value": "product_a" },
+              { "label": "Product B", "value": "product_b" },
+              { "label": "Product C", "value": "product_c" }
+            ],
+            "required": false
+          },
+          {
+            "id": "rating",
+            "name": "rating",
+            "label": "Rating",
+            "type": "number",
+            "min": 1,
+            "max": 5,
             "required": true
           },
           {
-            "id": "field2",
-            "name": "field2",
-            "label": "Field 2",
-            "type": "text",
+            "id": "comments",
+            "name": "comments",
+            "label": "Comments",
+            "type": "textarea",
             "required": false
           },
           {
             "id": "submit",
             "name": "submit",
-            "label": "Submit",
+            "label": "Submit Feedback",
             "type": "button",
             "subtype": "submit",
             "className": "btn-primary"
@@ -175,23 +290,37 @@
         "description": "This is the ebook download template.",
         "fields": [
           {
-            "id": "field1",
-            "name": "field1",
-            "label": "Field 1",
+            "id": "full_name",
+            "name": "full_name",
+            "label": "Full Name",
             "type": "text",
             "required": true
           },
           {
-            "id": "field2",
-            "name": "field2",
-            "label": "Field 2",
+            "id": "email",
+            "name": "email",
+            "label": "Email",
+            "type": "email",
+            "required": true
+          },
+          {
+            "id": "company",
+            "name": "company",
+            "label": "Company",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "job_title",
+            "name": "job_title",
+            "label": "Job Title",
             "type": "text",
             "required": false
           },
           {
             "id": "submit",
             "name": "submit",
-            "label": "Submit",
+            "label": "Download eBook",
             "type": "button",
             "subtype": "submit",
             "className": "btn-primary"
@@ -200,6 +329,7 @@
       }
     ]
   },
+  
   {
     "category": "Business",
     "forms": [
@@ -208,18 +338,32 @@
         "description": "This is the contact us template.",
         "fields": [
           {
-            "id": "field1",
-            "name": "field1",
-            "label": "Field 1",
+            "id": "fullName",
+            "name": "fullName",
+            "label": "Full Name",
             "type": "text",
             "required": true
           },
           {
-            "id": "field2",
-            "name": "field2",
-            "label": "Field 2",
-            "type": "text",
+            "id": "email",
+            "name": "email",
+            "label": "Email Address",
+            "type": "email",
+            "required": true
+          },
+          {
+            "id": "phone",
+            "name": "phone",
+            "label": "Phone Number",
+            "type": "tel",
             "required": false
+          },
+          {
+            "id": "message",
+            "name": "message",
+            "label": "Message",
+            "type": "textarea",
+            "required": true
           },
           {
             "id": "submit",
@@ -236,17 +380,38 @@
         "description": "This is the client details template.",
         "fields": [
           {
-            "id": "field1",
-            "name": "field1",
-            "label": "Field 1",
+            "id": "companyName",
+            "name": "companyName",
+            "label": "Company Name",
             "type": "text",
             "required": true
           },
           {
-            "id": "field2",
-            "name": "field2",
-            "label": "Field 2",
+            "id": "contactPerson",
+            "name": "contactPerson",
+            "label": "Contact Person",
             "type": "text",
+            "required": true
+          },
+          {
+            "id": "email",
+            "name": "email",
+            "label": "Email",
+            "type": "email",
+            "required": true
+          },
+          {
+            "id": "phone",
+            "name": "phone",
+            "label": "Phone Number",
+            "type": "tel",
+            "required": false
+          },
+          {
+            "id": "address",
+            "name": "address",
+            "label": "Address",
+            "type": "textarea",
             "required": false
           },
           {
@@ -264,23 +429,42 @@
         "description": "This is the email subscription template.",
         "fields": [
           {
-            "id": "field1",
-            "name": "field1",
-            "label": "Field 1",
-            "type": "text",
+            "id": "email",
+            "name": "email",
+            "label": "Email Address",
+            "type": "email",
             "required": true
           },
           {
-            "id": "field2",
-            "name": "field2",
-            "label": "Field 2",
+            "id": "firstName",
+            "name": "firstName",
+            "label": "First Name",
             "type": "text",
+            "required": false
+          },
+          {
+            "id": "lastName",
+            "name": "lastName",
+            "label": "Last Name",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "preferences",
+            "name": "preferences",
+            "label": "Subscription Preferences",
+            "type": "checkbox-group",
+            "options": [
+              { "label": "Newsletters", "value": "newsletters" },
+              { "label": "Promotions", "value": "promotions" },
+              { "label": "Events", "value": "events" }
+            ],
             "required": false
           },
           {
             "id": "submit",
             "name": "submit",
-            "label": "Submit",
+            "label": "Subscribe",
             "type": "button",
             "subtype": "submit",
             "className": "btn-primary"
@@ -292,23 +476,46 @@
         "description": "This is the software evaluation template.",
         "fields": [
           {
-            "id": "field1",
-            "name": "field1",
-            "label": "Field 1",
+            "id": "softwareName",
+            "name": "softwareName",
+            "label": "Software Name",
             "type": "text",
             "required": true
           },
           {
-            "id": "field2",
-            "name": "field2",
-            "label": "Field 2",
+            "id": "version",
+            "name": "version",
+            "label": "Version",
             "type": "text",
+            "required": false
+          },
+          {
+            "id": "evaluatorName",
+            "name": "evaluatorName",
+            "label": "Evaluator Name",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "rating",
+            "name": "rating",
+            "label": "Rating (1-5)",
+            "type": "number",
+            "min": 1,
+            "max": 5,
+            "required": true
+          },
+          {
+            "id": "comments",
+            "name": "comments",
+            "label": "Comments",
+            "type": "textarea",
             "required": false
           },
           {
             "id": "submit",
             "name": "submit",
-            "label": "Submit",
+            "label": "Submit Evaluation",
             "type": "button",
             "subtype": "submit",
             "className": "btn-primary"
@@ -320,23 +527,43 @@
         "description": "This is the complaints template.",
         "fields": [
           {
-            "id": "field1",
-            "name": "field1",
-            "label": "Field 1",
+            "id": "complainantName",
+            "name": "complainantName",
+            "label": "Your Name",
             "type": "text",
             "required": true
           },
           {
-            "id": "field2",
-            "name": "field2",
-            "label": "Field 2",
-            "type": "text",
-            "required": false
+            "id": "email",
+            "name": "email",
+            "label": "Email",
+            "type": "email",
+            "required": true
+          },
+          {
+            "id": "issueType",
+            "name": "issueType",
+            "label": "Issue Type",
+            "type": "select",
+            "options": [
+              { "label": "Product", "value": "product" },
+              { "label": "Service", "value": "service" },
+              { "label": "Billing", "value": "billing" },
+              { "label": "Other", "value": "other" }
+            ],
+            "required": true
+          },
+          {
+            "id": "description",
+            "name": "description",
+            "label": "Complaint Description",
+            "type": "textarea",
+            "required": true
           },
           {
             "id": "submit",
             "name": "submit",
-            "label": "Submit",
+            "label": "Submit Complaint",
             "type": "button",
             "subtype": "submit",
             "className": "btn-primary"
@@ -348,23 +575,50 @@
         "description": "This is the bug tracker template.",
         "fields": [
           {
-            "id": "field1",
-            "name": "field1",
-            "label": "Field 1",
+            "id": "reporterName",
+            "name": "reporterName",
+            "label": "Reporter Name",
             "type": "text",
             "required": true
           },
           {
-            "id": "field2",
-            "name": "field2",
-            "label": "Field 2",
+            "id": "email",
+            "name": "email",
+            "label": "Email",
+            "type": "email",
+            "required": true
+          },
+          {
+            "id": "softwareVersion",
+            "name": "softwareVersion",
+            "label": "Software Version",
             "type": "text",
             "required": false
           },
           {
+            "id": "bugDescription",
+            "name": "bugDescription",
+            "label": "Bug Description",
+            "type": "textarea",
+            "required": true
+          },
+          {
+            "id": "severity",
+            "name": "severity",
+            "label": "Severity",
+            "type": "select",
+            "options": [
+              { "label": "Low", "value": "low" },
+              { "label": "Medium", "value": "medium" },
+              { "label": "High", "value": "high" },
+              { "label": "Critical", "value": "critical" }
+            ],
+            "required": true
+          },
+          {
             "id": "submit",
             "name": "submit",
-            "label": "Submit",
+            "label": "Submit Bug Report",
             "type": "button",
             "subtype": "submit",
             "className": "btn-primary"
@@ -373,6 +627,7 @@
       }
     ]
   },
+  
   {
     "category": "E-commerce",
     "forms": [
@@ -381,18 +636,18 @@
         "description": "This is the order form template.",
         "fields": [
           {
-            "id": "field1",
-            "name": "field1",
-            "label": "Field 1",
+            "id": "customerName",
+            "name": "customerName",
+            "label": "Customer Name",
             "type": "text",
             "required": true
           },
           {
-            "id": "field2",
-            "name": "field2",
-            "label": "Field 2",
-            "type": "text",
-            "required": false
+            "id": "orderDate",
+            "name": "orderDate",
+            "label": "Order Date",
+            "type": "date",
+            "required": true
           },
           {
             "id": "submit",
@@ -409,17 +664,25 @@
         "description": "This is the meal order form template.",
         "fields": [
           {
-            "id": "field1",
-            "name": "field1",
-            "label": "Field 1",
-            "type": "text",
+            "id": "mealType",
+            "name": "mealType",
+            "label": "Meal Type",
+            "type": "select",
+            "options": ["Breakfast", "Lunch", "Dinner"],
             "required": true
           },
           {
-            "id": "field2",
-            "name": "field2",
-            "label": "Field 2",
-            "type": "text",
+            "id": "quantity",
+            "name": "quantity",
+            "label": "Quantity",
+            "type": "number",
+            "required": true
+          },
+          {
+            "id": "specialInstructions",
+            "name": "specialInstructions",
+            "label": "Special Instructions",
+            "type": "textarea",
             "required": false
           },
           {
@@ -437,18 +700,25 @@
         "description": "This is the product order form template.",
         "fields": [
           {
-            "id": "field1",
-            "name": "field1",
-            "label": "Field 1",
+            "id": "productName",
+            "name": "productName",
+            "label": "Product Name",
             "type": "text",
             "required": true
           },
           {
-            "id": "field2",
-            "name": "field2",
-            "label": "Field 2",
+            "id": "productSKU",
+            "name": "productSKU",
+            "label": "Product SKU",
             "type": "text",
             "required": false
+          },
+          {
+            "id": "quantity",
+            "name": "quantity",
+            "label": "Quantity",
+            "type": "number",
+            "required": true
           },
           {
             "id": "submit",
@@ -465,17 +735,24 @@
         "description": "This is the service order form template.",
         "fields": [
           {
-            "id": "field1",
-            "name": "field1",
-            "label": "Field 1",
+            "id": "serviceName",
+            "name": "serviceName",
+            "label": "Service Name",
             "type": "text",
             "required": true
           },
           {
-            "id": "field2",
-            "name": "field2",
-            "label": "Field 2",
-            "type": "text",
+            "id": "serviceDate",
+            "name": "serviceDate",
+            "label": "Service Date",
+            "type": "date",
+            "required": true
+          },
+          {
+            "id": "serviceDetails",
+            "name": "serviceDetails",
+            "label": "Service Details",
+            "type": "textarea",
             "required": false
           },
           {
@@ -493,18 +770,25 @@
         "description": "This is the online order confirmation template.",
         "fields": [
           {
-            "id": "field1",
-            "name": "field1",
-            "label": "Field 1",
+            "id": "orderId",
+            "name": "orderId",
+            "label": "Order ID",
             "type": "text",
             "required": true
           },
           {
-            "id": "field2",
-            "name": "field2",
-            "label": "Field 2",
-            "type": "text",
-            "required": false
+            "id": "confirmationEmail",
+            "name": "confirmationEmail",
+            "label": "Confirmation Email",
+            "type": "email",
+            "required": true
+          },
+          {
+            "id": "confirmationDate",
+            "name": "confirmationDate",
+            "label": "Confirmation Date",
+            "type": "date",
+            "required": true
           },
           {
             "id": "submit",
@@ -521,17 +805,25 @@
         "description": "This is the order/delivery tracking template.",
         "fields": [
           {
-            "id": "field1",
-            "name": "field1",
-            "label": "Field 1",
+            "id": "trackingNumber",
+            "name": "trackingNumber",
+            "label": "Tracking Number",
             "type": "text",
             "required": true
           },
           {
-            "id": "field2",
-            "name": "field2",
-            "label": "Field 2",
-            "type": "text",
+            "id": "deliveryStatus",
+            "name": "deliveryStatus",
+            "label": "Delivery Status",
+            "type": "select",
+            "options": ["Pending", "Shipped", "In Transit", "Delivered", "Cancelled"],
+            "required": true
+          },
+          {
+            "id": "estimatedDeliveryDate",
+            "name": "estimatedDeliveryDate",
+            "label": "Estimated Delivery Date",
+            "type": "date",
             "required": false
           },
           {
@@ -549,17 +841,26 @@
         "description": "This is the delivery feedback template.",
         "fields": [
           {
-            "id": "field1",
-            "name": "field1",
-            "label": "Field 1",
+            "id": "orderId",
+            "name": "orderId",
+            "label": "Order ID",
             "type": "text",
             "required": true
           },
           {
-            "id": "field2",
-            "name": "field2",
-            "label": "Field 2",
-            "type": "text",
+            "id": "deliveryRating",
+            "name": "deliveryRating",
+            "label": "Delivery Rating",
+            "type": "number",
+            "min": 1,
+            "max": 5,
+            "required": true
+          },
+          {
+            "id": "feedbackComments",
+            "name": "feedbackComments",
+            "label": "Comments",
+            "type": "textarea",
             "required": false
           },
           {
@@ -574,6 +875,7 @@
       }
     ]
   },
+  
   {
     "category": "Feedback",
     "forms": [
@@ -867,17 +1169,33 @@
         "description": "This is the concert/ show ticket booking form template.",
         "fields": [
           {
-            "id": "field1",
-            "name": "field1",
-            "label": "Field 1",
+            "id": "fullName",
+            "name": "fullName",
+            "label": "Full Name",
             "type": "text",
             "required": true
           },
           {
-            "id": "field2",
-            "name": "field2",
-            "label": "Field 2",
-            "type": "text",
+            "id": "email",
+            "name": "email",
+            "label": "Email Address",
+            "type": "email",
+            "required": true
+          },
+          {
+            "id": "numberOfTickets",
+            "name": "numberOfTickets",
+            "label": "Number of Tickets",
+            "type": "number",
+            "required": true,
+            "min": 1
+          },
+          {
+            "id": "seatPreference",
+            "name": "seatPreference",
+            "label": "Seat Preference",
+            "type": "select",
+            "options": ["Front", "Middle", "Back", "Balcony"],
             "required": false
           },
           {
@@ -895,17 +1213,39 @@
         "description": "This is the room reservation form template.",
         "fields": [
           {
-            "id": "field1",
-            "name": "field1",
-            "label": "Field 1",
+            "id": "guestName",
+            "name": "guestName",
+            "label": "Guest Name",
             "type": "text",
             "required": true
           },
           {
-            "id": "field2",
-            "name": "field2",
-            "label": "Field 2",
-            "type": "text",
+            "id": "checkInDate",
+            "name": "checkInDate",
+            "label": "Check-in Date",
+            "type": "date",
+            "required": true
+          },
+          {
+            "id": "checkOutDate",
+            "name": "checkOutDate",
+            "label": "Check-out Date",
+            "type": "date",
+            "required": true
+          },
+          {
+            "id": "roomType",
+            "name": "roomType",
+            "label": "Room Type",
+            "type": "select",
+            "options": ["Single", "Double", "Suite", "Deluxe"],
+            "required": true
+          },
+          {
+            "id": "specialRequests",
+            "name": "specialRequests",
+            "label": "Special Requests",
+            "type": "textarea",
             "required": false
           },
           {
@@ -923,17 +1263,39 @@
         "description": "This is the appointment booking form template.",
         "fields": [
           {
-            "id": "field1",
-            "name": "field1",
-            "label": "Field 1",
+            "id": "clientName",
+            "name": "clientName",
+            "label": "Client Name",
             "type": "text",
             "required": true
           },
           {
-            "id": "field2",
-            "name": "field2",
-            "label": "Field 2",
-            "type": "text",
+            "id": "appointmentDate",
+            "name": "appointmentDate",
+            "label": "Appointment Date",
+            "type": "date",
+            "required": true
+          },
+          {
+            "id": "appointmentTime",
+            "name": "appointmentTime",
+            "label": "Appointment Time",
+            "type": "time",
+            "required": true
+          },
+          {
+            "id": "serviceType",
+            "name": "serviceType",
+            "label": "Service Type",
+            "type": "select",
+            "options": ["Consultation", "Follow-up", "Treatment", "Other"],
+            "required": true
+          },
+          {
+            "id": "notes",
+            "name": "notes",
+            "label": "Additional Notes",
+            "type": "textarea",
             "required": false
           },
           {
@@ -947,7 +1309,8 @@
         ]
       }
     ]
-  },
+  }
+  ,
   {
     "category": "Human Resources",
     "forms": [
@@ -956,17 +1319,39 @@
         "description": "This is the job application template.",
         "fields": [
           {
-            "id": "field1",
-            "name": "field1",
-            "label": "Field 1",
+            "id": "fullName",
+            "name": "fullName",
+            "label": "Full Name",
             "type": "text",
             "required": true
           },
           {
-            "id": "field2",
-            "name": "field2",
-            "label": "Field 2",
-            "type": "text",
+            "id": "email",
+            "name": "email",
+            "label": "Email Address",
+            "type": "email",
+            "required": true
+          },
+          {
+            "id": "phone",
+            "name": "phone",
+            "label": "Phone Number",
+            "type": "tel",
+            "required": true
+          },
+          {
+            "id": "resume",
+            "name": "resume",
+            "label": "Upload Resume",
+            "type": "file",
+            "required": true,
+            "accept": ".pdf,.doc,.docx"
+          },
+          {
+            "id": "coverLetter",
+            "name": "coverLetter",
+            "label": "Cover Letter",
+            "type": "textarea",
             "required": false
           },
           {
@@ -984,17 +1369,39 @@
         "description": "This is the employee evaluation template.",
         "fields": [
           {
-            "id": "field1",
-            "name": "field1",
-            "label": "Field 1",
+            "id": "employeeName",
+            "name": "employeeName",
+            "label": "Employee Name",
             "type": "text",
             "required": true
           },
           {
-            "id": "field2",
-            "name": "field2",
-            "label": "Field 2",
+            "id": "evaluatorName",
+            "name": "evaluatorName",
+            "label": "Evaluator Name",
             "type": "text",
+            "required": true
+          },
+          {
+            "id": "evaluationDate",
+            "name": "evaluationDate",
+            "label": "Evaluation Date",
+            "type": "date",
+            "required": true
+          },
+          {
+            "id": "performanceRating",
+            "name": "performanceRating",
+            "label": "Performance Rating",
+            "type": "select",
+            "options": ["Excellent", "Good", "Average", "Poor"],
+            "required": true
+          },
+          {
+            "id": "comments",
+            "name": "comments",
+            "label": "Comments",
+            "type": "textarea",
             "required": false
           },
           {
@@ -1012,17 +1419,38 @@
         "description": "This is the employee emergency information template.",
         "fields": [
           {
-            "id": "field1",
-            "name": "field1",
-            "label": "Field 1",
+            "id": "employeeName",
+            "name": "employeeName",
+            "label": "Employee Name",
             "type": "text",
             "required": true
           },
           {
-            "id": "field2",
-            "name": "field2",
-            "label": "Field 2",
+            "id": "emergencyContactName",
+            "name": "emergencyContactName",
+            "label": "Emergency Contact Name",
             "type": "text",
+            "required": true
+          },
+          {
+            "id": "emergencyContactPhone",
+            "name": "emergencyContactPhone",
+            "label": "Emergency Contact Phone",
+            "type": "tel",
+            "required": true
+          },
+          {
+            "id": "relationship",
+            "name": "relationship",
+            "label": "Relationship",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "medicalConditions",
+            "name": "medicalConditions",
+            "label": "Medical Conditions",
+            "type": "textarea",
             "required": false
           },
           {
@@ -1040,17 +1468,32 @@
         "description": "This is the employee satisfaction template.",
         "fields": [
           {
-            "id": "field1",
-            "name": "field1",
-            "label": "Field 1",
+            "id": "employeeName",
+            "name": "employeeName",
+            "label": "Employee Name",
             "type": "text",
             "required": true
           },
           {
-            "id": "field2",
-            "name": "field2",
-            "label": "Field 2",
+            "id": "department",
+            "name": "department",
+            "label": "Department",
             "type": "text",
+            "required": false
+          },
+          {
+            "id": "satisfactionLevel",
+            "name": "satisfactionLevel",
+            "label": "Satisfaction Level",
+            "type": "select",
+            "options": ["Very Satisfied", "Satisfied", "Neutral", "Dissatisfied", "Very Dissatisfied"],
+            "required": true
+          },
+          {
+            "id": "feedback",
+            "name": "feedback",
+            "label": "Feedback",
+            "type": "textarea",
             "required": false
           },
           {
@@ -1068,732 +1511,24 @@
         "description": "This is the resignation form template.",
         "fields": [
           {
-            "id": "field1",
-            "name": "field1",
-            "label": "Field 1",
+            "id": "employeeName",
+            "name": "employeeName",
+            "label": "Employee Name",
             "type": "text",
             "required": true
           },
           {
-            "id": "field2",
-            "name": "field2",
-            "label": "Field 2",
-            "type": "text",
-            "required": false
-          },
-          {
-            "id": "submit",
-            "name": "submit",
-            "label": "Submit",
-            "type": "button",
-            "subtype": "submit",
-            "className": "btn-primary"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "category": "Requests",
-    "forms": [
-      {
-        "title": "Leave Application",
-        "description": "This is the leave application template.",
-        "fields": [
-          {
-            "id": "field1",
-            "name": "field1",
-            "label": "Field 1",
-            "type": "text",
+            "id": "lastWorkingDay",
+            "name": "lastWorkingDay",
+            "label": "Last Working Day",
+            "type": "date",
             "required": true
           },
           {
-            "id": "field2",
-            "name": "field2",
-            "label": "Field 2",
-            "type": "text",
-            "required": false
-          },
-          {
-            "id": "submit",
-            "name": "submit",
-            "label": "Submit",
-            "type": "button",
-            "subtype": "submit",
-            "className": "btn-primary"
-          }
-        ]
-      },
-      {
-        "title": "Asset Request Form",
-        "description": "This is the asset request form template.",
-        "fields": [
-          {
-            "id": "field1",
-            "name": "field1",
-            "label": "Field 1",
-            "type": "text",
-            "required": true
-          },
-          {
-            "id": "field2",
-            "name": "field2",
-            "label": "Field 2",
-            "type": "text",
-            "required": false
-          },
-          {
-            "id": "submit",
-            "name": "submit",
-            "label": "Submit",
-            "type": "button",
-            "subtype": "submit",
-            "className": "btn-primary"
-          }
-        ]
-      },
-      {
-        "title": "Software Request",
-        "description": "This is the software request template.",
-        "fields": [
-          {
-            "id": "field1",
-            "name": "field1",
-            "label": "Field 1",
-            "type": "text",
-            "required": true
-          },
-          {
-            "id": "field2",
-            "name": "field2",
-            "label": "Field 2",
-            "type": "text",
-            "required": false
-          },
-          {
-            "id": "submit",
-            "name": "submit",
-            "label": "Submit",
-            "type": "button",
-            "subtype": "submit",
-            "className": "btn-primary"
-          }
-        ]
-      },
-      {
-        "title": "Corporate Team Outing Form",
-        "description": "This is the corporate team outing form template.",
-        "fields": [
-          {
-            "id": "field1",
-            "name": "field1",
-            "label": "Field 1",
-            "type": "text",
-            "required": true
-          },
-          {
-            "id": "field2",
-            "name": "field2",
-            "label": "Field 2",
-            "type": "text",
-            "required": false
-          },
-          {
-            "id": "submit",
-            "name": "submit",
-            "label": "Submit",
-            "type": "button",
-            "subtype": "submit",
-            "className": "btn-primary"
-          }
-        ]
-      },
-      {
-        "title": "Food Preference Form",
-        "description": "This is the food preference form template.",
-        "fields": [
-          {
-            "id": "field1",
-            "name": "field1",
-            "label": "Field 1",
-            "type": "text",
-            "required": true
-          },
-          {
-            "id": "field2",
-            "name": "field2",
-            "label": "Field 2",
-            "type": "text",
-            "required": false
-          },
-          {
-            "id": "submit",
-            "name": "submit",
-            "label": "Submit",
-            "type": "button",
-            "subtype": "submit",
-            "className": "btn-primary"
-          }
-        ]
-      },
-      {
-        "title": "Cancellation Request Form",
-        "description": "This is the cancellation request form template.",
-        "fields": [
-          {
-            "id": "field1",
-            "name": "field1",
-            "label": "Field 1",
-            "type": "text",
-            "required": true
-          },
-          {
-            "id": "field2",
-            "name": "field2",
-            "label": "Field 2",
-            "type": "text",
-            "required": false
-          },
-          {
-            "id": "submit",
-            "name": "submit",
-            "label": "Submit",
-            "type": "button",
-            "subtype": "submit",
-            "className": "btn-primary"
-          }
-        ]
-      },
-      {
-        "title": "Personal Information Form",
-        "description": "This is the personal information form template.",
-        "fields": [
-          {
-            "id": "field1",
-            "name": "field1",
-            "label": "Field 1",
-            "type": "text",
-            "required": true
-          },
-          {
-            "id": "field2",
-            "name": "field2",
-            "label": "Field 2",
-            "type": "text",
-            "required": false
-          },
-          {
-            "id": "submit",
-            "name": "submit",
-            "label": "Submit",
-            "type": "button",
-            "subtype": "submit",
-            "className": "btn-primary"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "category": "Medicine",
-    "forms": [
-      {
-        "title": "Patient Details",
-        "description": "This is the patient details template.",
-        "fields": [
-          {
-            "id": "field1",
-            "name": "field1",
-            "label": "Field 1",
-            "type": "text",
-            "required": true
-          },
-          {
-            "id": "field2",
-            "name": "field2",
-            "label": "Field 2",
-            "type": "text",
-            "required": false
-          },
-          {
-            "id": "submit",
-            "name": "submit",
-            "label": "Submit",
-            "type": "button",
-            "subtype": "submit",
-            "className": "btn-primary"
-          }
-        ]
-      },
-      {
-        "title": "Patient Admission",
-        "description": "This is the patient admission template.",
-        "fields": [
-          {
-            "id": "field1",
-            "name": "field1",
-            "label": "Field 1",
-            "type": "text",
-            "required": true
-          },
-          {
-            "id": "field2",
-            "name": "field2",
-            "label": "Field 2",
-            "type": "text",
-            "required": false
-          },
-          {
-            "id": "submit",
-            "name": "submit",
-            "label": "Submit",
-            "type": "button",
-            "subtype": "submit",
-            "className": "btn-primary"
-          }
-        ]
-      },
-      {
-        "title": "Patient Progress Tracking",
-        "description": "This is the patient progress tracking template.",
-        "fields": [
-          {
-            "id": "field1",
-            "name": "field1",
-            "label": "Field 1",
-            "type": "text",
-            "required": true
-          },
-          {
-            "id": "field2",
-            "name": "field2",
-            "label": "Field 2",
-            "type": "text",
-            "required": false
-          },
-          {
-            "id": "submit",
-            "name": "submit",
-            "label": "Submit",
-            "type": "button",
-            "subtype": "submit",
-            "className": "btn-primary"
-          }
-        ]
-      },
-      {
-        "title": "Staff Task Tracking",
-        "description": "This is the staff task tracking template.",
-        "fields": [
-          {
-            "id": "field1",
-            "name": "field1",
-            "label": "Field 1",
-            "type": "text",
-            "required": true
-          },
-          {
-            "id": "field2",
-            "name": "field2",
-            "label": "Field 2",
-            "type": "text",
-            "required": false
-          },
-          {
-            "id": "submit",
-            "name": "submit",
-            "label": "Submit",
-            "type": "button",
-            "subtype": "submit",
-            "className": "btn-primary"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "category": "Education",
-    "forms": [
-      {
-        "title": "School Application Form",
-        "description": "This is the school application form template.",
-        "fields": [
-          {
-            "id": "field1",
-            "name": "field1",
-            "label": "Field 1",
-            "type": "text",
-            "required": true
-          },
-          {
-            "id": "field2",
-            "name": "field2",
-            "label": "Field 2",
-            "type": "text",
-            "required": false
-          },
-          {
-            "id": "submit",
-            "name": "submit",
-            "label": "Submit",
-            "type": "button",
-            "subtype": "submit",
-            "className": "btn-primary"
-          }
-        ]
-      },
-      {
-        "title": "Scholarship Application Form",
-        "description": "This is the scholarship application form template.",
-        "fields": [
-          {
-            "id": "field1",
-            "name": "field1",
-            "label": "Field 1",
-            "type": "text",
-            "required": true
-          },
-          {
-            "id": "field2",
-            "name": "field2",
-            "label": "Field 2",
-            "type": "text",
-            "required": false
-          },
-          {
-            "id": "submit",
-            "name": "submit",
-            "label": "Submit",
-            "type": "button",
-            "subtype": "submit",
-            "className": "btn-primary"
-          }
-        ]
-      },
-      {
-        "title": "Course Application",
-        "description": "This is the course application template.",
-        "fields": [
-          {
-            "id": "field1",
-            "name": "field1",
-            "label": "Field 1",
-            "type": "text",
-            "required": true
-          },
-          {
-            "id": "field2",
-            "name": "field2",
-            "label": "Field 2",
-            "type": "text",
-            "required": false
-          },
-          {
-            "id": "submit",
-            "name": "submit",
-            "label": "Submit",
-            "type": "button",
-            "subtype": "submit",
-            "className": "btn-primary"
-          }
-        ]
-      },
-      {
-        "title": "Leave Application Form",
-        "description": "This is the leave application form template.",
-        "fields": [
-          {
-            "id": "field1",
-            "name": "field1",
-            "label": "Field 1",
-            "type": "text",
-            "required": true
-          },
-          {
-            "id": "field2",
-            "name": "field2",
-            "label": "Field 2",
-            "type": "text",
-            "required": false
-          },
-          {
-            "id": "submit",
-            "name": "submit",
-            "label": "Submit",
-            "type": "button",
-            "subtype": "submit",
-            "className": "btn-primary"
-          }
-        ]
-      },
-      {
-        "title": "Course Evaluation",
-        "description": "This is the course evaluation template.",
-        "fields": [
-          {
-            "id": "field1",
-            "name": "field1",
-            "label": "Field 1",
-            "type": "text",
-            "required": true
-          },
-          {
-            "id": "field2",
-            "name": "field2",
-            "label": "Field 2",
-            "type": "text",
-            "required": false
-          },
-          {
-            "id": "submit",
-            "name": "submit",
-            "label": "Submit",
-            "type": "button",
-            "subtype": "submit",
-            "className": "btn-primary"
-          }
-        ]
-      },
-      {
-        "title": "Library Membership Registration",
-        "description": "This is the library membership registration template.",
-        "fields": [
-          {
-            "id": "field1",
-            "name": "field1",
-            "label": "Field 1",
-            "type": "text",
-            "required": true
-          },
-          {
-            "id": "field2",
-            "name": "field2",
-            "label": "Field 2",
-            "type": "text",
-            "required": false
-          },
-          {
-            "id": "submit",
-            "name": "submit",
-            "label": "Submit",
-            "type": "button",
-            "subtype": "submit",
-            "className": "btn-primary"
-          }
-        ]
-      },
-      {
-        "title": "Workshop Registration",
-        "description": "This is the workshop registration template.",
-        "fields": [
-          {
-            "id": "field1",
-            "name": "field1",
-            "label": "Field 1",
-            "type": "text",
-            "required": true
-          },
-          {
-            "id": "field2",
-            "name": "field2",
-            "label": "Field 2",
-            "type": "text",
-            "required": false
-          },
-          {
-            "id": "submit",
-            "name": "submit",
-            "label": "Submit",
-            "type": "button",
-            "subtype": "submit",
-            "className": "btn-primary"
-          }
-        ]
-      },
-      {
-        "title": "Transportation Request",
-        "description": "This is the transportation request template.",
-        "fields": [
-          {
-            "id": "field1",
-            "name": "field1",
-            "label": "Field 1",
-            "type": "text",
-            "required": true
-          },
-          {
-            "id": "field2",
-            "name": "field2",
-            "label": "Field 2",
-            "type": "text",
-            "required": false
-          },
-          {
-            "id": "submit",
-            "name": "submit",
-            "label": "Submit",
-            "type": "button",
-            "subtype": "submit",
-            "className": "btn-primary"
-          }
-        ]
-      },
-      {
-        "title": "School Excursion Consent",
-        "description": "This is the school excursion consent template.",
-        "fields": [
-          {
-            "id": "field1",
-            "name": "field1",
-            "label": "Field 1",
-            "type": "text",
-            "required": true
-          },
-          {
-            "id": "field2",
-            "name": "field2",
-            "label": "Field 2",
-            "type": "text",
-            "required": false
-          },
-          {
-            "id": "submit",
-            "name": "submit",
-            "label": "Submit",
-            "type": "button",
-            "subtype": "submit",
-            "className": "btn-primary"
-          }
-        ]
-      },
-      {
-        "title": "Parent Feedback",
-        "description": "This is the parent feedback template.",
-        "fields": [
-          {
-            "id": "field1",
-            "name": "field1",
-            "label": "Field 1",
-            "type": "text",
-            "required": true
-          },
-          {
-            "id": "field2",
-            "name": "field2",
-            "label": "Field 2",
-            "type": "text",
-            "required": false
-          },
-          {
-            "id": "submit",
-            "name": "submit",
-            "label": "Submit",
-            "type": "button",
-            "subtype": "submit",
-            "className": "btn-primary"
-          }
-        ]
-      },
-      {
-        "title": "Student Feedback",
-        "description": "This is the student feedback template.",
-        "fields": [
-          {
-            "id": "field1",
-            "name": "field1",
-            "label": "Field 1",
-            "type": "text",
-            "required": true
-          },
-          {
-            "id": "field2",
-            "name": "field2",
-            "label": "Field 2",
-            "type": "text",
-            "required": false
-          },
-          {
-            "id": "submit",
-            "name": "submit",
-            "label": "Submit",
-            "type": "button",
-            "subtype": "submit",
-            "className": "btn-primary"
-          }
-        ]
-      },
-      {
-        "title": "Alumni Registration Form",
-        "description": "This is the alumni registration form template.",
-        "fields": [
-          {
-            "id": "field1",
-            "name": "field1",
-            "label": "Field 1",
-            "type": "text",
-            "required": true
-          },
-          {
-            "id": "field2",
-            "name": "field2",
-            "label": "Field 2",
-            "type": "text",
-            "required": false
-          },
-          {
-            "id": "submit",
-            "name": "submit",
-            "label": "Submit",
-            "type": "button",
-            "subtype": "submit",
-            "className": "btn-primary"
-          }
-        ]
-      },
-      {
-        "title": "Reunion Form",
-        "description": "This is the reunion form template.",
-        "fields": [
-          {
-            "id": "field1",
-            "name": "field1",
-            "label": "Field 1",
-            "type": "text",
-            "required": true
-          },
-          {
-            "id": "field2",
-            "name": "field2",
-            "label": "Field 2",
-            "type": "text",
-            "required": false
-          },
-          {
-            "id": "submit",
-            "name": "submit",
-            "label": "Submit",
-            "type": "button",
-            "subtype": "submit",
-            "className": "btn-primary"
-          }
-        ]
-      },
-      {
-        "title": "e-Slam Book",
-        "description": "This is the e-slam book template.",
-        "fields": [
-          {
-            "id": "field1",
-            "name": "field1",
-            "label": "Field 1",
-            "type": "text",
-            "required": true
-          },
-          {
-            "id": "field2",
-            "name": "field2",
-            "label": "Field 2",
-            "type": "text",
+            "id": "reasonForLeaving",
+            "name": "reasonForLeaving",
+            "label": "Reason for Leaving",
+            "type": "textarea",
             "required": false
           },
           {
@@ -1808,4 +1543,1250 @@
       }
     ]
   }
+,  
+{
+  "category": "Requests",
+  "forms": [
+    {
+      "title": "Leave Application",
+      "description": "This is the leave application template.",
+      "fields": [
+        {
+          "id": "employeeName",
+          "name": "employeeName",
+          "label": "Employee Name",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "leaveType",
+          "name": "leaveType",
+          "label": "Leave Type",
+          "type": "select",
+          "options": ["Annual", "Sick", "Maternity", "Paternity", "Unpaid"],
+          "required": true
+        },
+        {
+          "id": "startDate",
+          "name": "startDate",
+          "label": "Start Date",
+          "type": "date",
+          "required": true
+        },
+        {
+          "id": "endDate",
+          "name": "endDate",
+          "label": "End Date",
+          "type": "date",
+          "required": true
+        },
+        {
+          "id": "reason",
+          "name": "reason",
+          "label": "Reason for Leave",
+          "type": "textarea",
+          "required": false
+        },
+        {
+          "id": "submit",
+          "name": "submit",
+          "label": "Submit",
+          "type": "button",
+          "subtype": "submit",
+          "className": "btn-primary"
+        }
+      ]
+    },
+    {
+      "title": "Asset Request Form",
+      "description": "This is the asset request form template.",
+      "fields": [
+        {
+          "id": "employeeName",
+          "name": "employeeName",
+          "label": "Employee Name",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "assetType",
+          "name": "assetType",
+          "label": "Asset Type",
+          "type": "select",
+          "options": ["Laptop", "Monitor", "Phone", "Desk Chair", "Other"],
+          "required": true
+        },
+        {
+          "id": "assetDetails",
+          "name": "assetDetails",
+          "label": "Asset Details / Specifications",
+          "type": "textarea",
+          "required": false
+        },
+        {
+          "id": "justification",
+          "name": "justification",
+          "label": "Reason for Request",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "id": "submit",
+          "name": "submit",
+          "label": "Submit",
+          "type": "button",
+          "subtype": "submit",
+          "className": "btn-primary"
+        }
+      ]
+    },
+    {
+      "title": "Software Request",
+      "description": "This is the software request template.",
+      "fields": [
+        {
+          "id": "employeeName",
+          "name": "employeeName",
+          "label": "Employee Name",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "softwareName",
+          "name": "softwareName",
+          "label": "Software Name",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "licenseType",
+          "name": "licenseType",
+          "label": "License Type",
+          "type": "select",
+          "options": ["Single User", "Multi User", "Enterprise"],
+          "required": true
+        },
+        {
+          "id": "justification",
+          "name": "justification",
+          "label": "Reason for Software Request",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "id": "submit",
+          "name": "submit",
+          "label": "Submit",
+          "type": "button",
+          "subtype": "submit",
+          "className": "btn-primary"
+        }
+      ]
+    },
+    {
+      "title": "Corporate Team Outing Form",
+      "description": "This is the corporate team outing form template.",
+      "fields": [
+        {
+          "id": "employeeName",
+          "name": "employeeName",
+          "label": "Employee Name",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "team",
+          "name": "team",
+          "label": "Team / Department",
+          "type": "text",
+          "required": false
+        },
+        {
+          "id": "outingDate",
+          "name": "outingDate",
+          "label": "Outing Date",
+          "type": "date",
+          "required": true
+        },
+        {
+          "id": "foodPreference",
+          "name": "foodPreference",
+          "label": "Food Preference",
+          "type": "select",
+          "options": [
+            "Vegetarian",
+            "Non-Vegetarian",
+            "Vegan",
+            "Gluten-Free",
+            "Other"
+          ],
+          "required": false
+        },
+        {
+          "id": "specialRequests",
+          "name": "specialRequests",
+          "label": "Special Requests",
+          "type": "textarea",
+          "required": false
+        },
+        {
+          "id": "submit",
+          "name": "submit",
+          "label": "Submit",
+          "type": "button",
+          "subtype": "submit",
+          "className": "btn-primary"
+        }
+      ]
+    },
+    {
+      "title": "Food Preference Form",
+      "description": "This is the food preference form template.",
+      "fields": [
+        {
+          "id": "employeeName",
+          "name": "employeeName",
+          "label": "Employee Name",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "mealType",
+          "name": "mealType",
+          "label": "Meal Type",
+          "type": "select",
+          "options": ["Breakfast", "Lunch", "Dinner", "Snacks"],
+          "required": true
+        },
+        {
+          "id": "dietaryRestrictions",
+          "name": "dietaryRestrictions",
+          "label": "Dietary Restrictions",
+          "type": "textarea",
+          "required": false
+        },
+        {
+          "id": "favoriteCuisines",
+          "name": "favoriteCuisines",
+          "label": "Favorite Cuisines",
+          "type": "text",
+          "required": false
+        },
+        {
+          "id": "submit",
+          "name": "submit",
+          "label": "Submit",
+          "type": "button",
+          "subtype": "submit",
+          "className": "btn-primary"
+        }
+      ]
+    },
+    {
+      "title": "Cancellation Request Form",
+      "description": "This is the cancellation request form template.",
+      "fields": [
+        {
+          "id": "requesterName",
+          "name": "requesterName",
+          "label": "Requester Name",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "requestType",
+          "name": "requestType",
+          "label": "Request Type",
+          "type": "select",
+          "options": ["Meeting", "Order", "Subscription", "Other"],
+          "required": true
+        },
+        {
+          "id": "requestId",
+          "name": "requestId",
+          "label": "Request ID / Reference Number",
+          "type": "text",
+          "required": false
+        },
+        {
+          "id": "reason",
+          "name": "reason",
+          "label": "Reason for Cancellation",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "id": "submit",
+          "name": "submit",
+          "label": "Submit",
+          "type": "button",
+          "subtype": "submit",
+          "className": "btn-primary"
+        }
+      ]
+    },
+    {
+      "title": "Personal Information Form",
+      "description": "This is the personal information form template.",
+      "fields": [
+        {
+          "id": "fullName",
+          "name": "fullName",
+          "label": "Full Name",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "dateOfBirth",
+          "name": "dateOfBirth",
+          "label": "Date of Birth",
+          "type": "date",
+          "required": true
+        },
+        {
+          "id": "contactNumber",
+          "name": "contactNumber",
+          "label": "Contact Number",
+          "type": "tel",
+          "required": true
+        },
+        {
+          "id": "address",
+          "name": "address",
+          "label": "Address",
+          "type": "textarea",
+          "required": false
+        },
+        {
+          "id": "emergencyContact",
+          "name": "emergencyContact",
+          "label": "Emergency Contact",
+          "type": "text",
+          "required": false
+        },
+        {
+          "id": "submit",
+          "name": "submit",
+          "label": "Submit",
+          "type": "button",
+          "subtype": "submit",
+          "className": "btn-primary"
+        }
+      ]
+    }
+  ]
+}
+,
+{
+  "category": "Medicine",
+  "forms": [
+    {
+      "title": "Patient Details",
+      "description": "This is the patient details template.",
+      "fields": [
+        {
+          "id": "patientName",
+          "name": "patientName",
+          "label": "Patient Name",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "dateOfBirth",
+          "name": "dateOfBirth",
+          "label": "Date of Birth",
+          "type": "date",
+          "required": true
+        },
+        {
+          "id": "gender",
+          "name": "gender",
+          "label": "Gender",
+          "type": "select",
+          "options": ["Male", "Female", "Other"],
+          "required": true
+        },
+        {
+          "id": "contactNumber",
+          "name": "contactNumber",
+          "label": "Contact Number",
+          "type": "tel",
+          "required": false
+        },
+        {
+          "id": "address",
+          "name": "address",
+          "label": "Address",
+          "type": "textarea",
+          "required": false
+        },
+        {
+          "id": "submit",
+          "name": "submit",
+          "label": "Submit",
+          "type": "button",
+          "subtype": "submit",
+          "className": "btn-primary"
+        }
+      ]
+    },
+    {
+      "title": "Patient Admission",
+      "description": "This is the patient admission template.",
+      "fields": [
+        {
+          "id": "patientId",
+          "name": "patientId",
+          "label": "Patient ID",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "admissionDate",
+          "name": "admissionDate",
+          "label": "Admission Date",
+          "type": "date",
+          "required": true
+        },
+        {
+          "id": "ward",
+          "name": "ward",
+          "label": "Ward / Room Number",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "admittingDoctor",
+          "name": "admittingDoctor",
+          "label": "Admitting Doctor",
+          "type": "text",
+          "required": false
+        },
+        {
+          "id": "reasonForAdmission",
+          "name": "reasonForAdmission",
+          "label": "Reason for Admission",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "id": "submit",
+          "name": "submit",
+          "label": "Submit",
+          "type": "button",
+          "subtype": "submit",
+          "className": "btn-primary"
+        }
+      ]
+    },
+    {
+      "title": "Patient Progress Tracking",
+      "description": "This is the patient progress tracking template.",
+      "fields": [
+        {
+          "id": "patientId",
+          "name": "patientId",
+          "label": "Patient ID",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "date",
+          "name": "date",
+          "label": "Date",
+          "type": "date",
+          "required": true
+        },
+        {
+          "id": "vitalSigns",
+          "name": "vitalSigns",
+          "label": "Vital Signs (BP, Pulse, Temp)",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "id": "progressNotes",
+          "name": "progressNotes",
+          "label": "Progress Notes",
+          "type": "textarea",
+          "required": false
+        },
+        {
+          "id": "nextSteps",
+          "name": "nextSteps",
+          "label": "Next Steps / Treatment Plan",
+          "type": "textarea",
+          "required": false
+        },
+        {
+          "id": "submit",
+          "name": "submit",
+          "label": "Submit",
+          "type": "button",
+          "subtype": "submit",
+          "className": "btn-primary"
+        }
+      ]
+    },
+    {
+      "title": "Staff Task Tracking",
+      "description": "This is the staff task tracking template.",
+      "fields": [
+        {
+          "id": "staffName",
+          "name": "staffName",
+          "label": "Staff Name",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "taskDescription",
+          "name": "taskDescription",
+          "label": "Task Description",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "id": "assignedDate",
+          "name": "assignedDate",
+          "label": "Assigned Date",
+          "type": "date",
+          "required": true
+        },
+        {
+          "id": "dueDate",
+          "name": "dueDate",
+          "label": "Due Date",
+          "type": "date",
+          "required": false
+        },
+        {
+          "id": "status",
+          "name": "status",
+          "label": "Status",
+          "type": "select",
+          "options": ["Pending", "In Progress", "Completed", "On Hold"],
+          "required": true
+        },
+        {
+          "id": "submit",
+          "name": "submit",
+          "label": "Submit",
+          "type": "button",
+          "subtype": "submit",
+          "className": "btn-primary"
+        }
+      ]
+    }
+  ]
+}
+,
+{
+  "category": "Education",
+  "forms": [
+    {
+      "title": "School Application Form",
+      "description": "This is the school application form template.",
+      "fields": [
+        {
+          "id": "studentName",
+          "name": "studentName",
+          "label": "Student Name",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "dateOfBirth",
+          "name": "dateOfBirth",
+          "label": "Date of Birth",
+          "type": "date",
+          "required": true
+        },
+        {
+          "id": "gradeApplyingFor",
+          "name": "gradeApplyingFor",
+          "label": "Grade Applying For",
+          "type": "select",
+          "options": [
+            "Kindergarten",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "11",
+            "12"
+          ],
+          "required": true
+        },
+        {
+          "id": "parentContact",
+          "name": "parentContact",
+          "label": "Parent Contact Number",
+          "type": "tel",
+          "required": true
+        },
+        {
+          "id": "submit",
+          "name": "submit",
+          "label": "Submit",
+          "type": "button",
+          "subtype": "submit",
+          "className": "btn-primary"
+        }
+      ]
+    },
+    {
+      "title": "Scholarship Application Form",
+      "description": "This is the scholarship application form template.",
+      "fields": [
+        {
+          "id": "applicantName",
+          "name": "applicantName",
+          "label": "Applicant Name",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "scholarshipType",
+          "name": "scholarshipType",
+          "label": "Scholarship Type",
+          "type": "select",
+          "options": ["Merit-based", "Need-based", "Athletic", "Artistic"],
+          "required": true
+        },
+        {
+          "id": "gpa",
+          "name": "gpa",
+          "label": "Current GPA",
+          "type": "number",
+          "step": "0.01",
+          "min": 0,
+          "max": 4,
+          "required": true
+        },
+        {
+          "id": "essay",
+          "name": "essay",
+          "label": "Scholarship Essay",
+          "type": "textarea",
+          "required": false
+        },
+        {
+          "id": "submit",
+          "name": "submit",
+          "label": "Submit",
+          "type": "button",
+          "subtype": "submit",
+          "className": "btn-primary"
+        }
+      ]
+    },
+    {
+      "title": "Course Application",
+      "description": "This is the course application template.",
+      "fields": [
+        {
+          "id": "studentName",
+          "name": "studentName",
+          "label": "Student Name",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "courseName",
+          "name": "courseName",
+          "label": "Course Name",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "startDate",
+          "name": "startDate",
+          "label": "Preferred Start Date",
+          "type": "date",
+          "required": false
+        },
+        {
+          "id": "contactEmail",
+          "name": "contactEmail",
+          "label": "Contact Email",
+          "type": "email",
+          "required": true
+        },
+        {
+          "id": "submit",
+          "name": "submit",
+          "label": "Submit",
+          "type": "button",
+          "subtype": "submit",
+          "className": "btn-primary"
+        }
+      ]
+    },
+    {
+      "title": "Leave Application Form",
+      "description": "This is the leave application form template.",
+      "fields": [
+        {
+          "id": "employeeName",
+          "name": "employeeName",
+          "label": "Employee Name",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "leaveType",
+          "name": "leaveType",
+          "label": "Leave Type",
+          "type": "select",
+          "options": [
+            "Sick Leave",
+            "Casual Leave",
+            "Maternity Leave",
+            "Paternity Leave",
+            "Annual Leave"
+          ],
+          "required": true
+        },
+        {
+          "id": "startDate",
+          "name": "startDate",
+          "label": "Start Date",
+          "type": "date",
+          "required": true
+        },
+        {
+          "id": "endDate",
+          "name": "endDate",
+          "label": "End Date",
+          "type": "date",
+          "required": true
+        },
+        {
+          "id": "reason",
+          "name": "reason",
+          "label": "Reason for Leave",
+          "type": "textarea",
+          "required": false
+        },
+        {
+          "id": "submit",
+          "name": "submit",
+          "label": "Submit",
+          "type": "button",
+          "subtype": "submit",
+          "className": "btn-primary"
+        }
+      ]
+    },
+    {
+      "title": "Course Evaluation",
+      "description": "This is the course evaluation template.",
+      "fields": [
+        {
+          "id": "studentName",
+          "name": "studentName",
+          "label": "Student Name",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "courseName",
+          "name": "courseName",
+          "label": "Course Name",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "rating",
+          "name": "rating",
+          "label": "Course Rating (1-5)",
+          "type": "number",
+          "min": 1,
+          "max": 5,
+          "required": true
+        },
+        {
+          "id": "comments",
+          "name": "comments",
+          "label": "Additional Comments",
+          "type": "textarea",
+          "required": false
+        },
+        {
+          "id": "submit",
+          "name": "submit",
+          "label": "Submit",
+          "type": "button",
+          "subtype": "submit",
+          "className": "btn-primary"
+        }
+      ]
+    },
+    {
+      "title": "Library Membership Registration",
+      "description": "This is the library membership registration template.",
+      "fields": [
+        {
+          "id": "fullName",
+          "name": "fullName",
+          "label": "Full Name",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "email",
+          "name": "email",
+          "label": "Email Address",
+          "type": "email",
+          "required": true
+        },
+        {
+          "id": "phone",
+          "name": "phone",
+          "label": "Phone Number",
+          "type": "tel",
+          "required": false
+        },
+        {
+          "id": "address",
+          "name": "address",
+          "label": "Address",
+          "type": "textarea",
+          "required": false
+        },
+        {
+          "id": "submit",
+          "name": "submit",
+          "label": "Submit",
+          "type": "button",
+          "subtype": "submit",
+          "className": "btn-primary"
+        }
+      ]
+    },
+    {
+      "title": "Workshop Registration",
+      "description": "This is the workshop registration template.",
+      "fields": [
+        {
+          "id": "participantName",
+          "name": "participantName",
+          "label": "Participant Name",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "workshopTitle",
+          "name": "workshopTitle",
+          "label": "Workshop Title",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "email",
+          "name": "email",
+          "label": "Email",
+          "type": "email",
+          "required": true
+        },
+        {
+          "id": "contactNumber",
+          "name": "contactNumber",
+          "label": "Contact Number",
+          "type": "tel",
+          "required": false
+        },
+        {
+          "id": "submit",
+          "name": "submit",
+          "label": "Submit",
+          "type": "button",
+          "subtype": "submit",
+          "className": "btn-primary"
+        }
+      ]
+    },
+    {
+      "title": "Transportation Request",
+      "description": "This is the transportation request template.",
+      "fields": [
+        {
+          "id": "requesterName",
+          "name": "requesterName",
+          "label": "Requester Name",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "pickupLocation",
+          "name": "pickupLocation",
+          "label": "Pickup Location",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "dropoffLocation",
+          "name": "dropoffLocation",
+          "label": "Dropoff Location",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "pickupDate",
+          "name": "pickupDate",
+          "label": "Pickup Date",
+          "type": "date",
+          "required": true
+        },
+        {
+          "id": "contactNumber",
+          "name": "contactNumber",
+          "label": "Contact Number",
+          "type": "tel",
+          "required": false
+        },
+        {
+          "id": "submit",
+          "name": "submit",
+          "label": "Submit",
+          "type": "button",
+          "subtype": "submit",
+          "className": "btn-primary"
+        }
+      ]
+    },
+    {
+      "title": "School Excursion Consent",
+      "description": "This is the school excursion consent template.",
+      "fields": [
+        {
+          "id": "studentName",
+          "name": "studentName",
+          "label": "Student Name",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "parentName",
+          "name": "parentName",
+          "label": "Parent/Guardian Name",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "excursionDate",
+          "name": "excursionDate",
+          "label": "Excursion Date",
+          "type": "date",
+          "required": true
+        },
+        {
+          "id": "consent",
+          "name": "consent",
+          "label": "I consent to my child participating in the excursion",
+          "type": "checkbox",
+          "required": true
+        },
+        {
+          "id": "submit",
+          "name": "submit",
+          "label": "Submit",
+          "type": "button",
+          "subtype": "submit",
+          "className": "btn-primary"
+        }
+      ]
+    },
+    {
+      "title": "Parent Feedback",
+      "description": "This is the parent feedback template.",
+      "fields": [
+        {
+          "id": "parentName",
+          "name": "parentName",
+          "label": "Parent Name",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "studentName",
+          "name": "studentName",
+          "label": "Student Name",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "feedback",
+          "name": "feedback",
+          "label": "Feedback",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "id": "rating",
+          "name": "rating",
+          "label": "Rating (1-5)",
+          "type": "number",
+          "min": 1,
+          "max": 5,
+          "required": false
+        },
+        {
+          "id": "submit",
+          "name": "submit",
+          "label": "Submit",
+          "type": "button",
+          "subtype": "submit",
+          "className": "btn-primary"
+        }
+      ]
+    },
+    {
+      "title": "Student Feedback",
+      "description": "This is the student feedback template.",
+      "fields": [
+        {
+          "id": "studentName",
+          "name": "studentName",
+          "label": "Student Name",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "courseName",
+          "name": "courseName",
+          "label": "Course Name",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "feedback",
+          "name": "feedback",
+          "label": "Feedback",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "id": "rating",
+          "name": "rating",
+          "label": "Rating (1-5)",
+          "type": "number",
+          "min": 1,
+          "max": 5,
+          "required": false
+        },
+        {
+          "id": "submit",
+          "name": "submit",
+          "label": "Submit",
+          "type": "button",
+          "subtype": "submit",
+          "className": "btn-primary"
+        }
+      ]
+    },
+    {
+      "title": "Alumni Registration Form",
+      "description": "This is the alumni registration form template.",
+      "fields": [
+        {
+          "id": "alumniName",
+          "name": "alumniName",
+          "label": "Full Name",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "graduationYear",
+          "name": "graduationYear",
+          "label": "Graduation Year",
+          "type": "number",
+          "min": 1900,
+          "max": 2100,
+          "required": true
+        },
+        {
+          "id": "email",
+          "name": "email",
+          "label": "Email Address",
+          "type": "email",
+          "required": true
+        },
+        {
+          "id": "currentOccupation",
+          "name": "currentOccupation",
+          "label": "Current Occupation",
+          "type": "text",
+          "required": false
+        },
+        {
+          "id": "submit",
+          "name": "submit",
+          "label": "Submit",
+          "type": "button",
+          "subtype": "submit",
+          "className": "btn-primary"
+        }
+      ]
+    },
+    {
+      "title": "Reunion Form",
+      "description": "This is the reunion form template.",
+      "fields": [
+        {
+          "id": "alumniName",
+          "name": "alumniName",
+          "label": "Full Name",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "graduationYear",
+          "name": "graduationYear",
+          "label": "Graduation Year",
+          "type": "number",
+          "min": 1900,
+          "max": 2100,
+          "required": false
+        },
+        {
+          "id": "contactEmail",
+          "name": "contactEmail",
+          "label": "Contact Email",
+          "type": "email",
+          "required": true
+        },
+        {
+          "id": "attendance",
+          "name": "attendance",
+          "label": "Will you attend?",
+          "type": "radio",
+          "options": ["Yes", "No", "Maybe"],
+          "required": true
+        },
+        {
+          "id": "submit",
+          "name": "submit",
+          "label": "Submit",
+          "type": "button",
+          "subtype": "submit",
+          "className": "btn-primary"
+        }
+      ]
+    },
+    {
+      "title": "e-Slam Book",
+      "description": "This is the e-slam book template.",
+      "fields": [
+        {
+          "id": "studentName",
+          "name": "studentName",
+          "label": "Your Name",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "favoriteMemory",
+          "name": "favoriteMemory",
+          "label": "Favorite Memory",
+          "type": "textarea",
+          "required": false
+        },
+        {
+          "id": "bestFriend",
+          "name": "bestFriend",
+          "label": "Best Friend",
+          "type": "text",
+          "required": false
+        },
+        {
+          "id": "futureGoals",
+          "name": "futureGoals",
+          "label": "Future Goals",
+          "type": "textarea",
+          "required": false
+        },
+        {
+          "id": "submit",
+          "name": "submit",
+          "label": "Submit",
+          "type": "button",
+          "subtype": "submit",
+          "className": "btn-primary"
+        }
+      ]
+    },
+    {
+      "title": "Timetable",
+      "description": "This is the timetable template.",
+      "fields": [
+        {
+          "id": "studentName",
+          "name": "studentName",
+          "label": "Student Name",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "weekStartDate",
+          "name": "weekStartDate",
+          "label": "Week Starting Date",
+          "type": "date",
+          "required": true
+        },
+        {
+          "id": "mondaySchedule",
+          "name": "mondaySchedule",
+          "label": "Monday Schedule",
+          "type": "textarea",
+          "required": false
+        },
+        {
+          "id": "tuesdaySchedule",
+          "name": "tuesdaySchedule",
+          "label": "Tuesday Schedule",
+          "type": "textarea",
+          "required": false
+        },
+        {
+          "id": "wednesdaySchedule",
+          "name": "wednesdaySchedule",
+          "label": "Wednesday Schedule",
+          "type": "textarea",
+          "required": false
+        },
+        {
+          "id": "thursdaySchedule",
+          "name": "thursdaySchedule",
+          "label": "Thursday Schedule",
+          "type": "textarea",
+          "required": false
+        },
+        {
+          "id": "fridaySchedule",
+          "name": "fridaySchedule",
+          "label": "Friday Schedule",
+          "type": "textarea",
+          "required": false
+        },
+        {
+          "id": "submit",
+          "name": "submit",
+          "label": "Submit",
+          "type": "button",
+          "subtype": "submit",
+          "className": "btn-primary"
+        }
+      ]
+    }
+  ]
+}
+
 ]
