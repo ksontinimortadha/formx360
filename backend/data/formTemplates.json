@@ -42,6 +42,7 @@
           },
           {
             "type": "button",
+            "name": "submit",
             "subtype": "submit",
             "label": "Place Order",
             "className": "btn-primary"
