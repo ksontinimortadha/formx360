@@ -24,7 +24,8 @@
             "id": "password",
             "name": "password",
             "label": "Password",
-            "type": "password",
+            "type": "text",
+            "subtype": "password",
             "required": true
           },
           {
