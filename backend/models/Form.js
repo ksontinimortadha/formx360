@@ -44,10 +44,7 @@ const formSchema = new mongoose.Schema(
         },
         subtype: {
           type: String,
-          enum: [
-            "password",
-            "email",
-          ],
+          enum: ["password", "email", "submit"],
         }, // e.g., "password" for text fields
         label: { type: String, required: true },
         name: { type: String, required: true },
