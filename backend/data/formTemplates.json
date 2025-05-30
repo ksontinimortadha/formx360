@@ -1,50 +1,1807 @@
 [
   {
-    "category": "Sales",
+    "category": "Lead Generation",
     "forms": [
       {
-        "title": "Order Form",
-        "description": "Place an order for our products.",
+        "title": "Sign Up",
+        "description": "This is the sign up template.",
         "fields": [
           {
-            "id": "customer_name",
-            "name": "customer_name",
-            "label": "Customer Name",
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
             "type": "text",
             "required": true
           },
           {
-            "id": "product_id",
-            "name": "product_id",
-            "label": "Product",
-            "type": "select",
-            "required": true,
-            "options": [
-              { "label": "Product A", "value": "product_a" },
-              { "label": "Product B", "value": "product_b" },
-              { "label": "Product C", "value": "product_c" }
-            ]
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
           },
           {
-            "id": "quantity",
-            "name": "quantity",
-            "label": "Quantity",
-            "type": "number",
-            "required": true,
-            "min": 1
-          },
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      },
+      {
+        "title": "Event Registration",
+        "description": "This is the event registration template.",
+        "fields": [
           {
-            "id": "delivery_address",
-            "name": "delivery_address",
-            "label": "Delivery Address",
-            "type": "textarea",
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
             "required": true
           },
           {
-            "type": "button",
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
             "name": "submit",
+            "label": "Submit",
+            "type": "button",
             "subtype": "submit",
-            "label": "Place Order",
+            "className": "btn-primary"
+          }
+        ]
+      },
+      {
+        "title": "Trial Request",
+        "description": "This is the trial request template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      },
+      {
+        "title": "Free Trial Request",
+        "description": "This is the free trial request template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      },
+      {
+        "title": "Product Enquiry",
+        "description": "This is the product enquiry template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      },
+      {
+        "title": "Product Feedback",
+        "description": "This is the product feedback template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      },
+      {
+        "title": "eBook Download",
+        "description": "This is the ebook download template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "Business",
+    "forms": [
+      {
+        "title": "Contact Us",
+        "description": "This is the contact us template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      },
+      {
+        "title": "Client Details",
+        "description": "This is the client details template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      },
+      {
+        "title": "Email Subscription",
+        "description": "This is the email subscription template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      },
+      {
+        "title": "Software Evaluation",
+        "description": "This is the software evaluation template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      },
+      {
+        "title": "Complaints",
+        "description": "This is the complaints template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      },
+      {
+        "title": "Bug Tracker",
+        "description": "This is the bug tracker template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "E-commerce",
+    "forms": [
+      {
+        "title": "Order Form",
+        "description": "This is the order form template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      },
+      {
+        "title": "Meal Order Form",
+        "description": "This is the meal order form template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      },
+      {
+        "title": "Product Order form",
+        "description": "This is the product order form template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      },
+      {
+        "title": "Service Order Form",
+        "description": "This is the service order form template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      },
+      {
+        "title": "Online Order Confirmation",
+        "description": "This is the online order confirmation template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      },
+      {
+        "title": "Order/delivery Tracking",
+        "description": "This is the order/delivery tracking template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      },
+      {
+        "title": "Delivery Feedback",
+        "description": "This is the delivery feedback template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "Feedback",
+    "forms": [
+      {
+        "title": "Feedback Form",
+        "description": "This is the feedback form template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      },
+      {
+        "title": "Rating Form",
+        "description": "This is the rating form template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      },
+      {
+        "title": "Service Satisfaction",
+        "description": "This is the service satisfaction template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      },
+      {
+        "title": "Testimonial Form",
+        "description": "This is the testimonial form template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      },
+      {
+        "title": "Website Feedback",
+        "description": "This is the website feedback template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      },
+      {
+        "title": "Product Review",
+        "description": "This is the product review template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      },
+      {
+        "title": "Customer Satisfaction Form",
+        "description": "This is the customer satisfaction form template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      },
+      {
+        "title": "Testimonial",
+        "description": "This is the testimonial template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      },
+      {
+        "title": "Service Review Form",
+        "description": "This is the service review form template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      },
+      {
+        "title": "Event Feedback Form",
+        "description": "This is the event feedback form template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "Reservation/Booking",
+    "forms": [
+      {
+        "title": "Concert/ Show Ticket Booking Form",
+        "description": "This is the concert/ show ticket booking form template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      },
+      {
+        "title": "Room Reservation Form",
+        "description": "This is the room reservation form template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      },
+      {
+        "title": "Appointment Booking Form",
+        "description": "This is the appointment booking form template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "Human Resources",
+    "forms": [
+      {
+        "title": "Job Application",
+        "description": "This is the job application template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      },
+      {
+        "title": "Employee Evaluation",
+        "description": "This is the employee evaluation template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      },
+      {
+        "title": "Employee Emergency Information",
+        "description": "This is the employee emergency information template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      },
+      {
+        "title": "Employee Satisfaction",
+        "description": "This is the employee satisfaction template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      },
+      {
+        "title": "Resignation Form",
+        "description": "This is the resignation form template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "Requests",
+    "forms": [
+      {
+        "title": "Leave Application",
+        "description": "This is the leave application template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      },
+      {
+        "title": "Asset Request Form",
+        "description": "This is the asset request form template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      },
+      {
+        "title": "Software Request",
+        "description": "This is the software request template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      },
+      {
+        "title": "Corporate Team Outing Form",
+        "description": "This is the corporate team outing form template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      },
+      {
+        "title": "Food Preference Form",
+        "description": "This is the food preference form template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      },
+      {
+        "title": "Cancellation Request Form",
+        "description": "This is the cancellation request form template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      },
+      {
+        "title": "Personal Information Form",
+        "description": "This is the personal information form template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "Medicine",
+    "forms": [
+      {
+        "title": "Patient Details",
+        "description": "This is the patient details template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      },
+      {
+        "title": "Patient Admission",
+        "description": "This is the patient admission template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      },
+      {
+        "title": "Patient Progress Tracking",
+        "description": "This is the patient progress tracking template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      },
+      {
+        "title": "Staff Task Tracking",
+        "description": "This is the staff task tracking template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "Education",
+    "forms": [
+      {
+        "title": "School Application Form",
+        "description": "This is the school application form template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      },
+      {
+        "title": "Scholarship Application Form",
+        "description": "This is the scholarship application form template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      },
+      {
+        "title": "Course Application",
+        "description": "This is the course application template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      },
+      {
+        "title": "Leave Application Form",
+        "description": "This is the leave application form template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      },
+      {
+        "title": "Course Evaluation",
+        "description": "This is the course evaluation template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      },
+      {
+        "title": "Library Membership Registration",
+        "description": "This is the library membership registration template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      },
+      {
+        "title": "Workshop Registration",
+        "description": "This is the workshop registration template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      },
+      {
+        "title": "Transportation Request",
+        "description": "This is the transportation request template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      },
+      {
+        "title": "School Excursion Consent",
+        "description": "This is the school excursion consent template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      },
+      {
+        "title": "Parent Feedback",
+        "description": "This is the parent feedback template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      },
+      {
+        "title": "Student Feedback",
+        "description": "This is the student feedback template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      },
+      {
+        "title": "Alumni Registration Form",
+        "description": "This is the alumni registration form template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      },
+      {
+        "title": "Reunion Form",
+        "description": "This is the reunion form template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
+            "className": "btn-primary"
+          }
+        ]
+      },
+      {
+        "title": "e-Slam Book",
+        "description": "This is the e-slam book template.",
+        "fields": [
+          {
+            "id": "field1",
+            "name": "field1",
+            "label": "Field 1",
+            "type": "text",
+            "required": true
+          },
+          {
+            "id": "field2",
+            "name": "field2",
+            "label": "Field 2",
+            "type": "text",
+            "required": false
+          },
+          {
+            "id": "submit",
+            "name": "submit",
+            "label": "Submit",
+            "type": "button",
+            "subtype": "submit",
             "className": "btn-primary"
           }
         ]
