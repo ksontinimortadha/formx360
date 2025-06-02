@@ -91,7 +91,7 @@ function ResetPassword() {
             </div>
           </Card.Header>
 
-          <Card.Body className="p-4">
+          <Card.Body className="p-4" style={{ marginTop: "-40px" }}>
             <div className="text-center mb-4">
               <img
                 className="img-fluid mb-3"
