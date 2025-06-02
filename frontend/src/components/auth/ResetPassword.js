@@ -26,9 +26,6 @@ function ResetPassword() {
   const email = searchParams.get("email");
 
   useEffect(() => {
-    console.log("Token from URL: ", token);
-    console.log("Email from URL: ", email);
-
     if (!token || !email) {
       setError("Invalid or expired reset link.");
     }
@@ -82,15 +79,18 @@ function ResetPassword() {
           className="shadow border-light"
           style={{ maxWidth: "600px", margin: "5px auto" }}
         >
-          <Card.Header className="bg-white border-0 d-flex align-items-center">
-            <Button
-              variant="light"
-              className="d-flex align-items-center"
-              onClick={() => navigate("/")}
-            >
-              <FaArrowLeft className="me-2" /> Back
-            </Button>
+          <Card.Header className="bg-white border-0">
+            <div className="d-flex justify-content-start">
+              <Button
+                variant="light"
+                className="d-flex align-items-center"
+                onClick={() => navigate("/")}
+              >
+                <FaArrowLeft className="me-2" />
+              </Button>
+            </div>
           </Card.Header>
+
           <Card.Body className="p-4">
             <div className="text-center mb-4">
               <img
@@ -150,7 +150,7 @@ function ResetPassword() {
             <div className="text-center mt-4">
               <hr className="border-secondary-subtle" />
               <p className="text-secondary small">
-                Back to login page?
+                Back to login page?{" "}
                 <span
                   className="text-primary text-decoration-none"
                   style={{ cursor: "pointer" }}

@@ -112,36 +112,6 @@ function EditStyleModal({
     }
   };
 
-
-{  /*const resetToCurrentTheme = async () => {
-    if (selectedField && formId) {
-      try {
-        // Fetch form data to get the current theme
-        const response = await axios.get(
-          `https://formx360.onrender.com/forms/${formId}`
-        );
-        const formTheme = response.data.form.theme;
-
-        // Check if the theme exists in the themeStyles object
-        if (formTheme && themeStyles[formTheme]) {
-          const themeStyle = themeStyles[formTheme];
-          console.log("theme style ", themeStyle);
-          // Apply the form's current theme to the field
-          setUpdatedStyles({
-            backgroundColor: themeStyle.backgroundColor,
-            color: themeStyle.color,
-            position,
-          });
-        } else {
-          setError("Theme not found.");
-        }
-      } catch (err) {
-        console.error("Error fetching form theme:", err);
-        setError("Failed to load current theme.");
-      }
-    }
-  };*/}
-
   return (
     <Modal show={show} onHide={onHide} dialogClassName="right-modal">
       <Modal.Header closeButton className="border-0 pb-0">

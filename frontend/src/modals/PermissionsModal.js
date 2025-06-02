@@ -43,8 +43,6 @@ const PermissionsModal = ({
 
       // Update selectedPermissions based on fetched data
       setSelectedPermissions(flatPermissions);
-
-      console.log("Permissions for form", formId, flatPermissions);
     } catch (error) {
       console.error("Failed to fetch permissions:", error);
       toast.error("Failed to load permissions.");
@@ -136,7 +134,12 @@ const PermissionsModal = ({
               </div>
               <div className="d-flex gap-3 flex-wrap">
                 <Form.Check
-                  label={<FaWpforms title="Can Submit Form" style={{marginTop:"5px"}} />}
+                  label={
+                    <FaWpforms
+                      title="Can Submit Form"
+                      style={{ marginTop: "5px" }}
+                    />
+                  }
                   checked={isChecked(user._id, "view")}
                   onChange={() => handleCheckboxChange(user._id, "view")}
                   disabled={user.role === "Super Admin" || !canEditPermissions}

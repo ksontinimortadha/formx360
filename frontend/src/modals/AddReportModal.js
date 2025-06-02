@@ -38,9 +38,7 @@ function AddReportModal({ show, handleClose }) {
       toast.error("Please fill in all fields.");
       return;
     }
-    console.log("title ", reportTitle);
-    console.log("selectedForm ", selectedForm);
-    console.log("companyId ", companyId);
+
     try {
       const response = await axios.post(
         `https://formx360.onrender.com/reports/`,
