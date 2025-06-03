@@ -22,7 +22,7 @@ const features = [
     icon: <FaPuzzlePiece size={50} className="text-success mb-3" />,
     title: "Rich Field Variety",
     description:
-      "Select from a wide range of fields including text, email, dropdowns, checkboxes, ratings, signatures, and file uploads.",
+      "Select from a wide range of fields including text, numbers, dropdowns, checkboxes, dates, and file uploads.",
     mediaType: "image",
     mediaSrc: "/assets/fields.png",
   },
