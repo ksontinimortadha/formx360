@@ -28,6 +28,7 @@ import EditResponse from "./components/responses/EditResponse";
 import UserDashboard from "./components/UserDashboard";
 import FormBuilderFeatures from "./components/home/FormBuilderFeatures";
 import UserResponsePage from "./components/userResponses/UserResponsePage ";
+import ShareFormsFeature from "./components/home/ShareFormsFeature";
 
 function App() {
   useEffect(() => {
@@ -42,7 +43,7 @@ function App() {
       socket.disconnect();
     };
   }, []);
-  
+
   return (
     <Router>
       {/* Routes Section */}
@@ -53,6 +54,7 @@ function App() {
           path="/form-builder-features"
           element={<FormBuilderFeatures />}
         />
+        <Route path="/share-forms" element={<ShareFormsFeature />} />
         <Route path="/users/register" element={<Register />} />
         <Route path="/users/login" element={<Login />} />
         <Route path="/reset-password-request" element={<RequestReset />} />
