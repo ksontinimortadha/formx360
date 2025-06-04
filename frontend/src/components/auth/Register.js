@@ -26,7 +26,7 @@ function Register() {
 
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false); // For button loading state
+  const [loading, setLoading] = useState(false); 
   const navigate = useNavigate();
 
   // Handle form field changes
@@ -68,7 +68,7 @@ function Register() {
     e.preventDefault();
     const formErrors = validateForm();
     if (Object.keys(formErrors).length === 0) {
-      setLoading(true); // Start loading
+      setLoading(true); 
       try {
         // Send registration data to the backend
         const response = await registerUser({
@@ -97,7 +97,7 @@ function Register() {
           error.response?.data.message || "Error during registration"
         );
       } finally {
-        setLoading(false); // Stop loading
+        setLoading(false); 
       }
     } else {
       setErrors(formErrors);

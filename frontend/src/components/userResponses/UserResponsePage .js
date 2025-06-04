@@ -5,8 +5,6 @@ import { toast } from "react-toastify";
 import NavbarComponent from "../NavbarComponent";
 import { Container, Navbar } from "react-bootstrap";
 import { FaArrowLeft } from "react-icons/fa";
-import ExportModal from "../../modals/ExportModal";
-import exportUtils from "../exportUtils";
 import ResponseTable from "./ResponseTable";
 import NoResponses from "./NoResponses";
 import Paginations from "../Paginations";
@@ -110,7 +108,6 @@ const UserResponsePage = () => {
 
       if (Array.isArray(data) && data.length > 0) {
         const viewableResponses = data.filter((response) => {
-          // Use form_id string or object? Defensive:
           const formId =
             typeof response.form_id === "object"
               ? response.form_id._id

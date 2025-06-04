@@ -21,7 +21,6 @@ function CompanyPage() {
 
   const navigate = useNavigate();
 
-  // Retrieve user ID from sessionStorage
   useEffect(() => {
     const userId = sessionStorage.getItem("userId");
   }, []);
@@ -31,11 +30,10 @@ function CompanyPage() {
     setIsSubmitting(true);
     setErrorMessage(null);
 
-    // Retrieve user ID from sessionStorage
     const userId = sessionStorage.getItem("userId");
 
     const generateCompanyId = () => {
-      const randomId = Math.random().toString(36).substring(2, 15); 
+      const randomId = Math.random().toString(36).substring(2, 15);
       return `${randomId}`;
     };
 
@@ -58,7 +56,7 @@ function CompanyPage() {
       const response = await axios.post(
         "https://formx360.onrender.com/companies/company",
         {
-          id: companyId, // Include the company ID
+          id: companyId,
           name: companyName,
           industry,
           description,
@@ -72,7 +70,6 @@ function CompanyPage() {
       sessionStorage.setItem("companyId", newCompany._id);
       navigate(`/dashboard?companyId=${newCompany._id}`);
     } catch (error) {
-      // Handle errors and display appropriate message
       setErrorMessage(
         error.response?.data?.error ||
           "Failed to create the company. Please try again."
@@ -82,7 +79,6 @@ function CompanyPage() {
       setIsSubmitting(false);
     }
   };
-  
 
   return (
     <div style={{ height: "100vh", display: "flex", flexDirection: "column" }}>

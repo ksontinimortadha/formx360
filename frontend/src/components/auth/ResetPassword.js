@@ -42,16 +42,15 @@ function ResetPassword() {
     }
 
     try {
-      // Send the token, email, and new password in the request body
       const response = await fetch(
-        "https://formx360.onrender.com/users/reset-password", // Update with actual backend URL
+        "https://formx360.onrender.com/users/reset-password",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            token: token, // JWT token from URL
-            email: email, // User email from URL
-            newPassword: password, // New password entered by user
+            token: token,
+            email: email,
+            newPassword: password,
           }),
         }
       );
@@ -61,7 +60,7 @@ function ResetPassword() {
       if (!response.ok) throw new Error(data.error || "Something went wrong.");
 
       setMessage("Password reset successful! Redirecting to login...");
-      setTimeout(() => navigate("/login"), 3000); // Redirect to login page after success
+      setTimeout(() => navigate("/login"), 3000);
     } catch (err) {
       setError(
         err.message || "An error occurred while resetting your password."

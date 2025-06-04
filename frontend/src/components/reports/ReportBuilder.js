@@ -43,7 +43,7 @@ function ReportBuilder() {
         `https://formx360.onrender.com/reports/report/${reportId}`
       );
       setReport(response.data);
-      setFilters(response.data.filters || []); // Load saved filters
+      setFilters(response.data.filters || []); 
       if (response.data.formId._id) {
         const formResponse = await axios.get(
           `https://formx360.onrender.com/forms/${response.data.formId._id}`

@@ -21,16 +21,15 @@ function Profile() {
     lastName: "",
     email: "",
     phone: "",
-    role: "", // Make sure role is also included in userInfo
+    role: "",
   });
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null); // State to handle errors
+  const [error, setError] = useState(null);
   const [companyId, setCompanyId] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
   const { userId } = useParams();
 
-  // Retrieve companyId and userId from sessionStorage (if not in URL params)
   useEffect(() => {
     const savedCompanyId = sessionStorage.getItem("companyId");
     const savedUserId = sessionStorage.getItem("userId");
@@ -40,13 +39,12 @@ function Profile() {
     }
 
     if (savedUserId || userId) {
-      // Use userId from URL or sessionStorage
       const targetUserId = userId || savedUserId;
       if (companyId && targetUserId) {
-        fetchUserInfo(companyId, targetUserId); // Fetch user info with both companyId and userId
+        fetchUserInfo(companyId, targetUserId);
       }
     }
-  }, [userId, companyId]); // Only re-run if userId or companyId changes
+  }, [userId, companyId]);
 
   // Fetch user info
   const fetchUserInfo = async (companyId, userId) => {
@@ -70,13 +68,13 @@ function Profile() {
   const handleEditUser = async (updatedUser) => {
     try {
       await axios.put(
-        `https://formx360.onrender.com/companies/users/${userId}`, // Using the userId in the URL
+        `https://formx360.onrender.com/companies/users/${userId}`,
         updatedUser
       );
-      setShowModal(false); // Close the modal after saving
+      setShowModal(false);
       toast.success("Profile updated successfully!");
-      // Optionally refetch the user data to update the UI
-      fetchUserInfo(companyId, userId); // To reflect the updated user info
+
+      fetchUserInfo(companyId, userId);
     } catch (error) {
       console.error("Failed to save changes", error);
       toast.error("Failed to save changes, please try again later.");

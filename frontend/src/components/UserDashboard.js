@@ -242,7 +242,6 @@ function UserDashboard() {
                           className="d-flex align-items-center gap-2"
                           onClick={(e) => e.stopPropagation()}
                         >
-                          {/* Fill Form Button */}
                           {hasPermission(form, "view") && (
                             <Button
                               variant="primary"
@@ -275,13 +274,11 @@ function UserDashboard() {
                               <FaPencilAlt size={16} />
                             </Button>
                           )}
-                        {/* Dropdown for Form Actions */}
-                        <UserFormActionsDropdown
-                          form={form}
-                          hasPermission={hasPermission}
-                        />
+                          <UserFormActionsDropdown
+                            form={form}
+                            hasPermission={hasPermission}
+                          />
                         </div>
-
                       </Card.Body>
                     </Card>
                   </Col>

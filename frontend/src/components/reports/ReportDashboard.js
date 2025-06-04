@@ -14,7 +14,7 @@ import { useParams } from "react-router-dom";
 import NavbarComponent from "../NavbarComponent";
 import ChartBuilderModal from "./ChartBuilderModal";
 
-// --- UTILITIES ---
+
 
 function applyFilters(responses, filters) {
   return responses.filter((resp) => {

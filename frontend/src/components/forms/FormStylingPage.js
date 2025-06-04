@@ -19,7 +19,6 @@ const FormStylingPage = () => {
   const { formId } = useParams();
   const navigate = useNavigate();
 
-  // Fetch form data from the API
   useEffect(() => {
     const fetchFormData = async () => {
       try {

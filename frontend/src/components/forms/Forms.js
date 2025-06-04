@@ -128,7 +128,6 @@ function Forms() {
       const userList = response.data.users || [];
       setUsers(userList);
 
-      // Get current user ID from sessionStorage
       const currentUserId = sessionStorage.getItem("userId");
 
       if (currentUserId) {
@@ -250,24 +249,19 @@ function Forms() {
 
   const handleDuplicateForm = async (form) => {
     try {
-      // Call API to duplicate the form
       const response = await axios.post(
         `https://formx360.onrender.com/forms/duplicate/${form._id}`
       );
 
       toast.success("Form duplicated successfully!");
 
-      const newForm = response.data; // This is the duplicated form
-
-      // Optimistically update the state for immediate UI feedback
+      const newForm = response.data; 
       setForms((prev) => [newForm, ...prev]);
-      setFilteredForms((prev) => [newForm, ...prev]); // <- update filtered forms too
+      setFilteredForms((prev) => [newForm, ...prev]); 
 
-      // Highlight the newly duplicated form
       setHighlightedFormId(newForm._id);
-      setTimeout(() => setHighlightedFormId(null), 3000); // Highlight disappears after 3 seconds
+      setTimeout(() => setHighlightedFormId(null), 3000); 
 
-      // Optional: Fetch fresh list of forms from the backend to ensure data consistency
       await fetchForms(companyId);
     } catch (error) {
       console.error("Error duplicating form:", error);

@@ -39,7 +39,7 @@ const ResponsePage = () => {
     }
   };
 
-  // Fetch responses from the API
+  // Fetch responses
   const fetchResponses = async () => {
     setLoading(true);
     try {
@@ -48,7 +48,6 @@ const ResponsePage = () => {
       );
 
       if (response.data.length > 0) {
-        // Extract unique field headers based on the responses
         const uniqueFields = [
           ...new Set(
             response.data.flatMap((res) => res.responses.map((r) => r.field_id))
@@ -130,18 +129,16 @@ const ResponsePage = () => {
   }
 
   const handleBackClick = () => {
-    navigate(`/forms`); // Navigate to the form page
+    navigate(`/forms`);
   };
 
   const handleEdit = async (updatedResponse) => {
     try {
-      // Send PUT request to the backend to update the response
       const response = await axios.put(
         `https://formx360.onrender.com/responses/${updatedResponse._id}`,
         updatedResponse
       );
 
-      // Update the responses in the frontend state with the updated response
       setResponses((prevResponses) =>
         prevResponses.map((res) =>
           res._id === updatedResponse._id ? { ...res, ...response.data } : res
@@ -157,18 +154,10 @@ const ResponsePage = () => {
 
   const handleDelete = async (responseId) => {
     try {
-      // Ask for confirmation before deletion
-      const confirmed = window.confirm(
-        "Are you sure you want to delete this response? This action cannot be undone."
-      );
-      if (!confirmed) return;
-
-      // Send DELETE request to the backend to remove the response
       await axios.delete(
         `https://formx360.onrender.com/responses/${responseId}`
       );
 
-      // Remove the deleted response from the state
       setResponses((prevResponses) =>
         prevResponses.filter((res) => res._id !== responseId)
       );

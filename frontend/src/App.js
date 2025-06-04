@@ -34,7 +34,6 @@ function App() {
   useEffect(() => {
     socket.connect();
 
-    // Optionally handle errors or logs
     socket.on("connect", () => {
       console.log("🔌 Connected to WebSocket server");
     });

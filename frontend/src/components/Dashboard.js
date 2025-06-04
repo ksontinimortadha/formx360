@@ -17,7 +17,6 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Sidebar from "./Sidebar";
 import EditCompanyModal from "../modals/EditCompanyModal";
-import DeleteCompanyModal from "../modals/DeleteCompanyModal";
 import DeleteUserModal from "../modals/DeleteUserModal";
 import AddUserModal from "../modals/AddUserModal";
 import NavbarComponent from "./NavbarComponent";
@@ -77,7 +76,6 @@ function Dashboard() {
       const userList = response.data.users || [];
       setUsers(userList);
 
-      // Get current user ID from sessionStorage
       const currentUserId = sessionStorage.getItem("userId");
 
       if (currentUserId) {
@@ -249,7 +247,6 @@ function Dashboard() {
                             </Card.Text>
                           </div>
 
-                          {/* Minimalistic Buttons with Icons */}
                           {currentUserRole === "Super Admin" && (
                             <div className="d-flex gap-2">
                               <Button
@@ -360,7 +357,7 @@ function Dashboard() {
                                 </OverlayTrigger>
                               )}
 
-                              {/* Delete button, only for Super Admin and not self */}
+                              {/* Delete button, only for Super Admin  */}
                               {currentUserRole === "Super Admin" &&
                                 user?._id !==
                                   sessionStorage.getItem("userId") && (

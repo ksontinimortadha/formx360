@@ -11,7 +11,7 @@ const FormSubmit = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [fieldStyles, setFieldStyles] = useState({});
-  const [selectedTheme, setSelectedTheme] = useState(""); // Theme state
+  const [selectedTheme, setSelectedTheme] = useState(""); 
   const { formId } = useParams();
 
   // Use ref for form data to optimize performance
@@ -80,7 +80,7 @@ const FormSubmit = () => {
       const response = await axios.post(
         `https://formx360.onrender.com/responses/${formId}`,
         {
-          submitted_by: userId, // ✅ use submitted_by
+          submitted_by: userId, 
           responses,
         }
       );
@@ -109,12 +109,10 @@ const FormSubmit = () => {
 
   if (loading) return <div>Loading form...</div>;
 
-  // Ensure formData and formData.fields exist before attempting to map
   if (!formData || !Array.isArray(formData.fields)) {
     return <div>Form data is not available</div>;
   }
 
-  // Render fields and prefill them with existing responses
   const renderFormFields = () => {
     if (!formData || !formData.fields) return null;
 
@@ -124,7 +122,6 @@ const FormSubmit = () => {
         ? `field-${fieldStyle.position}`
         : "";
 
-      // Defensive: Ensure responses and prefilledValue are safe
       const response = responses?.find((r) => r.field_id === field._id);
       const prefilledValue =
         response?.value ?? (field.type === "checkbox-group" ? [] : "");

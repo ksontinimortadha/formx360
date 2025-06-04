@@ -19,7 +19,6 @@ const FormSubmissionSuccess = () => {
   useEffect(() => {
     const fetchResponseAndPermissions = async () => {
       try {
-        // 1. Get response data to find form_id
         const res = await axios.get(
           `https://formx360.onrender.com/responses/get/${responseId}`
         );
@@ -31,7 +30,6 @@ const FormSubmissionSuccess = () => {
 
         setFormId(form_id);
 
-        // 2. Fetch permissions for the form
         const permsRes = await axios.get(
           `https://formx360.onrender.com/permissions/${form_id}`
         );
@@ -44,7 +42,6 @@ const FormSubmissionSuccess = () => {
           }))
         );
 
-        // 3. Check current user's permissions
         const userPermissions = flatPermissions.filter(
           (perm) => perm.userId === userId
         );

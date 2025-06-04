@@ -1,11 +1,6 @@
 import React, { useState } from "react";
 import { Container, Row, Col, Card, Button, Form } from "react-bootstrap";
-import {
-  FaLock,
-  FaCheckCircle,
-  FaUser,
-  FaRegAddressCard,
-} from "react-icons/fa";
+import { FaLock, FaCheckCircle } from "react-icons/fa";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
@@ -33,7 +28,7 @@ function Security() {
     setError(null);
 
     try {
-      const token = localStorage.getItem("token"); // Get the JWT token from localStorage
+      const token = localStorage.getItem("token");
       if (!token) {
         setError("You need to be logged in.");
         setLoading(false);
@@ -49,7 +44,7 @@ function Security() {
         },
         {
           headers: {
-            Authorization: `Bearer ${token}`, // Send the JWT token in the request header
+            Authorization: `Bearer ${token}`, 
           },
         }
       );

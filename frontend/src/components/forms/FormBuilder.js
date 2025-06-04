@@ -96,11 +96,9 @@ const FormBuilder = () => {
       const userList = response.data.users || [];
       setUsers(userList);
 
-      // Get current user ID from sessionStorage
       const currentUserId = sessionStorage.getItem("userId");
 
       if (currentUserId) {
-        // Compare as strings to avoid type issues
         const currentUser = userList.find(
           (user) => String(user._id) === String(currentUserId)
         );
@@ -108,36 +106,34 @@ const FormBuilder = () => {
           setCurrentUserRole(currentUser.role);
         } else {
           console.warn("Current user not found in company users list.");
-          setCurrentUserRole(""); // fallback
+          setCurrentUserRole("");
         }
       } else {
         console.warn("No userId found in sessionStorage.");
-        setCurrentUserRole(""); // fallback
+        setCurrentUserRole("");
       }
     } catch (error) {
       console.error("Error fetching users:", error);
       toast.error("Failed to fetch users.");
       setUsers([]);
-      setCurrentUserRole(""); // fallback
+      setCurrentUserRole("");
     }
   };
   useEffect(() => {
-    if (formData ) {
+    if (formData) {
       setFormTitle(formData.title || "");
       setFormDescription(formData.description || "");
     }
   }, [formData]);
-  
+
   const handleSaveForm = async () => {
     try {
       setIsSaving(true);
 
-      // Grab title input value directly from DOM instead of relying on React state
       const titleInputValue = document
         .querySelector(".form-title-input")
         ?.value?.trim();
 
-      // Also grab description directly if needed
       const descriptionInputValue = document
         .querySelector(".form-description-input")
         ?.value?.trim();
@@ -162,7 +158,6 @@ const FormBuilder = () => {
         }
       });
 
-      // Use the direct DOM values (fall back if missing)
       const titleToSave = titleInputValue || formData?.title || "Untitled Form";
       const descriptionToSave =
         descriptionInputValue || formData?.description || "";
@@ -190,8 +185,6 @@ const FormBuilder = () => {
       setIsSaving(false);
     }
   };
-  
-  
 
   const handleTitleChange = (e) => {
     setFormTitle(e.target.value);
@@ -240,7 +233,7 @@ const FormBuilder = () => {
               </div>
             </div>
 
-            {/* Use the ProgressBarComponent here */}
+            {/*  ProgressBarComponent  */}
             <ProgressBarComponent progress={progress} />
 
             <Card className="shadow-lg border-0 rounded-4 custom-card">
