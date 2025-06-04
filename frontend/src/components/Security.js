@@ -3,7 +3,6 @@ import { Container, Row, Col, Card, Button, Form } from "react-bootstrap";
 import { FaLock, FaCheckCircle } from "react-icons/fa";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useNavigate, useLocation, useParams } from "react-router-dom";
 import NavbarComponent from "./NavbarComponent";
 import ProfileSidebar from "./ProfileSidebar";
 
@@ -14,9 +13,6 @@ function Security() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { userId } = useParams();
 
   const handlePasswordChange = async () => {
     if (newPassword !== confirmPassword) {

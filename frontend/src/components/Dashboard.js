@@ -25,7 +25,6 @@ function Dashboard() {
   const [showModal, setShowModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showEditCompanyModal, setShowEditCompanyModal] = useState(false);
-  const [showDeleteCompanyModal, setShowDeleteCompanyModal] = useState(false);
   const [users, setUsers] = useState([]);
   const [companyDetails, setCompanyDetails] = useState(null);
   const [companyId, setCompanyId] = useState("");

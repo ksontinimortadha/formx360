@@ -16,7 +16,6 @@ const UserResponsePage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
-  const [showExportModal, setShowExportModal] = useState(false);
   const [existingPermissions, setExistingPermissions] = useState({});
   const [currentUserRole, setCurrentUserRole] = useState("");
   const [forms, setForms] = useState([]);

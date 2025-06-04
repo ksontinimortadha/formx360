@@ -1,13 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Button, Card } from "react-bootstrap";
-import {
-  FaUser,
-  FaEdit,
-  FaRegAddressCard,
-  FaLock,
-  FaWpforms,
-} from "react-icons/fa";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { FaEdit } from "react-icons/fa";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import NavbarComponent from "./NavbarComponent";
 import { toast } from "react-toastify";
@@ -26,8 +20,6 @@ function Profile() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [companyId, setCompanyId] = useState(null);
-  const navigate = useNavigate();
-  const location = useLocation();
   const { userId } = useParams();
 
   useEffect(() => {
