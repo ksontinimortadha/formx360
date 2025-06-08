@@ -53,13 +53,21 @@ function Reports() {
       const response = await axios.get(
         `https://formx360.onrender.com/reports/company/${companyId}`
       );
-      setReports(response.data);
+      const data = response.data;
+
+      setReports(data);
+
+      if (Array.isArray(data) && data.length === 0) {
+        setError("No reports have been made.");
+      }
     } catch (err) {
       console.error("Error fetching reports:", err);
       setError("Failed to load reports.");
     }
+
     setLoading(false);
   };
+  
 
   const handleReportAdded = () => {
     fetchReports();
