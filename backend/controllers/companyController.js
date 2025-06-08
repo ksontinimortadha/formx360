@@ -7,7 +7,7 @@ const crypto = require("crypto");
 
 // Add a new company
 exports.addCompany = async (req, res) => {
-  const { name, description, industry, userId, id } = req.body; // Assuming 'id' is being passed in the request body
+  const { name, description, industry, userId, id } = req.body;
 
   try {
     // Check if a company already exists with the same custom 'id'
@@ -15,9 +15,9 @@ exports.addCompany = async (req, res) => {
     if (existingCompany)
       return res.status(400).json({ error: "Company already exists." });
 
-    // Create a new company with the provided id
+    // Create a new company
     const newCompany = new Company({
-      id, 
+      id,
       name,
       description,
       industry,
@@ -156,7 +156,7 @@ exports.addUserToCompany = async (req, res) => {
       return res.status(400).json({ error: "User already exists." });
 
     // Generate a secure random password
-    const generatedPassword = crypto.randomBytes(8).toString("hex"); // 16 characters
+    const generatedPassword = crypto.randomBytes(8).toString("hex");
     const hashedPassword = await bcrypt.hash(generatedPassword, 10);
 
     const newUser = new User({

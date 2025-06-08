@@ -7,9 +7,9 @@ const reportSchema = new mongoose.Schema({
 
   filters: [
     {
-      field: { type: String, required: true }, // Field to filter (e.g., "status")
-      condition: { type: String, required: true }, // Condition (e.g., "equals", "contains")
-      value: { type: mongoose.Schema.Types.Mixed, required: true }, // Can be a string, number, or date
+      field: { type: String, required: true }, 
+      condition: { type: String, required: true }, 
+      value: { type: mongoose.Schema.Types.Mixed, required: true }, 
     },
   ],
   createdAt: { type: Date, default: Date.now },

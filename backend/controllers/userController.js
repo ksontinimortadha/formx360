@@ -10,7 +10,7 @@ const sendEmail = async (email, subject, text) => {
   const transporter = nodemailer.createTransport({
     secure: true,
     host: "smtp.gmail.com",
-    port: 465, // Ensure this is correct for your email provider
+    port: 465, 
     auth: {
       user: process.env.EMAIL_USER,
       pass: process.env.EMAIL_PASS,
@@ -167,7 +167,7 @@ exports.loginUser = async (req, res) => {
         name: `${user.firstName} ${user.lastName}`,
         email: user.email,
         role: user.role,
-        companyId: company ? company._id : null, // ✅ Return null instead of error
+        companyId: company ? company._id : null, 
       },
     });
   } catch (err) {
@@ -220,8 +220,7 @@ exports.resetPassword = async (req, res) => {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET); // Verify token
-
+    const decoded = jwt.verify(token, process.env.JWT_SECRET); 
     const user = await User.findById(decoded.userId);
     if (!user) {
       return res.status(404).json({ error: "User not found." });
@@ -249,8 +248,7 @@ exports.resetPassword = async (req, res) => {
 // Change Password 
 exports.changePassword = async (req, res) => {
   const { currentPassword, newPassword } = req.body;
-  const userId = req.user.id; // Get user ID from the authenticated token
-
+  const userId = req.user.id; 
   try {
     const user = await User.findById(userId);
     if (!user) {

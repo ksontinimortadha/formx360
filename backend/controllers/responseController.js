@@ -7,7 +7,6 @@ const User = require("../models/User");
 exports.submitResponse = async (req, res) => {
   const { submitted_by, responses } = req.body;
   const { form_id } = req.params;
-  
 
   try {
     const form = await Form.findById(form_id);
@@ -173,7 +172,7 @@ exports.submitResponse = async (req, res) => {
     await newResponse.save();
 
     // Notify form owner
-    const ownerId = form.user_id; 
+    const ownerId = form.user_id;
     const notifMessage = `A new response has been submitted to your form "${form.title}".`;
 
     const ownerNotif = await Notification.create({
@@ -218,7 +217,7 @@ exports.getFormResponses = async (req, res) => {
 
     // Fetch all responses for the given form
     const responses = await Response.find({ form_id })
-      .populate("user_id", "name email") // Populating user details
+      .populate("user_id", "name email")
       .exec();
 
     // Check if responses exist
@@ -228,7 +227,7 @@ exports.getFormResponses = async (req, res) => {
         .json({ message: "No responses found for this form" });
     }
 
-    res.status(200).json(responses); // Return responses
+    res.status(200).json(responses);
   } catch (err) {
     // Handle any errors that occur during the process
     res.status(500).json({ message: "Server error", error: err.message });
@@ -255,7 +254,6 @@ exports.getResponseById = async (req, res) => {
   }
 };
 
-
 // Get Responses Submitted by a User
 exports.getResponsesBySubmittedBy = async (req, res) => {
   const { userId } = req.params;
@@ -276,7 +274,7 @@ exports.getResponsesBySubmittedBy = async (req, res) => {
 // Edit a Response
 exports.editResponse = async (req, res) => {
   const { response_id } = req.params;
-  const { responses } = req.body; // Updated responses
+  const { responses } = req.body;
 
   try {
     // Validate the response exists
@@ -286,7 +284,7 @@ exports.editResponse = async (req, res) => {
       return res.status(404).json({ message: "Response not found" });
     }
 
-    // Validate the new responses (similar to submitResponse validation logic)
+    // Validate the new responses
     const validationErrors = [];
     const processedResponses = [];
 

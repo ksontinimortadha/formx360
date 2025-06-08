@@ -9,7 +9,7 @@ const responseSchema = new mongoose.Schema({
   user_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
-    required: false, // Optional for anonymous responses
+    required: false,
   },
   submitted_at: {
     type: Date,
@@ -17,7 +17,7 @@ const responseSchema = new mongoose.Schema({
   },
   submitted_by: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User", 
+    ref: "User",
     required: false,
   },
   responses: [
@@ -26,14 +26,14 @@ const responseSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "FormField",
         required: true,
-      }, // Reference to the form field
+      },
       field_name: {
         type: String,
       },
       value: {
         type: mongoose.Schema.Types.Mixed,
         required: true,
-      }, // Mixed type to support text, numbers, etc.
+      },
     },
   ],
 });

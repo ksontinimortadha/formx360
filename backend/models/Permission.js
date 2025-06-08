@@ -1,4 +1,3 @@
-// models/FormPermission.js
 const mongoose = require("mongoose");
 
 const formPermissionSchema = new mongoose.Schema({

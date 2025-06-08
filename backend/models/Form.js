@@ -12,9 +12,9 @@ const formSchema = new mongoose.Schema(
     description: { type: String },
     visibility: {
       type: String,
-      enum: ["public", "private"], // visibility can be either "public" or "private"
-      default: "private", // Default visibility is "private"
-    }, // visibitly of the form
+      enum: ["public", "private"],
+      default: "private",
+    },
     publicUrl: { type: String, default: null },
     privateUrl: { type: String, default: null },
     theme: { type: String },
@@ -44,57 +44,57 @@ const formSchema = new mongoose.Schema(
         subtype: {
           type: String,
           enum: [
-            "text", // default text subtype
-            "password", // password input
-            "email", // email input
-            "tel", // telephone number input
-            "url", // website URL input
-            "number", // numeric input
-            "date", // date picker
-            "datetime-local", // date + time picker
-            "month", // month picker
-            "week", // week picker
-            "time", // time picker
-            "color", // color picker
-            "search", // search field
-            "submit", // submit button
-            "reset", // reset button
-            "file", // file uploader
-            "hidden", // hidden input
+            "text",
+            "password",
+            "email",
+            "tel",
+            "url",
+            "number",
+            "date",
+            "datetime-local",
+            "month",
+            "week",
+            "time",
+            "color",
+            "search",
+            "submit",
+            "reset",
+            "file",
+            "hidden",
           ],
-        }, // e.g., "password" for text fields
+        },
         label: { type: String, required: true },
         name: { type: String, required: true },
         placeholder: { type: String },
-        className: { type: String }, // CSS classes for styling
-        style: { type: String }, // Inline styles
+        className: { type: String },
+        style: { type: String },
         required: { type: Boolean, default: false },
         options: [
           {
-            label: { type: String, required: true }, // The displayed label
-            value: { type: String, required: true }, // The actual stored value
-            selected: { type: Boolean, default: false }, // Whether the option is preselected
+            label: { type: String, required: true },
+            value: { type: String, required: true },
+            selected: { type: Boolean, default: false },
           },
         ],
-        description: { type: String }, // Help text for the field
-        access: { type: [String], default: ["all"] }, // e.g., ["admin", "user"]
-        values: { type: mongoose.Schema.Types.Mixed }, // Default value (can be any type)
-        value: { type: mongoose.Schema.Types.Mixed }, // Default value (can be any type)
-        multiple: { type: Boolean, default: false }, // Allows multiple selection
-        inline: { type: Boolean, default: false }, // Inline options for radio/checkbox
+        description: { type: String },
+        access: { type: [String], default: ["all"] },
+        values: { type: mongoose.Schema.Types.Mixed },
+        value: { type: mongoose.Schema.Types.Mixed },
+        multiple: { type: Boolean, default: false },
+        inline: { type: Boolean, default: false },
         min_length: { type: Number },
         max_length: { type: Number },
         min: { type: mongoose.Schema.Types.Mixed },
         max: { type: mongoose.Schema.Types.Mixed },
-        toggle: { type: Boolean }, // For fields like checkbox with "other"
-        other: { type: Boolean }, // For checkbox options that allow other input
+        toggle: { type: Boolean },
+        other: { type: Boolean },
         maxlength: { type: Number },
         rows: { type: Number },
         step: { type: Number },
-        style: { type: String }, // CSS for individual field styles
-        tooltip: { type: String }, // Tooltip text for the field
-        visibility_rules: { type: mongoose.Schema.Types.Mixed }, // Conditional visibility logic
-        order: { type: Number, required: false }, // Position of the field
+        style: { type: String },
+        tooltip: { type: String },
+        visibility_rules: { type: mongoose.Schema.Types.Mixed },
+        order: { type: Number, required: false },
       },
     ],
     fieldStyles: {
@@ -108,10 +108,10 @@ const formSchema = new mongoose.Schema(
           default: "left",
         },
       },
-      default: {}, // Each field ID will map to a style object
+      default: {},
     },
   },
-  { timestamps: true } // Automatically adds createdAt & updatedAt
+  { timestamps: true }
 );
 
 module.exports = mongoose.model("Form", formSchema);

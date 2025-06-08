@@ -1,4 +1,3 @@
-// Model (Mongoose)
 const mongoose = require("mongoose");
 
 const DashboardChartSchema = new mongoose.Schema({

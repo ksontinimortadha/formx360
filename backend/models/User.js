@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 
-// Define User Schema with company association
 const userSchema = new mongoose.Schema({
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },

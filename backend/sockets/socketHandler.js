@@ -1,9 +1,7 @@
-// socketHandler.js
 function setupSocket(io) {
   io.on("connection", (socket) => {
     console.log("A user connected");
 
-    // Handle events like notifications
     socket.on("new_notification", (data) => {
       socket.broadcast.emit("new_notification", data); 
     });

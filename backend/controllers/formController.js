@@ -29,7 +29,7 @@ exports.createForm = async (req, res) => {
       });
     }
 
-    // Create the new form object (not saved yet)
+    // Create the new form object
     const newForm = new Form({
       user_id: userId,
       title,
@@ -40,7 +40,7 @@ exports.createForm = async (req, res) => {
     });
 
     // Generate URLs based on visibility
-    const baseUrl = "https://formx360.vercel.app/responses"; // e.g. from env or config
+    const baseUrl = "https://formx360.vercel.app/responses";
 
     if (visibility === "public") {
       // Public forms can have a public URL accessible by anyone
@@ -72,7 +72,7 @@ exports.createForm = async (req, res) => {
     res.status(201).json({
       message: "Form created successfully!",
       formId: newForm._id,
-      form: newForm, // includes URLs
+      form: newForm,
     });
   } catch (error) {
     console.error("Error creating form:", error.message);
@@ -84,7 +84,7 @@ exports.createForm = async (req, res) => {
 
 // Get All Forms for a Company
 exports.getCompanyForms = async (req, res) => {
-  const { companyId } = req.params; // Fix parameter name
+  const { companyId } = req.params;
 
   try {
     // Ensure company exists
@@ -151,7 +151,7 @@ exports.updateForm = async (req, res) => {
       return res.status(404).json({ message: "Form not found" });
     }
 
-    const userId = existingForm.user_id; // Retrieve userId from the form
+    const userId = existingForm.user_id;
 
     if (!Array.isArray(fields)) {
       return res
@@ -170,9 +170,9 @@ exports.updateForm = async (req, res) => {
         field.options = field.options || []; // Ensure options exist
 
         field.options = field.options.map((option) => ({
-          label: option.label || option, // Use provided label or default to option value
-          value: option.value || option, // Use provided value or default
-          selected: option.selected ?? false, // Ensure selected is explicitly set
+          label: option.label || option,
+          value: option.value || option,
+          selected: option.selected ?? false,
         }));
       }
     });
@@ -181,7 +181,7 @@ exports.updateForm = async (req, res) => {
     const updatedForm = await Form.findByIdAndUpdate(
       id,
       { title, description, field_order, fields, values },
-      { new: true } // Return updated form & validate fields
+      { new: true }
     );
 
     // Handle form not found scenario
@@ -277,8 +277,8 @@ exports.updateFormStyle = async (req, res) => {
     // Update the form's theme
     const updatedForm = await Form.findByIdAndUpdate(
       id,
-      { $set: { theme } }, // Use $set to only update the theme field
-      { new: true } // Ensure the updated form is returned
+      { $set: { theme } },
+      { new: true }
     );
     if (!updatedForm) {
       return res.status(404).json({ message: "Form not found" });
@@ -306,7 +306,7 @@ exports.updateFieldStyle = async (req, res) => {
       return res.status(400).json({ message: "Invalid position value." });
     }
 
-    // Validate colors (optional: use regex for HEX validation)
+    // Validate colors
     if (backgroundColor && !/^#([0-9A-Fa-f]{3}){1,2}$/.test(backgroundColor)) {
       return res
         .status(400)
@@ -324,7 +324,7 @@ exports.updateFieldStyle = async (req, res) => {
           [`fieldStyles.${fieldId}`]: { backgroundColor, color, position },
         },
       },
-      { new: true } // Return updated form
+      { new: true }
     );
 
     if (!updatedForm) {
@@ -446,7 +446,7 @@ exports.duplicatedForm = async (req, res) => {
     delete formObj.__v;
     delete formObj.createdAt;
     delete formObj.updatedAt;
-    delete formObj.responses; // remove responses if present
+    delete formObj.responses; 
     formObj.title = `${formObj.title} - Copy`;
 
     // Create and save new form

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const companySchema = new mongoose.Schema({
-  id: { type: String, required: true, unique: true }, // custom id field
+  id: { type: String, required: true, unique: true }, 
   name: { type: String, required: true },
   description: { type: String },
   industry: { type: String },

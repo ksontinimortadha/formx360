@@ -1,4 +1,3 @@
-// routes/formPermissions.js
 const Permission = require("../models/Permission");
 
 // Save or update permissions

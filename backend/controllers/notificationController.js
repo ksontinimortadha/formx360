@@ -1,7 +1,7 @@
 const Notification = require("../models/Notification");
 const User = require("../models/User");
 
-// Get notifications for a specific user (both personal and company-wide notifications)
+// Get notifications for a specific user 
 exports.getNotifications = async (req, res) => {
   const userId = req.params.userId;
 
@@ -37,6 +37,7 @@ exports.getNotifications = async (req, res) => {
     });
   }
 };
+
 // Create a notification for all users in a company
 exports.createNotification = async (req, res) => {
   const { userId, companyId, message, createdBy } = req.body;

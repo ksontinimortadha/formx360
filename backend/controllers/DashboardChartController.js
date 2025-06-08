@@ -1,4 +1,3 @@
-// controllers/DashboardChartController.js
 const DashboardChart = require("../models/DashboardChart");
 
 exports.saveCharts = async (req, res) => {
