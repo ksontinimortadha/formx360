@@ -41,10 +41,13 @@ function Reports() {
   const fetchReports = async () => {
     setLoading(true);
     setError("");
+
     const companyId = sessionStorage.getItem("companyId");
 
+    // Handle missing company ID
     if (!companyId) {
       setError("Company ID not found. Please log in again.");
+      setReports([]); // Clear reports to avoid showing stale data
       setLoading(false);
       return;
     }
@@ -53,20 +56,28 @@ function Reports() {
       const response = await axios.get(
         `https://formx360.onrender.com/reports/company/${companyId}`
       );
+
       const data = response.data;
 
-      setReports(data);
-
-      if (Array.isArray(data) && data.length === 0) {
-        setError("No reports have been made.");
+      // Ensure data is a valid array
+      if (Array.isArray(data)) {
+        setReports(data);
+        if (data.length === 0) {
+          setError("No reports have been made.");
+        }
+      } else {
+        setReports([]);
+        setError("Unexpected response format.");
       }
     } catch (err) {
       console.error("Error fetching reports:", err);
-      setError("No reports have been made.");
+      setReports([]); // Clear reports to avoid showing old data
+      setError("Failed to load reports. Please try again later.");
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
+  
   
 
   const handleReportAdded = () => {
