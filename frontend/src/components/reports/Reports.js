@@ -62,7 +62,7 @@ function Reports() {
       }
     } catch (err) {
       console.error("Error fetching reports:", err);
-      setError("Failed to load reports.");
+      setError("No reports have been made.");
     }
 
     setLoading(false);
