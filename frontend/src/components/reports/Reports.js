@@ -41,13 +41,12 @@ function Reports() {
   const fetchReports = async () => {
     setLoading(true);
     setError("");
+    setReports([]);
 
     const companyId = sessionStorage.getItem("companyId");
 
-    // Handle missing company ID
     if (!companyId) {
       setError("Company ID not found. Please log in again.");
-      setReports([]); // Clear reports to avoid showing stale data
       setLoading(false);
       return;
     }
@@ -59,24 +58,19 @@ function Reports() {
 
       const data = response.data;
 
-      // Ensure data is a valid array
       if (Array.isArray(data)) {
-        setReports(data);
-        if (data.length === 0) {
-          setError("No reports have been made.");
-        }
+        setReports(data); // Just set data normally
       } else {
-        setReports([]);
         setError("Unexpected response format.");
       }
     } catch (err) {
       console.error("Error fetching reports:", err);
-      setReports([]); // Clear reports to avoid showing old data
       setError("Failed to load reports. Please try again later.");
     } finally {
       setLoading(false);
     }
   };
+  
   
   
 
@@ -167,9 +161,15 @@ function Reports() {
             {error && <Alert variant="danger">{error}</Alert>}
 
             {/* Empty State */}
-            {!loading && reports.length === 0 && !error && (
+            {!loading && error && (
+              <Alert variant="danger" className="mt-3 text-center">
+                {error}
+              </Alert>
+            )}
+
+            {!loading && !error && reports.length === 0 && (
               <div className="text-center mt-5 text-muted">
-                <p>No reports available.</p>
+                <p>No reports have been made yet.</p>
                 <p>
                   <em>
                     Create your first report by clicking "Add Report" above.
