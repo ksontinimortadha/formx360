@@ -104,6 +104,7 @@ function Forms() {
 
       setForms(response.data);
       setFilteredForms(response.data);
+      
       // Fetch permissions for each form
       response.data.forEach((form) => {
         fetchFormPermissions(form._id);
@@ -185,15 +186,16 @@ function Forms() {
 
       toast.success(`Form is now ${newVisibility}`);
 
-      // Update local state with full updated form (includes privateUrl or publicUrl)
+      // Update local state with full updated form 
       setForms((prevForms) =>
         prevForms.map((f) => (f._id === form._id ? updatedForm : f))
       );
 
-      // Optional: show the private link to the user
+      // show the private link to the user
       if (newVisibility === "private" && updatedForm.privateUrl) {
         toast.info(`Private URL: ${updatedForm.privateUrl}`);
       }
+      
       // Refresh form list
       fetchForms(companyId);
     } catch (error) {

@@ -49,7 +49,7 @@ function ThemeSelector({ onThemeChange }) {
         { theme: selectedTheme }
       );
 
-      // Check if the update was successful (status code 200)
+      // Check if the update was successful 
       if (response.status === 200) {
         toast.success("Theme saved successfully!");
         navigate("/forms");
@@ -59,7 +59,6 @@ function ThemeSelector({ onThemeChange }) {
     } catch (err) {
       console.error("Error saving theme:", err);
 
-      // Check if err.response exists and log the error message from the server
       if (err.response) {
         console.error("Backend Error Message:", err.response.data);
       } else {

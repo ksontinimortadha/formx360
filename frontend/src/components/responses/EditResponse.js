@@ -61,7 +61,7 @@ const EditResponse = () => {
     e.preventDefault();
     try {
       await axios.put(`https://formx360.onrender.com/responses/${responseId}`, {
-        responses: response.responses, 
+        responses: response.responses,
       });
       navigate(`/responses/submission-success/${responseId}`);
     } catch (error) {
@@ -76,42 +76,42 @@ const EditResponse = () => {
 
   return (
     <>
-    <div
-            style={{
-              position: "absolute",
-              top: "30px",
-              left: "360px",
-              zIndex: 10,
-            }}
-          >
-            <button
-              onClick={handleBackToDashboard}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                padding: "8px 14px",
-                borderRadius: "8px",
-                backgroundColor: "#f0f4ff",
-                color: "#1a73e8",
-                border: "1px solid #1a73e8",
-                fontWeight: "500",
-                cursor: "pointer",
-                boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
-                transition: "all 0.3s ease",
-              }}
-              onMouseOver={(e) => {
-                e.target.style.backgroundColor = "#1a73e8";
-                e.target.style.color = "#fff";
-              }}
-              onMouseOut={(e) => {
-                e.target.style.backgroundColor = "#f0f4ff";
-                e.target.style.color = "#1a73e8";
-              }}
-            >
-              <FaArrowLeft/> 
-            </button>
-          </div>
+      <div
+        style={{
+          position: "absolute",
+          top: "30px",
+          left: "360px",
+          zIndex: 10,
+        }}
+      >
+        <button
+          onClick={handleBackToDashboard}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            padding: "8px 14px",
+            borderRadius: "8px",
+            backgroundColor: "#f0f4ff",
+            color: "#1a73e8",
+            border: "1px solid #1a73e8",
+            fontWeight: "500",
+            cursor: "pointer",
+            boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
+            transition: "all 0.3s ease",
+          }}
+          onMouseOver={(e) => {
+            e.target.style.backgroundColor = "#1a73e8";
+            e.target.style.color = "#fff";
+          }}
+          onMouseOut={(e) => {
+            e.target.style.backgroundColor = "#f0f4ff";
+            e.target.style.color = "#1a73e8";
+          }}
+        >
+          <FaArrowLeft />
+        </button>
+      </div>
       <h1 className="mb-4 text-center" style={{ marginTop: "20px" }}>
         Update Your Response
       </h1>

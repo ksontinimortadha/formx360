@@ -117,7 +117,6 @@ const UserResponsePage = () => {
 
         setResponses(viewableResponses);
 
-        // Collect unique headers (field_ids) across all viewable responses
         const uniqueFields = [
           ...new Set(
             viewableResponses.flatMap((res) =>
@@ -152,7 +151,6 @@ const UserResponsePage = () => {
     }
   }, [userId, currentUserRole]);
 
-  // After forms are fetched & set, fetch responses filtered by permissions
   useEffect(() => {
     if (forms.length > 0) {
       fetchResponses();
@@ -223,11 +221,6 @@ const UserResponsePage = () => {
   };
 
   const handleDelete = async (responseId) => {
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this response? This action cannot be undone."
-    );
-    if (!confirmed) return;
-
     try {
       await axios.delete(
         `https://formx360.onrender.com/responses/${responseId}`

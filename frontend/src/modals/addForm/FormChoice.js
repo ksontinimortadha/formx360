@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, Row, Col } from "react-bootstrap";
-import { FaTools, FaClipboardList } from "react-icons/fa"; // Import icons
+import { FaTools, FaClipboardList } from "react-icons/fa";
 
 function FormChoice({ onSelect }) {
   return (

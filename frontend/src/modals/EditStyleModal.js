@@ -3,24 +3,6 @@ import { Modal, Button } from "react-bootstrap";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 
-const themeStyles = {
-  "classic-blue": { backgroundColor: "#007bff", color: "white" },
-  "modern-gray": { backgroundColor: "#6c757d", color: "white" },
-  "light-airy": { backgroundColor: "#f0f8ff", color: "#333" },
-  "dark-mode": { backgroundColor: "#212121", color: "white" },
-  "nature-green": { backgroundColor: "#28a745", color: "white" },
-  "vibrant-orange": { backgroundColor: "#fd7e14", color: "white" },
-  "minimalist-white": { backgroundColor: "#ffffff", color: "#333" },
-  "vintage-red": { backgroundColor: "#dc3545", color: "white" },
-  "elegant-purple": { backgroundColor: "#6f42c1", color: "white" },
-  "tech-blue": { backgroundColor: "#17a2b8", color: "white" },
-  "professional-bw": { backgroundColor: "#000", color: "#fff" },
-  "fresh-mint": { backgroundColor: "#3cb371", color: "white" },
-  "funky-pink": { backgroundColor: "#e83e8c", color: "white" },
-  "elegant-gold": { backgroundColor: "#f1c40f", color: "white" },
-  "techno-yellow": { backgroundColor: "#f39c12", color: "white" },
-};
-
 function EditStyleModal({
   show,
   onHide,
@@ -71,10 +53,8 @@ function EditStyleModal({
         return;
       }
 
-      // Prepare the data to update only the changed properties
       const dataToUpdate = {};
 
-      // Conditionally add properties to dataToUpdate if they are changed
       if (updatedStyles.backgroundColor) {
         dataToUpdate.backgroundColor = updatedStyles.backgroundColor;
       }
@@ -85,14 +65,12 @@ function EditStyleModal({
         dataToUpdate.position = updatedStyles.position;
       }
 
-      // If no properties to update, show an error or return early
       if (Object.keys(dataToUpdate).length === 0) {
         setError("No changes made to the field styles.");
         setIsSaving(false);
         return;
       }
 
-      // Send the request to update the styles
       const response = await axios.put(
         `https://formx360.onrender.com/forms/${formId}/fields/${selectedField}/style`,
         dataToUpdate
@@ -178,17 +156,6 @@ function EditStyleModal({
             </p>
           </div>
         </div>
-
-        {/* Reset to Theme Button */}
-        {/*<div className="mt-4">
-          <Button
-            variant="secondary"
-            className="w-full py-2 rounded-full text-gray-700"
-            onClick={resetToCurrentTheme}
-          >
-            Reset to Current Theme
-          </Button>
-        </div>*/}
       </Modal.Body>
       <Modal.Footer className="border-0 flex justify-between px-3 pb-3">
         <Button

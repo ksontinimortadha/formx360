@@ -137,12 +137,11 @@ function TemplatePreview({ show, onClose, template, onSubmit }) {
         return null;
     }
   };
-  
 
   return (
     <Modal show={show} onHide={onClose} centered size="lg">
       <Modal.Header closeButton>
-        <Modal.Title>📋 Template Preview</Modal.Title>
+        <Modal.Title> Template Preview</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <h5 className="fw-semibold mb-3">{template.title}</h5>

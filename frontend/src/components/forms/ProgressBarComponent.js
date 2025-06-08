@@ -13,8 +13,8 @@ const ProgressBarComponent = ({ progress }) => {
         }
         style={{
           height: "12px",
-          borderRadius: "10px", // Rounded corners for iOS-like style
-          backgroundColor: "#f0f0f5", // Light background for the bar
+          borderRadius: "10px", 
+          backgroundColor: "#f0f0f5", 
         }}
       />
     </div>

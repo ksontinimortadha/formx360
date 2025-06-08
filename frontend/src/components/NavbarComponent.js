@@ -15,7 +15,7 @@ function NavbarComponent() {
 
  
 
-  // 📨 Initial fetch for notifications
+  // Initial fetch for notifications
   useEffect(() => {
     if (!userId) return;
 
@@ -49,7 +49,7 @@ function NavbarComponent() {
     fetchNotifications();
   }, [userId]);
 
-  // 🔁 Real-time listener for new notifications
+  // Real-time listener for new notifications
   useEffect(() => {
     const handleNewNotification = async (data) => {
       
@@ -118,7 +118,7 @@ function NavbarComponent() {
         </Navbar.Brand>
 
         <div className="d-flex align-items-center ms-auto">
-          {/* 🔔 Notifications */}
+          {/* Notifications */}
           <Dropdown align="end" className="me-3">
             <Dropdown.Toggle
               variant="link"
@@ -196,7 +196,7 @@ function NavbarComponent() {
             </Dropdown.Menu>
           </Dropdown>
 
-          {/* 👤 Profile */}
+          {/* Profile */}
           <Dropdown align="end">
             <Dropdown.Toggle
               variant="link"

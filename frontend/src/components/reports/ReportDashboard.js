@@ -7,14 +7,10 @@ import LineChart from "../charts/LineChart";
 import BarChart from "../charts/BarCharts";
 import StatCard from "../charts/StatCard";
 import PieChart from "../charts/PieChart";
-import RadarChart from "../charts/RadarChart";
-import ConversionRateChart from "../charts/ConversionRateChart";
 
 import { useParams } from "react-router-dom";
 import NavbarComponent from "../NavbarComponent";
 import ChartBuilderModal from "./ChartBuilderModal";
-
-
 
 function applyFilters(responses, filters) {
   return responses.filter((resp) => {
@@ -50,31 +46,6 @@ function renderChart(config, responses) {
 
   if (filteredResponses.length === 0) {
     return <div>No data after applying filters.</div>;
-  }
-
-  if (chartType === "Radar") {
-    if (!fields.length) return <div>No fields selected for Radar chart.</div>;
-
-    const data = fields.map((field) => {
-      const values = filteredResponses
-        .map((r) => {
-          const f = r.responses.find((resp) => resp.field_name === field);
-          return f ? Number(f.value) : null;
-        })
-        .filter((v) => v !== null && !isNaN(v));
-
-      if (values.length === 0) return { label: field, normalizedValue: 0 };
-
-      const avg = values.reduce((a, b) => a + b, 0) / values.length;
-      const max = Math.max(...values);
-
-      return {
-        label: field,
-        normalizedValue: max === 0 ? 0 : avg / max,
-      };
-    });
-
-    return <RadarChart data={data} />;
   }
 
   if (fields.length === 0) return <div>Select at least one field.</div>;
@@ -135,27 +106,6 @@ function renderChart(config, responses) {
     }
   }
 
-  if (chartType === "ConversionRate") {
-    const totalVisited = filteredResponses.length;
-    const signedUp = filteredResponses.filter((r) =>
-      r.responses.some(
-        (f) => f.field_name === "Signed Up" && f.value === "true"
-      )
-    ).length;
-    const purchased = filteredResponses.filter((r) =>
-      r.responses.some(
-        (f) => f.field_name === "Purchased" && f.value === "true"
-      )
-    ).length;
-
-    return (
-      <ConversionRateChart
-        stages={["Visited", "Signed Up", "Purchased"]}
-        counts={[totalVisited, signedUp, purchased]}
-      />
-    );
-  }
-
   return <div>Chart type "{chartType}" not supported.</div>;
 }
 
@@ -166,7 +116,6 @@ function ReportDashboard() {
 
   const [charts, setCharts] = useState([]);
 
-  // Modal control for add/edit
   const [modalShow, setModalShow] = useState(false);
   const [editingChartIndex, setEditingChartIndex] = useState(null);
 

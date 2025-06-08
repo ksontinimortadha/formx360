@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Modal, Form, Button } from "react-bootstrap";
 import { FaSave } from "react-icons/fa";
 
@@ -14,14 +14,13 @@ function ChartBuilderModal({
     { label: "Line Chart", value: "Line" },
     { label: "Bar Chart", value: "Bar" },
     { label: "Pie Chart", value: "Pie" },
-    { label: "Radar Chart", value: "Radar" },
   ];
 
   const [chartType, setChartType] = useState(
     initialConfig?.chartType || "Line"
   );
 
-  // Fields selected: multiple for Radar, one for others
+  // Fields selected
   const [selectedFields, setSelectedFields] = useState(
     initialConfig?.fields || (chartType === "Radar" ? [] : [fields[0] || ""])
   );
@@ -38,7 +37,6 @@ function ChartBuilderModal({
   // Handle field selection changes
   function handleFieldChange(e) {
     if (chartType === "Radar") {
-      // Multi-select handling
       const options = e.target.options;
       const selected = [];
       for (let i = 0; i < options.length; i++) {
@@ -65,12 +63,7 @@ function ChartBuilderModal({
 
   function handleSubmit(e) {
     e.preventDefault();
-    if (
-      chartType === "Radar" ? selectedFields.length === 0 : !selectedFields[0]
-    ) {
-      alert("Please select required field(s).");
-      return;
-    }
+
     onSave({
       chartType,
       fields: selectedFields,
@@ -78,15 +71,6 @@ function ChartBuilderModal({
     });
     onHide();
   }
-
-  // When chartType changes, reset fields appropriately
-  useEffect(() => {
-    if (chartType === "Radar") {
-      setSelectedFields([]);
-    } else {
-      setSelectedFields([fields[0] || ""]);
-    }
-  }, [chartType, fields]);
 
   return (
     <Modal show={show} onHide={onHide} size="lg" centered backdrop="static">

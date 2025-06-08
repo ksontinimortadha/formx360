@@ -28,11 +28,11 @@ const FormActionsDropdown = ({
       const response = await axios.get(
         `https://formx360.onrender.com/forms/export/${form._id}`,
         {
-          responseType: "blob", // Handle the response as a file
+          responseType: "blob",
         }
       );
 
-      // Create a URL for the blob and trigger a download
+      // Create a URL and trigger a download
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
       link.href = url;

@@ -31,7 +31,6 @@ function Security() {
         return;
       }
 
-      // Call the backend API to change the password
       const response = await axios.put(
         `https://formx360.onrender.com/users/change-password`,
         {
@@ -40,7 +39,7 @@ function Security() {
         },
         {
           headers: {
-            Authorization: `Bearer ${token}`, 
+            Authorization: `Bearer ${token}`,
           },
         }
       );

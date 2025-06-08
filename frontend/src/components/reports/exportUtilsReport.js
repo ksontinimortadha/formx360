@@ -10,7 +10,7 @@ const exportToCSV = (data, headers, filename = "report.csv") => {
   // Dynamically generate header labels
   const headerLabels = headers.map((fieldId) => {
     const fieldData = data[0].responses.find((r) => r.field_id === fieldId);
-    return fieldData ? fieldData.field_name : fieldId; // Fallback to fieldId if not found
+    return fieldData ? fieldData.field_name : fieldId; 
   });
   csvRows.push(headerLabels.join(","));
 
@@ -19,7 +19,7 @@ const exportToCSV = (data, headers, filename = "report.csv") => {
     const values = headers.map((fieldId) => {
       const fieldData = item.responses.find((r) => r.field_name === fieldId);
       const value = fieldData ? fieldData.value : "N/A";
-      return `"${value}"`; // Wrapping value in quotes to handle commas and special chars
+      return `"${value}"`; 
     });
     csvRows.push(values.join(","));
   });
@@ -41,7 +41,7 @@ const exportToExcel = (data, headers, filename = "report.xlsx") => {
     const row = {};
     headers.forEach((fieldId) => {
       const fieldData = item.responses.find((r) => r.field_name === fieldId);
-      const label = fieldData ? fieldData.field_name : fieldId; // Fallback to fieldId if not found
+      const label = fieldData ? fieldData.field_name : fieldId; 
       row[label] = fieldData ? fieldData.value : "N/A";
     });
     return row;
@@ -75,7 +75,7 @@ const exportToPDF = (data, headers, filename = "report.pdf") => {
 
   const headerLabels = headers.map((fieldId) => {
     const fieldData = data[0].responses.find((r) => r.field_id === fieldId);
-    return fieldData ? fieldData.field_name : fieldId; // Fallback to fieldId if not found
+    return fieldData ? fieldData.field_name : fieldId; 
   });
 
   // Generate table in PDF using jsPDF's autoTable
@@ -89,5 +89,4 @@ const exportToPDF = (data, headers, filename = "report.pdf") => {
   doc.save(filename);
 };
 
-// Correct default export
 export default { exportToCSV, exportToExcel, exportToPDF };

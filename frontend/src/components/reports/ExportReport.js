@@ -7,7 +7,7 @@ const ExportReport = ({
   showModal,
   setShowModal,
   reportData,
-  availableFields, // Pass availableFields as a prop
+  availableFields, 
 }) => {
   const handleExport = (format) => {
     const headers = availableFields.map((field) => field.label); 

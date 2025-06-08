@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { Modal, Button, Form, Badge, ListGroup } from "react-bootstrap";
-import { FaEye, FaEdit, FaTrash, FaWpforms, FaPenAlt } from "react-icons/fa";
+import { FaEdit, FaTrash, FaWpforms } from "react-icons/fa";
 import axios from "axios";
 import { toast } from "react-toastify";
 
@@ -13,7 +13,7 @@ const PermissionsModal = ({
   initialPermissions = [],
   currentUserRole,
   companyId,
-  fetchForms, // Added this prop to fetch forms after saving
+  fetchForms,
 }) => {
   const [selectedPermissions, setSelectedPermissions] = useState([]);
   const [existingPermissions, setExistingPermissions] = useState({});
@@ -41,7 +41,6 @@ const PermissionsModal = ({
         [formId]: flatPermissions,
       }));
 
-      // Update selectedPermissions based on fetched data
       setSelectedPermissions(flatPermissions);
     } catch (error) {
       console.error("Failed to fetch permissions:", error);
@@ -52,7 +51,7 @@ const PermissionsModal = ({
   // Update permissions when form changes
   useEffect(() => {
     if (form?._id) {
-      fetchFormPermissions(form._id); // Fetch existing permissions when form is available
+      fetchFormPermissions(form._id);
     }
   }, [form]);
 
@@ -60,7 +59,7 @@ const PermissionsModal = ({
   const handleCheckboxChange = useCallback(
     (userId, permission) => {
       const user = users.find((u) => u._id === userId);
-      if (user?.role === "Super Admin") return; // Ignore changes for Super Admin
+      if (user?.role === "Super Admin") return;
 
       setSelectedPermissions((prev) => {
         const index = prev.findIndex(
@@ -68,12 +67,10 @@ const PermissionsModal = ({
         );
 
         if (index > -1) {
-          // Remove permission if it exists
           return prev.filter(
             (p) => !(p.userId === userId && p.permission === permission)
           );
         } else {
-          // Add new permission if it does not exist
           return [...prev, { userId, permission }];
         }
       });
@@ -102,7 +99,7 @@ const PermissionsModal = ({
         }
       );
       toast.success("Permissions saved successfully!");
-      await fetchForms(companyId); // Fetch updated forms after saving
+      await fetchForms(companyId);
       handleClose();
     } catch (error) {
       console.error("Error saving permissions:", error);

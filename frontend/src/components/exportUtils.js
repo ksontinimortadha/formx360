@@ -33,7 +33,6 @@ const exportToCSV = (data, headers, filename = "responses.csv") => {
   link.click();
 };
 
-
 const exportToExcel = (data, headers, filename = "responses.xlsx") => {
   // Flatten the data based on the headers
   const flattenedData = data.map((item) => {
@@ -61,7 +60,6 @@ const exportToExcel = (data, headers, filename = "responses.xlsx") => {
   saveAs(blob, filename);
 };
 
-
 const exportToPDF = (data, headers, filename = "responses.pdf") => {
   const doc = new jsPDF();
 
@@ -77,7 +75,7 @@ const exportToPDF = (data, headers, filename = "responses.pdf") => {
     return fieldData ? fieldData.field_name : field;
   });
 
-  // ✅ Use standalone autoTable function
+  // Use standalone autoTable function
   autoTable(doc, {
     head: [headerLabels],
     body: rows,
@@ -88,5 +86,4 @@ const exportToPDF = (data, headers, filename = "responses.pdf") => {
   doc.save(filename);
 };
 
-// ✅ Correct default export
 export default { exportToCSV, exportToExcel, exportToPDF };

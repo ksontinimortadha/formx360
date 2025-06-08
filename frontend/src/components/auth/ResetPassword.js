@@ -20,7 +20,6 @@ function ResetPassword() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Extract token and email from URL
   const searchParams = new URLSearchParams(location.search);
   const token = searchParams.get("token");
   const email = searchParams.get("email");

@@ -47,7 +47,7 @@ function Reports() {
     // Handle missing company ID
     if (!companyId) {
       setError("Company ID not found. Please log in again.");
-      setReports([]); // Clear reports to avoid showing stale data
+      setReports([]);
       setLoading(false);
       return;
     }
@@ -59,7 +59,6 @@ function Reports() {
 
       const data = response.data;
 
-      // Ensure data is a valid array
       if (Array.isArray(data)) {
         setReports(data);
         if (data.length === 0) {
@@ -71,14 +70,12 @@ function Reports() {
       }
     } catch (err) {
       console.error("Error fetching reports:", err);
-      setReports([]); // Clear reports to avoid showing old data
+      setReports([]);
       setError("No reports have been made.");
     } finally {
       setLoading(false);
     }
   };
-  
-  
 
   const handleReportAdded = () => {
     fetchReports();

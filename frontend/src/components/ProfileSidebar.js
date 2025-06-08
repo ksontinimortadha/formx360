@@ -1,4 +1,3 @@
-// Sidebar.js
 import React, { useEffect, useState } from "react";
 import { Button, Col } from "react-bootstrap";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
@@ -24,10 +23,9 @@ const ProfileSidebar = () => {
     }
 
     if (savedUserId || userId) {
-      // Use userId from URL or sessionStorage
       const targetUserId = userId || savedUserId;
       if (companyId && targetUserId) {
-        fetchUserInfo(companyId, targetUserId); // Fetch user info with both companyId and userId
+        fetchUserInfo(companyId, targetUserId);
       }
     }
   }, [userId, companyId]);
@@ -46,12 +44,11 @@ const ProfileSidebar = () => {
   };
   useEffect(() => {
     if (userInfo?._id) {
-      // Conditionally set the path for the first menu item based on the user role
       const userRole = userInfo.role;
 
       setMenuItems([
         {
-          path: userRole === "User" ? "/user-dashboard" : "/dashboard", 
+          path: userRole === "User" ? "/user-dashboard" : "/dashboard",
           label: userRole === "User" ? "Forms" : "dashboard",
           icon: userRole === "User" ? <FaWpforms /> : <FaUser />,
         },
